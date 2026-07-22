@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+body {
+  margin: 0;
+  background-color: $night-field;
+  color: $ice;
+  font-family: $font-family-base;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: $font-weight-bold;
+}

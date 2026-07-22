@@ -21,11 +21,11 @@ $button-radius: 3.75rem;
 $search-radius: 1.875rem; // 30px
 $submenu-radius: 3.28125rem; // 52.5px
 
-// Gradients
-$button-gradient: linear-gradient(124deg, $overlay-navy 42%, $aurora-teal 99%);
-
 // Overlay
 $overlay-navy: #111A2E;  // shared poster overlay + button gradient start
+
+// Gradients
+$button-gradient: linear-gradient(124deg, $overlay-navy 42%, $aurora-teal 99%);
 
 // Breakpoints - used by the mixins below, mobile-first
 $breakpoint-tablet: 48rem;
