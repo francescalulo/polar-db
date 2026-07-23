@@ -13,6 +13,50 @@
   }
 }
 
+// Flexible flex layout - pass only what differs from the defaults
+@mixin flex($direction: row, $align: center, $justify: flex-start, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// Reusable square icon button (bookmark, share, and future icon buttons)
+@mixin icon-button($size: 1.5rem) {
+  width: $size;
+  height: $size;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  @include poster-icon-shadow;
+
+  &:hover,
+  &:focus-visible {
+    @include text-glow;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Hover glow used on solid pill buttons (More Info, and likely other action buttons later)
+@mixin button-hover-glow {
+  background-image: $button-hover-gradient;
+  box-shadow:
+    0 0 7.8125rem #0bea89,
+    0 0 4.725rem #0bea89,
+    0 0 2.3625rem #0bea89,
+    0 0 0.675rem #0bea89,
+    0 0 0.3375rem #0bea89;
+}
+
 // The glow effect used on card hover
 @mixin glow-shadow {
   box-shadow:

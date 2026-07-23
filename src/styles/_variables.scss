@@ -5,7 +5,7 @@ $ice: #EAF6F4;                 // primary text
 $aurora-green: #79FF9C;        // accent / glow highlight
 $aurora-green-glow: #02EA8D;   // glow shadow color, used on hover
 $aurora-cyan: #00C3D5;         // secondary accent (genre tags, links)
-$aurora-deep-cyan: #008585;    // Reserved not yet placed
+$aurora-deep-cyan: #008585;    // used in hover gradient
 $aurora-teal: #26E4B0;         // Secondary Header Color, Artist Name Color
 $glass-overlay: #003C3B;
 
@@ -14,6 +14,12 @@ $font-family-base: 'Inter', sans-serif;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
+
+// Type Scale
+$font-size-xs: 0.75rem;   // 12px — artist mobile details
+$font-size-sm: 0.875rem;  // 14px — genre tags
+$font-size-md: 1rem;      // 16px — body copy, UI text (base size)
+$font-size-xl: 1.75rem;   // 28px — large movie title
 
 // Shape
 $card-radius: .75rem;
@@ -26,6 +32,8 @@ $overlay-navy: #111A2E;  // shared poster overlay + button gradient start
 
 // Gradients
 $button-gradient: linear-gradient(124deg, $overlay-navy 42%, $aurora-teal 99%);
+$button-hover-gradient: linear-gradient(90deg, #001F1F 0%, $aurora-deep-cyan 100%);
+$button-pressed-gradient: linear-gradient(90deg, $aurora-green-glow 7.212%, $aurora-deep-cyan 62.981%);
 
 // Breakpoints - used by the mixins below, mobile-first
 $breakpoint-tablet: 48rem;
