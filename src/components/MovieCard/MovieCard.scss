@@ -107,13 +107,8 @@
   @include poster-icon-shadow;
 }
 
-.movieCard__bookmark {
-  @include icon-button;
-}
-
 .movieCard__share {
   position: absolute;
   right: 1.25rem;
   bottom: 1.625rem;
-  @include icon-button;
 }

@@ -35,6 +35,11 @@
   cursor: pointer;
   @include poster-icon-shadow;
 
+  &:hover,
+  &:focus-visible {
+    @include text-glow;
+  }
+
   img {
     width: 100%;
     height: 100%;
