@@ -1,0 +1,24 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.moreInfoButton {
+  width: 7.5rem;
+  height: 2.25rem;
+  padding: 0.625rem;
+  border: none;
+  cursor: pointer;
+  color: $ice;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-md;
+  background-image: $button-gradient;
+  @include pill-button;
+
+  &:hover,
+  &:focus-visible {
+    @include button-hover-glow;
+  }
+
+  &:active {
+    background-image: $button-pressed-gradient;
+  }
+}

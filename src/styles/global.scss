@@ -1,10 +1,16 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 body {
   margin: 0;
   background-color: $night-field;
   color: $ice;
   font-family: $font-family-base;
+}
+
+.app {
+  @include flex($justify: center);
+  min-height: 100vh;
 }
 
 h1,
