@@ -45,7 +45,7 @@
     font-size: $font-size-sm;
   }
 
-  line-height: 1.5;
+  line-height: 1.25;
 }
 
 .footer__tagline span {
@@ -64,7 +64,7 @@
   color: $aurora-green;
   text-decoration: none;
   font-weight: $font-weight-medium;
-  font-size: 0.875rem;   // was $font-size-md — smaller so "My Watchlist" doesn't wrap or crowd the edge
+  font-size: $font-size-sm;   // was $font-size-md — smaller so "My Watchlist" doesn't wrap or crowd the edge
 
   @include tablet {
     font-size: $font-size-md;

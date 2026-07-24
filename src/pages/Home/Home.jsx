@@ -1,5 +1,7 @@
 import './Home.scss';
 import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import SubmenuTabBar from '../../components/SubmenuTabBar/SubmenuTabBar';
 import MovieCard from "../../components/MovieCard/MovieCard";
 
 // Movie Card Mock-up for preview purposes
@@ -17,7 +19,9 @@ function Home() {
   return (
     <div>
       <Header />
+      <SubmenuTabBar />
       <MovieCard movie={mockMovie} />
+      <Footer />
     </div>
   );
 }
