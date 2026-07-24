@@ -1,7 +1,23 @@
-// TODO (Day 6): replace with React Router routes once set up
+import MovieCard from './components/MovieCard/MovieCard';
 import About from './pages/About/About';
 
+// Movie Card Mock-up for preview purposes
+const mockMovie = {
+  id: 1,
+  title: "Kraken 2026",
+  poster_path: "https://image.tmdb.org/t/p/original/6kl4oAJgeGmxqNoDu4wk58YpORN.jpg",
+  release_date: "2025-12-19",
+  vote_average: 6.4,
+  overview: "A marine biologist is doing research on a fish farm when she encounters...",
+  genres: ["Horror", "Action", "Thriller"]
+};
+
 function App() {
+    return (
+    <div className="app">
+      <MovieCard movie={mockMovie} />
+    </div>
+  );
   return <About />;
 }
 
