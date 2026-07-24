@@ -1,21 +1,17 @@
-import MovieCard from './components/MovieCard/MovieCard';
-
-// Movie Card Mock-up for preview purposes
-const mockMovie = {
-  id: 1,
-  title: "Kraken 2026",
-  poster_path: "https://image.tmdb.org/t/p/original/6kl4oAJgeGmxqNoDu4wk58YpORN.jpg",
-  release_date: "2025-12-19",
-  vote_average: 6.4,
-  overview: "A marine biologist is doing research on a fish farm when she encounters...",
-  genres: ["Horror", "Action", "Thriller"]
-};
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import About from './pages/About/About';
+import MovieDetail from './pages/MovieDetail/MovieDetail';
+import Watchlist from './pages/Watchlist/Watchlist';
 
 function App() {
   return (
-    <div className="app">
-      <MovieCard movie={mockMovie} />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/movie/:id" element={<MovieDetail />} />
+      <Route path="/watchlist" element={<Watchlist />} />
+    </Routes>
   );
 }
 
