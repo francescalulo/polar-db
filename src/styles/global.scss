@@ -8,11 +8,6 @@ body {
   font-family: $font-family-base;
 }
 
-.app {
-  @include flex($justify: center);
-  min-height: 100vh;
-}
-
 h1,
 h2,
 h3 {

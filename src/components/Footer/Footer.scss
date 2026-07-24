@@ -1,0 +1,75 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.footer {
+  @include glass-panel(1);
+  padding: 2rem 1rem 1.5rem;
+
+  @include tablet {
+    padding: 2.5rem 2rem 1.5rem;
+  }
+
+  @include desktop {
+    padding: 3rem 3.75rem 1.75rem;
+  }
+}
+
+.footer__top {
+  @include flex($direction: column, $align: flex-start, $gap: 1.5rem);
+
+  @include tablet {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.footer__brand {
+  max-width: 20rem;
+}
+
+.footer__logo {
+  height: 1.75rem;
+  width: auto;
+  margin-bottom: 0.75rem;
+}
+
+.footer__tagline {
+  margin: 0;
+  color: rgba($ice, 0.8);
+  font-size: $font-size-sm;
+  line-height: 1.5;
+}
+
+.footer__nav {
+  @include flex($direction: column, $align: flex-start, $gap: 0.75rem);
+
+  @include tablet {
+    align-items: flex-end;
+  }
+
+  a {
+    color: $aurora-green;
+    text-decoration: none;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-md;
+
+    &:hover,
+    &:focus-visible {
+      @include text-glow;
+    }
+  }
+}
+
+.footer__divider {
+  margin: 1.5rem 0 1.25rem;
+  border: none;
+  border-top: 1px solid rgba($ice, 0.15);
+}
+
+.footer__copyright {
+  margin: 0;
+  text-align: center;
+  color: rgba($ice, 0.7);
+  font-size: $font-size-xs;
+}

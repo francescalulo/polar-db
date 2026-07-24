@@ -1,4 +1,5 @@
 import './Home.scss';
+import Header from '../../components/Header/Header';
 import MovieCard from "../../components/MovieCard/MovieCard";
 
 // Movie Card Mock-up for preview purposes
@@ -14,7 +15,8 @@ const mockMovie = {
 
 function Home() {
   return (
-    <div className="app">
+    <div>
+      <Header />
       <MovieCard movie={mockMovie} />
     </div>
   );
