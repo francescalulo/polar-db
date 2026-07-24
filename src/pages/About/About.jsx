@@ -5,7 +5,7 @@ import './About.scss';
 function About() {
   return (
     <>
-      <Header activePage="about" />
+      <Header />
 
       <main className="about">
         <section className="about__intro">

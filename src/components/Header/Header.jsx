@@ -1,43 +1,34 @@
+import { Link } from 'react-router-dom';
+import logoMark from '../../assets/icons/favicon.svg';
 import wordmark from '../../assets/polar-wordmark.svg';
+import bookmarkIcon from '../../assets/icons/bookmark-icon-outline.svg';
+import aboutIcon from '../../assets/icons/about-icon-outline.svg';
 import searchIcon from '../../assets/icons/search-icon-outline.svg';
-import bookmarkOutline from '../../assets/icons/bookmark-icon-outline.svg';
-import aboutOutline from '../../assets/icons/about-icon-outline.svg';
 import './Header.scss';
 
-function Header({ activePage }) {
+function Header() {
   return (
     <header className="header">
-      <div className="header__bar">
-        {/* TODO (Day 6): swap for React Router <Link to="/"> once routing is wired up */}
-        <a href="/" className="header__logo">
-          <img src={wordmark} alt="Polar+DB home" />
-        </a>
+      <Link to="/" className="header__logo" aria-label="Polar DB Home">
+        <img src={logoMark} alt="" className="header__logoMark" />
+        <img src={wordmark} alt="" className="header__logoWordmark" />
+      </Link>
 
-        <div className="header__search">
-          <input type="text" placeholder="Search" aria-label="Search movies" />
-          <img src={searchIcon} alt="" />
-        </div>
-
-        <nav className="header__nav" aria-label="Primary">
-          {/* TODO (Day 6): swap hrefs for React Router <Link> once routes exist */}
-          <a
-            href="#"
-            className="header__navLink"
-            aria-current={activePage === 'watchlist' ? 'page' : undefined}
-          >
-            <img src={bookmarkOutline} alt="" />
-            <span>My Watchlist</span>
-          </a>
-          <a
-            href="#"
-            className="header__navLink"
-            aria-current={activePage === 'about' ? 'page' : undefined}
-          >
-            <img src={aboutOutline} alt="" />
-            <span>About</span>
-          </a>
-        </nav>
+      <div className="header__search">
+        <input type="search" placeholder="Search" className="header__searchInput" />
+        <img src={searchIcon} alt="" className="header__searchIcon" />
       </div>
+
+      <nav className="header__nav" aria-label="Primary">
+        <Link to="/watchlist" className="header__navLink" aria-label="My Watchlist">
+          <img src={bookmarkIcon} alt="" />
+          <span className="header__navLabel">My Watchlist</span>
+        </Link>
+        <Link to="/about" className="header__navLink" aria-label="About">
+          <img src={aboutIcon} alt="" />
+          <span className="header__navLabel">About</span>
+        </Link>
+      </nav>
     </header>
   );
 }
