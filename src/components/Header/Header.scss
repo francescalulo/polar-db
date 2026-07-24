@@ -48,8 +48,8 @@
   box-sizing: border-box;
 
   &::placeholder {
-    color: rgba($ice, 0.5);
-  }
+  color: $aurora-green;
+}
 
   &:focus {
     outline: 2px solid $aurora-cyan;
@@ -79,7 +79,7 @@
 // Media Query
 @include desktop {
   .header {
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 3rem;
     justify-content: flex-start;
     gap: 2rem;
   }
@@ -96,29 +96,29 @@
     display: block;
   }
 
-  .header__logo img {
-    height: 1.75rem;
+  .header__search {
+    flex: 0 1 26rem;
+    max-width: 26rem;
   }
 
-  .header__search {
-  flex: 0 1 26rem;
-  max-width: 26rem;
+  .header__searchInput {
+    height: 2rem;   // was 2.25rem (base rule)
   }
 
   .header__navLink {
     width: auto;
     height: auto;
-    @include flex($gap: 0.625rem);
-    padding: 0.625rem;
+    @include flex($gap: 0.5rem);
+    padding: 0.5rem;
     color: $aurora-green;
     font-family: $font-family-base;
-    font-size: $font-size-md;
+    font-size: 0.95rem;   // was $font-size-md
     font-weight: $font-weight-regular;
     text-decoration: none;
 
     img {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.25rem;
+      height: 1.25rem;
     }
   }
 
