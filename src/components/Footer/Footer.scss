@@ -25,7 +25,10 @@
 }
 
 .footer__brand {
+  display: block;        // new — restores the stacked layout an <a> doesn't have by default
   max-width: 20rem;
+  text-decoration: none; // new — removes the default link underline
+  color: inherit;        // new — stops the tagline from inheriting default blue link color
 }
 
 .footer__logo {
