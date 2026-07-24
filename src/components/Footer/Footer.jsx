@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import wordmark from '../../assets/polar-wordmark.svg';
 import './Footer.scss';
 
@@ -10,11 +11,10 @@ function Footer() {
           <p className="footer__tagline">Find your next film by the light of the northern sky.</p>
         </div>
 
-        {/* TODO (Day 6): swap hrefs for React Router <Link> once routes exist */}
         <nav className="footer__nav" aria-label="Footer">
-          <a href="/">Home</a>
-          <a href="#">My Watchlist</a>
-          <a href="#">About</a>
+          <Link to="/">Home</Link>
+          <Link to="/watchlist">My Watchlist</Link>
+          <Link to="/about">About</Link>
         </nav>
       </div>
 
