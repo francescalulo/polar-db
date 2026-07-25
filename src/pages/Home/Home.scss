@@ -1,2 +1,14 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+
+.home {
+  padding-bottom: 4.5rem; // clears the fixed submenu bar on mobile
+
+  @include tablet {
+    padding-bottom: 5.5rem; // clears the taller tablet-size bar
+  }
+
+  @include desktop {
+    padding-bottom: 0; // bar is static/inline here, no longer overlaps anything
+  }
+}

@@ -8,8 +8,10 @@ function Footer() {
       <div className="footer__top">
         <div className="footer__brand">
           <Link to="/" className="footer__brand" aria-label="Polar DB Home">
-            <img src={wordmark} alt="Polar+DB" className="footer__logo" />           
-            <p className="footer__tagline">Find your next film by the <span>light of the northern sky.</span></p>
+            <img src={wordmark} alt="Polar+DB" className="footer__logo" />
+            <p className="footer__tagline">
+              Find your next film by the <span>light of the northern sky.</span>
+            </p>
           </Link>
         </div>
 
@@ -22,7 +24,9 @@ function Footer() {
 
       <hr className="footer__divider" />
 
-      <p className="footer__copyright">&copy; 2026 FWD44 | For Educational Purposes Only</p>
+      <p className="footer__copyright">
+        &copy; 2026 FWD44 | For Educational Purposes Only
+      </p>
     </footer>
   );
 }

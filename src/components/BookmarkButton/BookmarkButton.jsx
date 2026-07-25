@@ -12,7 +12,7 @@ function BookmarkButton({ movie, className }) {
     console.log(
       isBookmarked
         ? 'Removed "' + movie.title + '" from watchlist'
-        : 'Added "' + movie.title + '" to watchlist'
+        : 'Added "' + movie.title + '" to watchlist',
     );
   };
 

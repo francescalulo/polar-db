@@ -6,7 +6,11 @@ import './MovieCard.scss';
 function MovieCard({ movie }) {
   return (
     <div className="movieCard">
-      <img className="movieCard__poster" src={movie.poster_path} alt={movie.title} />
+      <img
+        className="movieCard__poster"
+        src={movie.poster_path}
+        alt={movie.title}
+      />
 
       <div className="movieCard__details">
         <div className="movieCard__overlay" />
@@ -22,7 +26,10 @@ function MovieCard({ movie }) {
       </div>
 
       <div className="movieCard__topRow">
-        <div className="movieCard__rating" aria-label={`User Score: ${Math.round(movie.vote_average * 10)}%`}>
+        <div
+          className="movieCard__rating"
+          aria-label={`User Score: ${Math.round(movie.vote_average * 10)}%`}
+        >
           <span>★ {Math.round(movie.vote_average * 10)}%</span>
         </div>
         <BookmarkButton movie={movie} />

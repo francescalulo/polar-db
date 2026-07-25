@@ -15,12 +15,20 @@ function Header() {
       </Link>
 
       <div className="header__search">
-        <input type="search" placeholder="Search" className="header__searchInput" />
+        <input
+          type="search"
+          placeholder="Search"
+          className="header__searchInput"
+        />
         <img src={searchIcon} alt="" className="header__searchIcon" />
       </div>
 
       <nav className="header__nav" aria-label="Primary">
-        <Link to="/watchlist" className="header__navLink" aria-label="My Watchlist">
+        <Link
+          to="/watchlist"
+          className="header__navLink"
+          aria-label="My Watchlist"
+        >
           <img src={bookmarkIcon} alt="" />
           <span className="header__navLabel">My Watchlist</span>
         </Link>
