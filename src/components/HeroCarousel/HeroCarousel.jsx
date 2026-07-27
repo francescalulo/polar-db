@@ -29,7 +29,7 @@ function HeroCarousel({ movie }) {
         </div>
 
         <div className="hero__actions">
-          <MoreInfoButton className="hero__moreInfo" />
+          <MoreInfoButton movieId={movie.id} className="hero__moreInfo" />
           <div className="hero__watchlist">
             <BookmarkButton movie={movie} />
             <span>Add to My Watchlist</span>
