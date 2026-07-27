@@ -1,10 +1,14 @@
+import { Link } from 'react-router-dom';
 import './MoreInfoButton.scss';
 
-function MoreInfoButton({ className, onClick }) {
+function MoreInfoButton({ movieId, className }) {
   return (
-    <button className={'moreInfoButton ' + (className || '')} type="button" onClick={onClick}>
+    <Link
+      to={'/movie/' + movieId}
+      className={'moreInfoButton ' + (className || '')}
+    >
       More Info
-    </button>
+    </Link>
   );
 }
 

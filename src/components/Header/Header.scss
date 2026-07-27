@@ -48,8 +48,8 @@
   box-sizing: border-box;
 
   &::placeholder {
-  color: $aurora-green;
-}
+    color: $aurora-green;
+  }
 
   &:focus {
     outline: 2px solid $aurora-cyan;
@@ -74,7 +74,6 @@
 .header__navLink {
   @include icon-button;
 }
-
 
 // Media Query
 @include desktop {
@@ -102,7 +101,7 @@
   }
 
   .header__searchInput {
-    height: 2rem;   // was 2.25rem (base rule)
+    height: 2rem; // was 2.25rem (base rule)
   }
 
   .header__navLink {
@@ -112,7 +111,7 @@
     padding: 0.5rem;
     color: $aurora-green;
     font-family: $font-family-base;
-    font-size: 0.95rem;   // was $font-size-md
+    font-size: 0.95rem; // was $font-size-md
     font-weight: $font-weight-regular;
     text-decoration: none;
 

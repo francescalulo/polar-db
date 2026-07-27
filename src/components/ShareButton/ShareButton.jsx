@@ -22,7 +22,12 @@ function ShareButton({ movie, className }) {
   };
 
   return (
-    <button className={'shareButton ' + (className || '')} type="button" aria-label="Share" onClick={handleClick}>
+    <button
+      className={'shareButton ' + (className || '')}
+      type="button"
+      aria-label="Share"
+      onClick={handleClick}
+    >
       <img src={shareOutline} alt="" />
     </button>
   );

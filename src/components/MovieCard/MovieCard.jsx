@@ -25,14 +25,12 @@ function MovieCard({ movie, onRemove }) {
             </p>
           </div>
 
-          <p className="movieCard__date">
-            Release Date: {movie.release_date}
-          </p>
+          <p className="movieCard__date">Release Date: {movie.release_date}</p>
 
           <p className="movieCard__overview">{movie.overview}</p>
         </div>
 
-        <MoreInfoButton className="movieCard__moreInfo" />
+        <MoreInfoButton movieId={movie.id} className="movieCard__moreInfo" />
       </div>
 
       <div className="movieCard__topRow">
@@ -44,16 +42,10 @@ function MovieCard({ movie, onRemove }) {
         </div>
 
         {/* Pass my remove function to the BookmarkButton */}
-        <BookmarkButton
-          movie={movie}
-          onRemove={onRemove}
-        />
+        <BookmarkButton movie={movie} onRemove={onRemove} />
       </div>
 
-      <ShareButton
-        movie={movie}
-        className="movieCard__share"
-      />
+      <ShareButton movie={movie} className="movieCard__share" />
     </div>
   );
 }

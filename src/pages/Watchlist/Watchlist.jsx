@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
 import MovieCard from '../../components/MovieCard/MovieCard';
 import EmptyWatchlist from '../../components/EmptyWatchlist/EmptyWatchlist';
 
@@ -24,24 +21,19 @@ function Watchlist() {
   const handleRemoveMovie = (movieId) => {
     // Keep every movie except the one being removed
     const updatedMovies = watchlistMovies.filter(
-      (movie) => movie.id !== movieId
+      (movie) => movie.id !== movieId,
     );
 
     // Update the page with the new movie list
     setWatchlistMovies(updatedMovies);
 
     // Save the updated list back to localStorage
-    localStorage.setItem(
-      'watchlist',
-      JSON.stringify(updatedMovies)
-    );
+    localStorage.setItem('watchlist', JSON.stringify(updatedMovies));
   };
 
   return (
     <>
-      <Header />
-
-      <main className="watchlist">
+      <div className="watchlist">
         <h1 className="watchlist__title">My Watchlist</h1>
 
         {/* Show the empty state if there are no saved movies */}
@@ -59,9 +51,7 @@ function Watchlist() {
             ))}
           </div>
         )}
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }
