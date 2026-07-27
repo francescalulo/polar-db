@@ -1,13 +1,9 @@
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
 import './About.scss';
 
 function About() {
   return (
     <>
-      <Header />
-
-      <main className="about">
+      <div className="about">
         <section className="about__intro">
           <h1 className="about__heading">
             About{' '}
@@ -75,9 +71,7 @@ function About() {
                 Download from https://www.themoviedb.org/about/logos-attribution and drop into src/assets/. */}
           </div>
         </section>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }

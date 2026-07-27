@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logoMark from '../../assets/icons/favicon.svg';
 import wordmark from '../../assets/polar-wordmark.svg';
 import bookmarkIcon from '../../assets/icons/bookmark-icon-outline.svg';
@@ -24,18 +24,18 @@ function Header() {
       </div>
 
       <nav className="header__nav" aria-label="Primary">
-        <Link
+        <NavLink
           to="/watchlist"
           className="header__navLink"
           aria-label="My Watchlist"
         >
           <img src={bookmarkIcon} alt="" />
           <span className="header__navLabel">My Watchlist</span>
-        </Link>
-        <Link to="/about" className="header__navLink" aria-label="About">
+        </NavLink>
+        <NavLink to="/about" className="header__navLink" aria-label="About">
           <img src={aboutIcon} alt="" />
           <span className="header__navLabel">About</span>
-        </Link>
+        </NavLink>
       </nav>
     </header>
   );

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import wordmark from '../../assets/polar-wordmark.svg';
 import './Footer.scss';
 
@@ -16,9 +16,9 @@ function Footer() {
         </div>
 
         <nav className="footer__nav" aria-label="Footer">
-          <Link to="/">Home</Link>
-          <Link to="/watchlist">My Watchlist</Link>
-          <Link to="/about">About</Link>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/watchlist">My Watchlist</NavLink>
+          <NavLink to="/about">About</NavLink>
         </nav>
       </div>
 
