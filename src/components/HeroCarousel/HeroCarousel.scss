@@ -124,3 +124,12 @@
     background: $aurora-green;
   }
 }
+
+.hero__watchlist {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: $aurora-green;
+  font-size: 1rem;
+  font-weight: $font-weight-medium;
+}
