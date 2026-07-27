@@ -3,7 +3,7 @@
 
 .footer {
   @include glass-panel(1);
-  padding: 2rem 1rem 1.5rem;
+  padding: 1.5rem 1rem 1.25rem;
 
   @include tablet {
     padding: 2.5rem 2rem 1.5rem;
@@ -15,61 +15,80 @@
 }
 
 .footer__top {
-  @include flex($direction: column, $align: flex-start, $gap: 1.5rem);
-
-  @include tablet {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
+  @include flex($justify: space-between, $align: flex-start, $gap: 1.5rem);
 }
 
 .footer__brand {
-  max-width: 20rem;
+  display: block;
+  max-width: 8.5rem; // new — was 20rem; needed now that it shares the row with nav on mobile
+
+  @include tablet {
+    max-width: 20rem; // restore the roomier width once there's more space
+  }
+
+  text-decoration: none;
+  color: inherit;
 }
 
 .footer__logo {
-  height: 1.75rem;
+  height: 1.5rem; // was 1.75rem adjusted to match the header
   width: auto;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem; // was 0.75rem
 }
 
 .footer__tagline {
   margin: 0;
-  color: rgba($ice, 0.8);
-  font-size: $font-size-sm;
-  line-height: 1.5;
+  color: $ice;
+  font-size: $font-size-xs; // was $font-size-sm — smaller to fit the narrower column
+
+  @include tablet {
+    font-size: $font-size-sm;
+  }
+
+  line-height: 1.25;
+}
+
+.footer__tagline span {
+  display: block;
 }
 
 .footer__nav {
-  @include flex($direction: column, $align: flex-start, $gap: 0.75rem);
+  @include flex(
+    $direction: column,
+    $align: flex-start,
+    $gap: 0.5rem
+  ); // gap was 0.75rem
 
   @include tablet {
     align-items: flex-end;
   }
+}
 
-  a {
-    color: $aurora-green;
-    text-decoration: none;
-    font-weight: $font-weight-medium;
+.footer__nav a {
+  color: $aurora-green;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm; // was $font-size-md — smaller so "My Watchlist" doesn't wrap or crowd the edge
+
+  @include tablet {
     font-size: $font-size-md;
+  }
 
-    &:hover,
-    &:focus-visible {
-      @include text-glow;
-    }
+  &:hover,
+  &:focus-visible {
+    @include text-glow;
   }
 }
 
 .footer__divider {
-  margin: 1.5rem 0 1.25rem;
+  margin: 2.5625rem 0;
   border: none;
-  border-top: 1px solid rgba($ice, 0.15);
+  border-top: 1.5px solid $aurora-green; // was 1px solid rgba($ice, 0.15)
 }
 
 .footer__copyright {
   margin: 0;
   text-align: center;
-  color: rgba($ice, 0.7);
+  color: $aurora-green; // was rgba($ice, 0.7)
   font-size: $font-size-xs;
 }
