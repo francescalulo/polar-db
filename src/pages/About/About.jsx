@@ -1,6 +1,4 @@
 import { useEffect } from 'react';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
 import wordmark from '../../assets/polar-wordmark.svg';
 import './About.scss';
 
@@ -28,10 +26,6 @@ function About() {
         <section className="about__intro">
           <h1 className="about__heading">
             About <img src={wordmark} alt="Polar+DB" className="about__logo" />
-            About{' '}
-            <span className="about__brand">
-              Polar<span className="about__brandAccent">+DB</span>
-            </span>
           </h1>
           <p>
             PolarDB is a movie discovery platform inspired by the beauty and
