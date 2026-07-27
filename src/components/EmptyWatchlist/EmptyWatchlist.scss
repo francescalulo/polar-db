@@ -23,10 +23,17 @@
   border: 2px dashed $aurora-green-glow;
   border-radius: $card-radius;
   background-color: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover,
-  &:focus-within {
+  &:focus-visible {
     @include glow-shadow-sm;
+    transform: scale(1.03);
   }
 }
 

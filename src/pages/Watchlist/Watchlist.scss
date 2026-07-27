@@ -4,7 +4,15 @@
 .watchlist {
   width: 100%;
   min-height: 70vh;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem 3rem;
+
+  @include tablet {
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  @include desktop {
+    padding: 3.5rem 3.75rem 5rem;
+  }
 }
 
 .watchlist__title {
