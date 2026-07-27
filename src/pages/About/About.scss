@@ -19,15 +19,14 @@
 
 .about__heading {
   margin: 0 0 1rem;
+  color: $aurora-green;
   font-size: $font-size-xl;
 }
 
-.about__brand {
-  color: $ice;
-}
-
-.about__brandAccent {
-  color: $aurora-teal;
+.about__logo {
+  height: 1.35em;
+  width: auto;
+  vertical-align: middle;
 }
 
 .about__intro p {
@@ -47,7 +46,7 @@
 
 .about__infoHeading {
   margin: 0 0 1rem;
-  color: $aurora-teal;
+  color: $aurora-green;
   font-size: $font-size-xl;
 }
 
