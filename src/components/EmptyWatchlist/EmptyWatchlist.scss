@@ -1,0 +1,56 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.emptyWatchlist {
+  @include flex(
+    $direction: column,
+    $align: center,
+    $justify: center,
+    $gap: 1.5rem
+  );
+
+  width: 100%;
+}
+
+.emptyWatchlist__card {
+  @include flex(
+    $align: center,
+    $justify: center
+  );
+
+  width: 12rem;
+  aspect-ratio: 2 / 3;
+  border: 2px dashed $aurora-green-glow;
+  border-radius: $card-radius;
+  background-color: transparent;
+
+  &:hover,
+  &:focus-within {
+    @include glow-shadow-sm;
+  }
+}
+
+.emptyWatchlist__plus {
+  @include flex(
+    $align: center,
+    $justify: center
+  );
+
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid $aurora-green-glow;
+  border-radius: 0.4rem;
+  color: $aurora-green-glow;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-medium;
+  line-height: 1;
+}
+
+.emptyWatchlist__message {
+  max-width: 28rem;
+  margin: 0;
+  color: $ice;
+  font-size: $font-size-md;
+  text-align: center;
+  line-height: 1.5;
+}
