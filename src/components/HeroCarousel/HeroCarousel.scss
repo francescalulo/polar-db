@@ -4,12 +4,14 @@
 .hero {
   position: relative;
   overflow: hidden;
-  display: none;
+  display: none; // hidden until mobile layout is built
+  margin-top: -$header-height-mobile;
 
   @include desktop {
     display: block;
     height: 51.375rem;
-    margin-bottom: 2rem; // new — breathing room before the submenu tab bar
+    margin-top: -$header-height-desktop;
+    margin-bottom: 2rem;
   }
 }
 

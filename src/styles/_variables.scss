@@ -47,3 +47,7 @@ $button-pressed-gradient: linear-gradient(
 // Breakpoints - used by the mixins below, mobile-first
 $breakpoint-tablet: 48rem;
 $breakpoint-desktop: 64rem;
+
+// Layout
+$header-height-mobile: 3.75rem; // 60px
+$header-height-desktop: 3.5rem; // 56px
