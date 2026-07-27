@@ -1,11 +1,33 @@
+import { useEffect } from 'react';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import wordmark from '../../assets/polar-wordmark.svg';
 import './About.scss';
 
 function About() {
+  useEffect(() => {
+    document.title = 'Polar DB | About';
+
+    const metaTag = document.querySelector('meta[name="description"]');
+    const description =
+      'Learn about Polar DB, a movie discovery app for browsing, searching, and saving your favourite films.';
+
+    if (metaTag) {
+      metaTag.setAttribute('content', description);
+    } else {
+      const newMetaTag = document.createElement('meta');
+      newMetaTag.name = 'description';
+      newMetaTag.content = description;
+      document.head.appendChild(newMetaTag);
+    }
+  }, []);
+
   return (
     <>
       <div className="about">
         <section className="about__intro">
           <h1 className="about__heading">
+            About <img src={wordmark} alt="Polar+DB" className="about__logo" />
             About{' '}
             <span className="about__brand">
               Polar<span className="about__brandAccent">+DB</span>
