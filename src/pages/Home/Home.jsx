@@ -26,7 +26,7 @@ function Home() {
 
   return (
     <div className="home">
-      <HeroCarousel movie={mockHeroMovies[0]} />
+      <HeroCarousel movies={mockHeroMovies} />
       <SubmenuTabBar />
       <MovieGrid movies={mockMovies} />
     </div>

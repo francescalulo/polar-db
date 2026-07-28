@@ -23,6 +23,16 @@
   object-fit: cover;
 }
 
+.hero__content {
+  opacity: 1;
+  transition: opacity var(--hero-transition-duration, 300ms)
+    var(--hero-transition-easing, ease);
+
+  &--visible {
+    opacity: 1;
+  }
+}
+
 .hero__overlay {
   display: none; // this is the dark gradient used on mobile — enabled in the next step
 }
