@@ -7,6 +7,7 @@
   display: block;
   height: 34rem;
   margin-top: -$header-height-mobile;
+  touch-action: pan-y;
 
   @include tablet {
     height: 40rem;
@@ -73,13 +74,8 @@
   }
 
   @include desktop {
-    left: 4.69%;
-    right: auto;
-    bottom: 7.83%;
-    width: 33.28%;
-    max-width: 39.9375rem;
-    gap: 1.97rem;
-    padding: 2.25rem;
+    width: 40%;
+    padding: 1.75rem;
     border: 0.0985rem solid #03624c;
     border-radius: 2.4375rem;
     background: linear-gradient(to right, #001f1f4d, #0085854d);
@@ -179,9 +175,9 @@
   @include desktop {
     font-size: 1rem;
     max-width: none;
-    line-clamp: unset;
-    -webkit-line-clamp: unset;
-    overflow: visible;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
 }
 
@@ -205,14 +201,7 @@
   gap: 0.5rem;
 
   @include tablet {
-    bottom: 1.5rem;
-  }
-
-  @include desktop {
-    left: 47.24%;
-    right: auto;
-    bottom: 6.08%;
-    gap: 0.625rem;
+    bottom: 2.5rem;
   }
 }
 
