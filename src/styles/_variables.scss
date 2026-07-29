@@ -9,7 +9,7 @@ $aurora-deep-cyan: #008585; // used in hover gradient
 $aurora-teal: #26e4b0; // Secondary Header Color, Artist Name Color
 $aurora-deep-teal: #03624c; // hero card border, tablet/desktop
 
-$glass-overlay: #003c3b;
+$glass-overlay: #003c3b; //header and footer
 
 // Typography
 $font-family-base: 'Inter', sans-serif;
@@ -18,11 +18,13 @@ $font-weight-medium: 500;
 $font-weight-bold: 700;
 
 // Type Scale
-$font-size-xs: 0.75rem; // 12px — artist mobile details
-$font-size-sm: 0.875rem; // 14px — genre tags
-$font-size-md: 1rem; // 16px — body copy, UI text (base size)
-$font-size-lg: 1.25rem;
-$font-size-xl: 1.75rem; // 28px — large movie title
+$font-size-xxs: 0.75rem; // 12px — artist mobile details
+$font-size-xs: 0.875rem; // 14px — genre tags
+$font-size-sm: 1rem; // 16px — body copy, UI text (base size)
+$font-size-md: 1.25rem;
+$font-size-lg: 1.375rem;
+$font-size-xl: 1.5rem;
+$font-size-xxl: 1.75rem; // 28px — large movie title
 
 // Shape
 $card-radius: 0.75rem;
