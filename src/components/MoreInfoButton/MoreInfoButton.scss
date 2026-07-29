@@ -6,16 +6,24 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  width: 7.5rem;
-  height: 2.25rem;
-  padding: 0.625rem;
+  white-space: nowrap;
+  width: 5.5rem;
+  height: 1.875rem;
+  padding: 0.5rem;
   border: none;
   cursor: pointer;
   color: $ice;
   font-weight: $font-weight-medium;
-  font-size: $font-size-lg;
+  font-size: $font-size-sm;
   background-image: $button-gradient;
   @include pill-button;
+
+  @include desktop {
+    width: 7.5rem;
+    height: 2.25rem;
+    padding: 0.625rem;
+    font-size: $font-size-md;
+  }
 
   &:hover,
   &:focus-visible {

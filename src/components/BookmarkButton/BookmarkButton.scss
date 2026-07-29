@@ -4,3 +4,7 @@
 .bookmarkButton {
   @include icon-button;
 }
+
+.bookmarkButton__label {
+  white-space: nowrap;
+}
