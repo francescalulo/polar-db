@@ -48,23 +48,6 @@
   }
 }
 
-.hero__watermark {
-  position: absolute;
-  left: 1rem;
-  bottom: 3.25rem;
-  font-size: 3.5rem;
-  font-weight: $font-weight-bold;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: rgba($ice, 0.12);
-  white-space: nowrap;
-  pointer-events: none;
-
-  @include tablet {
-    display: none;
-  }
-}
-
 .hero__card {
   position: absolute;
   left: 1rem;
@@ -77,7 +60,8 @@
 
   @include tablet {
     left: 2rem;
-    right: 2rem;
+    right: auto;
+    width: 65%;
     bottom: 4.5rem;
     gap: 1.5rem;
     padding: 1.75rem;
@@ -140,9 +124,15 @@
   font-weight: $font-weight-medium;
   font-size: 0.8125rem;
   color: $aurora-cyan;
+  max-width: 65%;
+
+  @include tablet {
+    max-width: none;
+  }
 
   @include desktop {
     font-size: 0.875rem;
+    max-width: none;
   }
 }
 
@@ -174,13 +164,22 @@
   margin: 0;
   font-size: 0.8125rem;
   line-height: 1.5;
+  max-width: 75%;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
+  box-orient: vertical;
   -webkit-box-orient: vertical;
   overflow: hidden;
 
+  @include tablet {
+    max-width: none;
+  }
+
   @include desktop {
     font-size: 1rem;
+    max-width: none;
+    line-clamp: unset;
     -webkit-line-clamp: unset;
     overflow: visible;
   }

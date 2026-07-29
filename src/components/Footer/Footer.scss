@@ -14,6 +14,18 @@
   }
 }
 
+.footer--home {
+  padding-bottom: 5.75rem; // original 1.25rem + 4.5rem to clear the fixed submenu bar on mobile
+
+  @include tablet {
+    padding-bottom: 7rem; // original 1.5rem + 5.5rem to clear the taller tablet bar
+  }
+
+  @include desktop {
+    padding-bottom: 1.75rem; // bar is static here, back to the normal footer padding
+  }
+}
+
 .footer__top {
   @include flex($justify: space-between, $align: flex-start, $gap: 1.5rem);
 }

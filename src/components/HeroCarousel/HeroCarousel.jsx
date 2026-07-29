@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import './HeroCarousel.scss';
@@ -22,6 +23,8 @@ function HeroCarousel({ movies }) {
   const dragStartX = useRef(null);
   const wheelCooldown = useRef(false);
   const movie = movies[currentIndex];
+  const isMobile = useIsMobile();
+  const heroImage = isMobile ? movie.poster : movie.backdrop;
 
   // Move to a specific slide by index. duration is split in half: half to
   // fade the current slide out, half to fade the next one in — so the whole
@@ -37,9 +40,10 @@ function HeroCarousel({ movies }) {
     setTransitionEasing(easing);
     setIsVisible(false);
 
-    const nextBackdrop = movies[targetIndex].backdrop;
+    const nextMovie = movies[targetIndex];
+    const nextImage = isMobile ? nextMovie.poster : nextMovie.backdrop;
     const preloadImage = new Image();
-    preloadImage.src = nextBackdrop;
+    preloadImage.src = nextImage;
 
     const swapAndFadeIn = () => {
       setCurrentIndex(targetIndex);
@@ -147,11 +151,8 @@ function HeroCarousel({ movies }) {
           'hero__content ' + (isVisible ? 'hero__content--visible' : '')
         }
       >
-        <img className="hero__image" src={movie.backdrop} alt="" />
+        <img className="hero__image" src={heroImage} alt="" />
         <div className="hero__overlay" />
-        <span className="hero__watermark" aria-hidden="true">
-          {movie.title}
-        </span>
 
         <div className="hero__card">
           <div className="hero__info">
