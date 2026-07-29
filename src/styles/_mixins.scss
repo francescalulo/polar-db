@@ -83,8 +83,8 @@
 }
 
 // Shadow
-@mixin poster-icon-shadow {
-  filter: drop-shadow(0 0 3.5px #000000cc);
+@mixin poster-icon-shadow($blur: 3.5px) {
+  filter: drop-shadow(0 0 $blur #000000cc);
 }
 
 @mixin text-shadow {
