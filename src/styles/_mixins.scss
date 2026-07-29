@@ -50,31 +50,31 @@
 @mixin button-hover-glow {
   background-image: $button-hover-gradient;
   box-shadow:
-    0 0 7.8125rem #0bea89,
-    0 0 4.725rem #0bea89,
-    0 0 2.3625rem #0bea89,
-    0 0 0.675rem #0bea89,
-    0 0 0.3375rem #0bea89;
+    0 0 7.8125rem $aurora-green-glow,
+    0 0 4.725rem $aurora-green-glow,
+    0 0 2.3625rem $aurora-green-glow,
+    0 0 0.675rem $aurora-green-glow,
+    0 0 0.3375rem $aurora-green-glow;
 }
 
 // The glow effect used on card hover
 @mixin glow-shadow {
   box-shadow:
-    0 4px 200px #02ea8db2,
+    0 4px 200px rgba($aurora-green-glow, 0.7),
     0 2px 50px $aurora-green-glow,
-    inset -2px -8px 10px #02ea8d40,
+    inset -2px -8px 10px rgba($aurora-green-glow, 0.25),
     inset 0 3px 10px #ffffff66,
-    inset 0 2px 5px #03624c99;
+    inset 0 2px 5px rgba($aurora-deep-teal, 0.6);
 }
 
 // Smaller glow, used on the active submenu tab
 @mixin glow-shadow-sm {
   box-shadow:
-    0 4px 100px #02ea8db2,
+    0 4px 100px rgba($aurora-green-glow, 0.7),
     0 2px 25px $aurora-green-glow,
-    inset -2px -8px 10px #02ea8d40,
+    inset -2px -8px 10px rgba($aurora-green-glow, 0.25),
     inset 0 3px 10px #ffffff66,
-    inset 0 2px 5px #03624c99;
+    inset 0 2px 5px rgba($aurora-deep-teal, 0.6);
 }
 
 // Navigation glow

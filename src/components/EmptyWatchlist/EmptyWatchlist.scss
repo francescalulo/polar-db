@@ -13,10 +13,7 @@
 }
 
 .emptyWatchlist__card {
-  @include flex(
-    $align: center,
-    $justify: center
-  );
+  @include flex($align: center, $justify: center);
 
   width: 12rem;
   aspect-ratio: 2 / 3;
@@ -38,19 +35,8 @@
 }
 
 .emptyWatchlist__plus {
-  @include flex(
-    $align: center,
-    $justify: center
-  );
-
   width: 2rem;
   height: 2rem;
-  border: 2px solid $aurora-green-glow;
-  border-radius: 0.4rem;
-  color: $aurora-green-glow;
-  font-size: $font-size-xl;
-  font-weight: $font-weight-medium;
-  line-height: 1;
 }
 
 .emptyWatchlist__message {

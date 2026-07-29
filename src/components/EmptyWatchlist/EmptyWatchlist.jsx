@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import addIcon from '../../assets/icons/add-icon-outline.svg';
 import './EmptyWatchlist.scss';
 
 function EmptyWatchlist() {
@@ -10,7 +11,7 @@ function EmptyWatchlist() {
         className="emptyWatchlist__card"
         aria-label="Return to the Home page to add a movie"
       >
-        <span className="emptyWatchlist__plus">+</span>
+        <img src={addIcon} alt="" className="emptyWatchlist__plus" />
       </Link>
 
       <p className="emptyWatchlist__message">
