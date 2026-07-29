@@ -18,13 +18,6 @@
   background-image: $button-gradient;
   @include pill-button;
 
-  @include desktop {
-    width: 7.5rem;
-    height: 2.25rem;
-    padding: 0.625rem;
-    font-size: $font-size-md;
-  }
-
   &:hover,
   &:focus-visible {
     @include button-hover-glow;

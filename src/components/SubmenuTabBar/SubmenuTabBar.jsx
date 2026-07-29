@@ -36,11 +36,16 @@ const TABS = [
   },
 ];
 
-function SubmenuTabBar() {
+function SubmenuTabBar({ isVisible = false }) {
   const [activeTab, setActiveTab] = useState('popular');
 
   return (
-    <div className="submenuTabBar__wrapper">
+    <div
+      className={
+        'submenuTabBar__wrapper ' +
+        (isVisible ? 'submenuTabBar__wrapper--visible' : '')
+      }
+    >
       <div className="submenuTabBar">
         {TABS.map((tab) => {
           const isActive = activeTab === tab.key;

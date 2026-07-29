@@ -43,8 +43,9 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba($purple-sky, 0) 40%,
-    rgba($purple-sky, 0.95) 88%
+    rgba($purple-sky, 0) 15%,
+    rgba($purple-sky, 0.85) 55%,
+    $purple-sky 80%
   );
   pointer-events: none;
 
@@ -92,6 +93,7 @@
 
 .hero__info {
   @include flex($direction: column, $align: stretch, $gap: 0.75rem);
+  @include text-shadow;
 
   @include desktop {
     gap: 1.25rem;

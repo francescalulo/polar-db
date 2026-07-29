@@ -101,8 +101,9 @@
 @mixin poster-overlay {
   background: linear-gradient(
     to bottom,
-    rgba($overlay-navy, 0) 29.048%,
-    $overlay-navy 72.262%
+    rgba($overlay-navy, 0) 10%,
+    rgba($overlay-navy, 0.85) 55%,
+    $overlay-navy 80%
   );
 }
 

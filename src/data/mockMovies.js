@@ -17,7 +17,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/cf7hE1ifY4UNbS25tGnaTyyDrI2.jpg',
     release_date: '2025-12-19',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Science Fiction', 'Adventure', 'Action'],
   },
   {
@@ -49,7 +49,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/mWN6knIVJ2o7eGwSm7mOgSCwNUc.jpg',
     release_date: '2026-02-01',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Family', 'Comedy', 'Fantasy'],
   },
   {
@@ -70,7 +70,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/nz7i42yhLIJ4ve9JKgM6NthoLHO.jpg',
     release_date: '2026-06-01',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Animation', 'Comedy', 'Family', 'Fantasy'],
   },
   {
@@ -80,7 +80,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/pspkSVP39NGa6G2rvK5KlMjvYUe.jpg',
     release_date: '2026-07-31',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Action', 'Adventure', 'Science Fiction'],
   },
   {
@@ -101,7 +101,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/jDrtrBDIFGDmwSJ52F987wz2Gkn.jpg',
     release_date: '2026-07-10',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Animation', 'Adventure', 'Family', 'Fantasy'],
   },
   {
@@ -111,7 +111,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/w9fnixuVCfJ4WGQskza80g84AZP.jpg',
     release_date: '2026-12-18',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Action', 'Adventure', 'Science Fiction'],
   },
   {
@@ -121,7 +121,7 @@ export const mockMovies = [
       'https://image.tmdb.org/t/p/original/9QtCSf4Gnd6y9adjf4F9kCxjfHn.jpg',
     release_date: '2026-08-14',
     vote_average: 6.6,
-    overview: 'Placeholder overview — grab the real synopsis from TMDB.',
+    overview: 'Placeholder overview, grab the real synopsis from TMDB.',
     genres: ['Animation', 'Comedy', 'Family', 'Adventure'],
   },
 ];

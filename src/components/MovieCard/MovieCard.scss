@@ -15,13 +15,24 @@
     border-radius: $card-radius;
   }
 
-  &:hover,
+  &--active,
   &:focus-within {
     @include glow-shadow;
 
     .movieCard__details {
       opacity: 1;
       pointer-events: auto;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @include glow-shadow;
+
+      .movieCard__details {
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
   }
 }
@@ -119,6 +130,7 @@
   position: relative;
   z-index: 1;
   margin: 0 0 0.875rem 0.875rem;
+  @include poster-icon-shadow;
 
   @include tablet {
     margin: 0 0 1.25rem 1.25rem;

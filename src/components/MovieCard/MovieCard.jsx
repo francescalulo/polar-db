@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import ShareButton from '../ShareButton/ShareButton';
@@ -5,8 +7,41 @@ import './MovieCard.scss';
 
 // Added onRemove so the Watchlist can update when a movie is removed
 function MovieCard({ movie, onRemove }) {
+  const [isActive, setIsActive] = useState(false);
+  const cardRef = useRef(null);
+  const isBelowDesktop = useIsMobile(1024); // tablet + mobile tap to reveal; desktop keeps hover
+  const isMobile = useIsMobile(768); // mobile gets a shorter genre list than tablet/desktop
+  const genreLimit = isMobile ? 2 : 3;
+
+  const handleCardClick = (e) => {
+    if (!isBelowDesktop) return; // desktop relies on hover, not tap
+    if (e.target.closest('a, button')) return; // let links/buttons handle their own click
+
+    setIsActive((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    const handleOutsideClick = (e) => {
+      if (cardRef.current && !cardRef.current.contains(e.target)) {
+        setIsActive(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('pointerdown', handleOutsideClick);
+    };
+  }, [isActive]);
+
   return (
-    <div className="movieCard">
+    <div
+      className={'movieCard ' + (isActive ? 'movieCard--active' : '')}
+      ref={cardRef}
+      onClick={handleCardClick}
+    >
       <img
         className="movieCard__poster"
         src={movie.poster_path}
@@ -21,7 +56,8 @@ function MovieCard({ movie, onRemove }) {
             <h3 className="movieCard__title">{movie.title}</h3>
 
             <p className="movieCard__genre">
-              {movie.genres?.join(', ') || 'Genre unavailable'}
+              {movie.genres?.slice(0, genreLimit).join(', ') ||
+                'Genre unavailable'}
             </p>
           </div>
 

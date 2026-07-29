@@ -11,12 +11,19 @@
   @include glass-panel(0.125);
   padding: 0.5rem 1rem;
   z-index: 100;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+
+  &--visible {
+    transform: translateY(0);
+  }
 
   @include desktop {
     position: static;
     background: none;
     backdrop-filter: none;
     padding: 0;
+    transform: none;
   }
 }
 

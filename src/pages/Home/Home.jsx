@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Home.scss';
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
 import SubmenuTabBar from '../../components/SubmenuTabBar/SubmenuTabBar';
@@ -7,6 +7,9 @@ import { mockMovies } from '../../data/mockMovies';
 import { mockHeroMovies } from '../../data/mockHeroMovies';
 
 function Home() {
+  const gridRef = useRef(null);
+  const [isGridVisible, setIsGridVisible] = useState(false);
+
   useEffect(() => {
     document.title = 'Polar DB | Home';
 
@@ -24,11 +27,31 @@ function Home() {
     }
   }, []);
 
+  // Show the submenu bar once the movie grid scrolls into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsGridVisible(entry.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+
+    if (gridRef.current) {
+      observer.observe(gridRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div className="home">
       <HeroCarousel movies={mockHeroMovies} />
-      <SubmenuTabBar />
-      <MovieGrid movies={mockMovies} />
+      <SubmenuTabBar isVisible={isGridVisible} />
+      <div ref={gridRef}>
+        <MovieGrid movies={mockMovies} />
+      </div>
     </div>
   );
 }
