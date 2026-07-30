@@ -1,58 +1,54 @@
 import { useEffect, useState } from 'react';
-import MovieCard from '../../components/MovieCard/MovieCard';
+
+import AddWatchlistCard from '../../components/AddWatchlistCard/AddWatchlistCard';
 import EmptyWatchlist from '../../components/EmptyWatchlist/EmptyWatchlist';
+import MovieCard from '../../components/MovieCard/MovieCard';
 
 import './Watchlist.scss';
 
 function Watchlist() {
-  // Store all movies saved to the user's watchlist
-  const [watchlistMovies, setWatchlistMovies] = useState([]);
-
-  // Load saved movies from localStorage when the page first loads
-  useEffect(() => {
+  // Read the saved watchlist when the state is first created
+  const [watchlistMovies, setWatchlistMovies] = useState(() => {
     const savedMovies = localStorage.getItem('watchlist');
 
-    if (savedMovies) {
-      setWatchlistMovies(JSON.parse(savedMovies));
-    }
-  }, []);
+    return savedMovies ? JSON.parse(savedMovies) : [];
+  });
 
-  // Remove a movie from the watchlist
-  const handleRemoveMovie = (movieId) => {
-    // Keep every movie except the one being removed
-    const updatedMovies = watchlistMovies.filter(
-      (movie) => movie.id !== movieId,
+  // Save the watchlist whenever the state changes
+  useEffect(() => {
+    localStorage.setItem(
+      'watchlist',
+      JSON.stringify(watchlistMovies),
     );
+  }, [watchlistMovies]);
 
-    // Update the page with the new movie list
-    setWatchlistMovies(updatedMovies);
-
-    // Save the updated list back to localStorage
-    localStorage.setItem('watchlist', JSON.stringify(updatedMovies));
+  // Remove one movie from the current watchlist
+  const handleRemoveMovie = (movieId) => {
+    setWatchlistMovies((currentMovies) =>
+      currentMovies.filter((movie) => movie.id !== movieId),
+    );
   };
 
   return (
-    <>
-      <div className="watchlist">
-        <h1 className="watchlist__title">My Watchlist</h1>
+    <div className="watchlist">
+      <h1 className="watchlist__title">My Watchlist</h1>
 
-        {/* Show the empty state if there are no saved movies */}
-        {watchlistMovies.length === 0 ? (
-          <EmptyWatchlist />
-        ) : (
-          <div className="watchlist__grid">
-            {/* Display a MovieCard for each saved movie */}
-            {watchlistMovies.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                movie={movie}
-                onRemove={handleRemoveMovie}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </>
+      {watchlistMovies.length === 0 ? (
+        <EmptyWatchlist />
+      ) : (
+        <div className="watchlist__grid">
+          {watchlistMovies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              onRemove={handleRemoveMovie}
+            />
+          ))}
+
+          <AddWatchlistCard />
+        </div>
+      )}
+    </div>
   );
 }
 
