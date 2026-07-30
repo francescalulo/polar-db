@@ -19,11 +19,16 @@
   }
 
   @include desktop {
-    position: static;
+    position: sticky;
+    top: $header-height-mobile;
+    bottom: auto;
+    transform: none;
     background: none;
     backdrop-filter: none;
-    padding: 0;
-    transform: none;
+
+    &.submenuTabBar__wrapper--stuck {
+      @include glass-panel(0.125);
+    }
   }
 }
 

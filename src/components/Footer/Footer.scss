@@ -15,14 +15,14 @@
 }
 
 .footer--home {
-  padding-bottom: 5.75rem; // original 1.25rem + 4.5rem to clear the fixed submenu bar on mobile
+  padding-bottom: 5.75rem;
 
   @include tablet {
-    padding-bottom: 7rem; // original 1.5rem + 5.5rem to clear the taller tablet bar
+    padding-bottom: 7rem;
   }
 
   @include desktop {
-    padding-bottom: 1.75rem; // bar is static here, back to the normal footer padding
+    padding-bottom: 1.75rem;
   }
 }
 
@@ -32,7 +32,7 @@
 
 .footer__brand {
   display: block;
-  max-width: 8.5rem; // new — was 20rem; needed now that it shares the row with nav on mobile
+  max-width: 8.5rem;
 
   @include tablet {
     max-width: 20rem; // restore the roomier width once there's more space
@@ -43,9 +43,9 @@
 }
 
 .footer__logo {
-  height: 1.5rem; // was 1.75rem adjusted to match the header
+  height: 1.5rem;
   width: auto;
-  margin-bottom: 0.5rem; // was 0.75rem
+  margin-bottom: 0.5rem;
 }
 
 .footer__tagline {
@@ -94,7 +94,7 @@
 .footer__divider {
   margin: 2.5625rem 0;
   border: none;
-  border-top: 1.5px solid $aurora-green; // was 1px solid rgba($ice, 0.15)
+  border-top: 1.5px solid $aurora-green;
 }
 
 .footer__copyright {

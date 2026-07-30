@@ -21,9 +21,11 @@ function HeroCarousel({ movies }) {
   const [transitionEasing, setTransitionEasing] = useState('ease');
 
   const dragStartX = useRef(null);
+  // Prevents one wheel/trackpad gesture from firing multiple rapid slide changes
   const wheelCooldown = useRef(false);
   const movie = movies[currentIndex];
   const isMobile = useIsMobile();
+  // Portrait posters fit mobile screens better than the wide backdrop images
   const heroImage = isMobile ? movie.poster : movie.backdrop;
 
   // Move to a specific slide by index. duration is split in half: half to

@@ -1,13 +1,10 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import wordmark from '../../assets/polar-wordmark.svg';
 import './Footer.scss';
 
 function Footer() {
-  const { pathname } = useLocation();
-  const isHomePage = pathname === '/';
-
   return (
-    <footer className={'footer ' + (isHomePage ? 'footer--home' : '')}>
+    <footer className="footer">
       <div className="footer__top">
         <div className="footer__brand">
           <Link to="/" className="footer__brand" aria-label="Polar DB Home">

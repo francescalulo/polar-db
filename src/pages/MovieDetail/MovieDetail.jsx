@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './MovieDetail.scss';
 
 function MovieDetail() {
+  // Set this page's title and meta description on mount (for browser tab + SEO)
   useEffect(() => {
     document.title = 'Polar DB | Movie Detail';
 

@@ -5,12 +5,14 @@
   position: relative;
   overflow: hidden;
   display: block;
-  height: 34rem;
+  height: 100vh;
+  height: 100dvh;
   margin-top: -$header-height-mobile;
   touch-action: pan-y;
 
   @include tablet {
-    height: 40rem;
+    height: 100vh;
+    height: 100dvh;
   }
 
   @include desktop {

@@ -10,6 +10,7 @@ function Home() {
   const gridRef = useRef(null);
   const [isGridVisible, setIsGridVisible] = useState(false);
 
+  // Set this page's title and meta description on mount (for browser tab + SEO)
   useEffect(() => {
     document.title = 'Polar DB | Home';
 
@@ -33,7 +34,7 @@ function Home() {
       ([entry]) => {
         setIsGridVisible(entry.isIntersecting);
       },
-      { threshold: 0 },
+      { threshold: 0, rootMargin: '0px 0px -5% 0px' },
     );
 
     if (gridRef.current) {
@@ -49,6 +50,7 @@ function Home() {
     <div className="home">
       <HeroCarousel movies={mockHeroMovies} />
       <SubmenuTabBar isVisible={isGridVisible} />
+      {/* MovieGrid doesn't forward a ref, so wrap it, this div is what the observer above watches */}
       <div ref={gridRef}>
         <MovieGrid movies={mockMovies} />
       </div>
