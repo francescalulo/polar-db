@@ -1,4 +1,33 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
 .notFound {
+  @include flex($direction: column, $gap: 0.75rem);
+  padding: 5rem 1rem;
   text-align: center;
-  padding: 4rem 1rem;
+}
+
+.notFound__code {
+  margin: 0;
+  color: $aurora-green;
+  font-size: 3rem;
+}
+
+.notFound__message {
+  margin: 0 0 0.5rem;
+  color: rgba($ice, 0.9);
+}
+
+.notFound__link {
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  color: $ice;
+  text-decoration: none;
+  background-image: $button-gradient;
+  @include pill-button;
+
+  &:hover,
+  &:focus-visible {
+    @include button-hover-glow;
+  }
 }
