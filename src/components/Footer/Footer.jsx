@@ -25,7 +25,7 @@ function Footer() {
       <hr className="footer__divider" />
 
       <p className="footer__copyright">
-        &copy; 2026 FWD44 | For Educational Purposes Only
+        &copy; 2026 Movie App | Frances, Sara, and Talia
       </p>
     </footer>
   );
