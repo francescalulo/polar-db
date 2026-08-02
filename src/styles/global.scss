@@ -1,6 +1,12 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: $night-field;
