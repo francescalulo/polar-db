@@ -56,7 +56,7 @@ function About() {
             <h3>Movie Data</h3>
             <p>
               Movie information, ratings, release dates, and artwork are
-              provided through the TMDb API.
+              provided through the TMDB API.
             </p>
           </div>
 
@@ -80,8 +80,8 @@ function About() {
           <div className="about__infoItem">
             <h3>TMDb Attribution</h3>
             <p>
-              This product uses the TMDb API but is not endorsed or certified by
-              TMDb.
+              This product uses the TMDB API but is not endorsed or certified by
+              TMDB.
             </p>
             {/* TODO: add the official TMDb attribution logo here, sized smaller than our app logo.
                 Download from https://www.themoviedb.org/about/logos-attribution and drop into src/assets/. */}
