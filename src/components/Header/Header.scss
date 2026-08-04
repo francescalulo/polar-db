@@ -30,6 +30,11 @@
     height: 1.5rem;
     width: auto;
   }
+
+  &:hover img,
+  &:focus-visible img {
+    @include subtle-glow;
+  }
 }
 
 .header__logoMark {

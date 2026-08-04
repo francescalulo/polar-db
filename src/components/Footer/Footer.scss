@@ -40,6 +40,11 @@
 
   text-decoration: none;
   color: inherit;
+
+  &:hover img,
+  &:focus-visible img {
+    @include subtle-glow;
+  }
 }
 
 .footer__logo {
