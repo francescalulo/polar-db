@@ -78,7 +78,7 @@ function About() {
           </div>
 
           <div className="about__infoItem">
-            <h3>TMDb Attribution</h3>
+            <h3>TMDB Attribution</h3>
             <p>
               This product uses the TMDB API but is not endorsed or certified by
               TMDB.

@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getMovieDetails, getMovieTrailer } from '../../services/movies';
+import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
+import ShareButton from '../../components/ShareButton/ShareButton';
+import backIcon from '../../assets/icons/back-icon-outline.svg';
 import './MovieDetail.scss';
+
+// TEMP placeholder until Sara/Talia add credits data (director + cast) to the API
+const TEMP_DIRECTOR = 'John Doe';
 
 function MovieDetail() {
   const { id } = useParams();
@@ -9,6 +15,7 @@ function MovieDetail() {
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -20,7 +27,7 @@ function MovieDetail() {
       try {
         const [details, trailerResult] = await Promise.all([
           getMovieDetails(id),
-          getMovieTrailer(id).catch(() => null), // missing trailer shouldn't break the page
+          getMovieTrailer(id).catch(() => null),
         ]);
 
         if (isMounted) {
@@ -44,47 +51,145 @@ function MovieDetail() {
     };
   }, [id]);
 
-  if (loading) return <div className="movieDetail movieDetail--status">Loading movie...</div>;
-  if (error) return <div className="movieDetail movieDetail--status">Error: {error}</div>;
+  if (loading)
+    return (
+      <div className="movieDetail movieDetail--status">Loading movie...</div>
+    );
+  if (error)
+    return (
+      <div className="movieDetail movieDetail--status">Error: {error}</div>
+    );
   if (!movie) return null;
 
   return (
     <div className="movieDetail">
-      {movie.backdropUrl && (
-        <img src={movie.backdropUrl} alt="" className="movieDetail__backdrop" />
-      )}
+      <div className="movieDetail__hero">
+        {movie.backdropUrl && (
+          <img
+            src={movie.backdropUrl}
+            alt=""
+            className="movieDetail__backdrop"
+          />
+        )}
+        <div className="movieDetail__backdropOverlay" />
 
-      <div className="movieDetail__content">
-        {movie.posterUrl && (
-          <img src={movie.posterUrl} alt={movie.title} className="movieDetail__poster" />
+        <div className="movieDetail__heroBanner">
+          <Link to="/" className="movieDetail__back">
+            <img src={backIcon} alt="" />
+            <span className="movieDetail__backLabel">Back</span>
+          </Link>
+
+          {movie.posterUrl && (
+            <img
+              src={movie.posterUrl}
+              alt=""
+              className="movieDetail__heroImage"
+            />
+          )}
+          <div className="movieDetail__heroOverlay" />
+
+          <div className="movieDetail__card">
+            {movie.posterUrl && (
+              <img
+                src={movie.posterUrl}
+                alt=""
+                className="movieDetail__cardPoster"
+              />
+            )}
+            <div className="movieDetail__cardOverlay" />
+
+            <div className="movieDetail__info">
+              <h1 className="movieDetail__title">
+                {movie.title} ({movie.releaseDate?.slice(0, 4)})
+              </h1>
+              <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
+              <p className="movieDetail__director">
+                Directed by {TEMP_DIRECTOR}
+              </p>
+              <p className="movieDetail__release">
+                Release Date: {movie.releaseDate}
+              </p>
+
+              <div className="movieDetail__metaLine">
+                <span
+                  className="movieDetail__rating"
+                  aria-label={`User Score: ${Math.round(movie.voteAverage * 10)}%`}
+                >
+                  ★ {Math.round(movie.voteAverage * 10)}%
+                </span>
+                {movie.certification && <span>{movie.certification}</span>}
+                <span>{movie.runtime}m</span>
+                <ShareButton
+                  movie={movie}
+                  className="movieDetail__share movieDetail__share--inline"
+                />
+              </div>
+
+              <div className="movieDetail__watchlistRow">
+                <BookmarkButton
+                  movie={movie}
+                  showLabel
+                  className="movieDetail__watchlist"
+                />
+                <ShareButton
+                  movie={movie}
+                  className="movieDetail__share movieDetail__share--row"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {trailer && (
+          <div className="movieDetail__trailerWrap">
+            {isTrailerPlaying ? (
+              <iframe
+                src={trailer.embedUrl + '?autoplay=1'}
+                title={`${movie.title} trailer`}
+                className="movieDetail__trailerFrame"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            ) : (
+              <button
+                type="button"
+                className="movieDetail__trailerPreview"
+                onClick={() => setIsTrailerPlaying(true)}
+                aria-label={`Play trailer for ${movie.title}`}
+              >
+                <img
+                  src={`https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`}
+                  alt=""
+                  className="movieDetail__trailerThumb"
+                />
+                <span className="movieDetail__playButton">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="28"
+                    height="28"
+                    aria-hidden="true"
+                  >
+                    <polygon
+                      points="6,4 20,12 6,20"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+            )}
+          </div>
         )}
 
-        <div className="movieDetail__info">
-          <h1 className="movieDetail__title">{movie.title}</h1>
-
-          <div className="movieDetail__meta">
-            <span>{movie.releaseDate}</span>
-            {movie.certification && <span>{movie.certification}</span>}
-            <span>{movie.runtime} min</span>
-            <span>★ {Math.round(movie.voteAverage * 10)}%</span>
-          </div>
-
-          <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
-
-          <p className="movieDetail__overview">{movie.overview}</p>
-
-          {trailer && (
-            <a
-              href={trailer.youtubeUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="movieDetail__trailer"
-            >
-              Watch Trailer
-            </a>
-          )}
+        <div className="movieDetail__overview">
+          <h2>Overview</h2>
+          <p>{movie.overview}</p>
         </div>
       </div>
+
+      {/* Cast section goes here */}
     </div>
   );
 }
