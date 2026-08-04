@@ -3,25 +3,36 @@
 
 .movieCard {
   position: relative;
-  width: 12.25rem; // 196px — Figma Mobile Movie Card
-  height: 18.25rem; // 292px
-  border-radius: 0.5rem; // 8px
+  width: 12.25rem;
+  height: 18.25rem;
+  border-radius: 0.5rem;
   background-color: $purple-sky;
   overflow: hidden;
 
   @include tablet {
-    width: 17.125rem; // 274px — Figma Desktop Movie Card, also used from tablet up
-    height: 26.25rem; // 420px
-    border-radius: $card-radius; // 12px
+    width: 17.125rem;
+    height: 26.25rem;
+    border-radius: $card-radius;
   }
 
-  &:hover,
+  &--active,
   &:focus-within {
     @include glow-shadow;
 
     .movieCard__details {
       opacity: 1;
       pointer-events: auto;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @include glow-shadow;
+
+      .movieCard__details {
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
   }
 }
@@ -40,10 +51,12 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 1.25rem; // 20px — space between the text block and the button row
+  @include flex(
+    $direction: column,
+    $align: stretch,
+    $justify: flex-end,
+    $gap: 1.25rem
+  );
 }
 
 .movieCard__overlay {
@@ -57,47 +70,41 @@
 .movieCard__info {
   position: relative;
   z-index: 1;
-  margin: 0 0.875rem; // 14px — Figma mobile inset
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem; // 6px — same on both sizes
+  margin: 0 0.875rem;
+  @include flex($direction: column, $align: stretch, $gap: 0.375rem);
   @include poster-icon-shadow;
   @include text-shadow;
 
   @include tablet {
-    margin: 0 1.25rem; // 20px — Figma desktop inset
+    margin: 0 1.25rem;
   }
 }
 
 .movieCard__titleGroup {
-  @include flex(
-    $direction: column,
-    $align: flex-start,
-    $gap: 0.125rem
-  ); // 2px, same both sizes
+  @include flex($direction: column, $align: flex-start, $gap: 0.125rem);
 }
 
 .movieCard__title {
   margin: 0;
   font-weight: $font-weight-bold;
-  font-size: 1.25rem; // 20px
-  letter-spacing: -0.0375rem; // -0.6px
+  font-size: $font-size-md;
+  letter-spacing: -0.0375rem;
 
   @include tablet {
-    font-size: 1.75rem; // 28px
-    letter-spacing: -0.0525rem; // -0.84px
+    font-size: $font-size-xxl;
+    letter-spacing: -0.0525rem;
   }
 }
 
 .movieCard__genre {
   margin: 0;
   font-weight: $font-weight-medium;
-  font-size: 0.75rem; // 12px
+  font-size: $font-size-xxs;
   line-height: 1.6;
   color: $aurora-cyan;
 
   @include tablet {
-    font-size: 0.875rem; // 14px
+    font-size: $font-size-xs;
   }
 }
 
@@ -105,11 +112,11 @@
 .movieCard__overview {
   margin: 0;
   font-weight: $font-weight-regular;
-  font-size: 0.75rem; // 12px
+  font-size: $font-size-xxs;
   line-height: 1.5;
 
   @include tablet {
-    font-size: 1rem; // 16px
+    font-size: $font-size-sm;
   }
 }
 
@@ -122,23 +129,24 @@
 .movieCard__moreInfo {
   position: relative;
   z-index: 1;
-  margin: 0 0 0.875rem 0.875rem; // 14px — Figma mobile inset
+  margin: 0 0 0.875rem 0.875rem;
+  @include poster-icon-shadow;
 
   @include tablet {
-    margin: 0 0 1.25rem 1.25rem; // 20px — Figma desktop inset
+    margin: 0 0 1.25rem 1.25rem;
   }
 }
 
 .movieCard__topRow {
   position: absolute;
-  top: 0.875rem; // 14px
+  top: 0.875rem;
   left: 0.875rem;
   right: 0.875rem;
   height: 2.75rem;
   @include flex($justify: space-between);
 
   @include tablet {
-    top: 1.25rem; // 20px
+    top: 1.25rem;
     left: 1.25rem;
     right: 1.25rem;
   }
@@ -146,7 +154,7 @@
 
 .movieCard__rating {
   @include flex($gap: 0.625rem);
-  font-size: 1rem; // 16px — same on both sizes
+  font-size: $font-size-sm;
   @include poster-icon-shadow;
 }
 

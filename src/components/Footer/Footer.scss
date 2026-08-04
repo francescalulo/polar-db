@@ -14,13 +14,25 @@
   }
 }
 
+.footer--home {
+  padding-bottom: 5.75rem;
+
+  @include tablet {
+    padding-bottom: 7rem;
+  }
+
+  @include desktop {
+    padding-bottom: 1.75rem;
+  }
+}
+
 .footer__top {
   @include flex($justify: space-between, $align: flex-start, $gap: 1.5rem);
 }
 
 .footer__brand {
   display: block;
-  max-width: 8.5rem; // new — was 20rem; needed now that it shares the row with nav on mobile
+  max-width: 8.5rem;
 
   @include tablet {
     max-width: 20rem; // restore the roomier width once there's more space
@@ -31,18 +43,18 @@
 }
 
 .footer__logo {
-  height: 1.5rem; // was 1.75rem adjusted to match the header
+  height: 1.5rem;
   width: auto;
-  margin-bottom: 0.5rem; // was 0.75rem
+  margin-bottom: 0.5rem;
 }
 
 .footer__tagline {
   margin: 0;
   color: $ice;
-  font-size: $font-size-xs; // was $font-size-sm — smaller to fit the narrower column
+  font-size: $font-size-xxs;
 
   @include tablet {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
   }
 
   line-height: 1.25;
@@ -68,10 +80,9 @@
   color: $aurora-green;
   text-decoration: none;
   font-weight: $font-weight-medium;
-  font-size: $font-size-sm; // was $font-size-md — smaller so "My Watchlist" doesn't wrap or crowd the edge
-
+  font-size: $font-size-xs;
   @include tablet {
-    font-size: $font-size-md;
+    font-size: $font-size-sm;
   }
 
   &:hover,
@@ -83,12 +94,12 @@
 .footer__divider {
   margin: 2.5625rem 0;
   border: none;
-  border-top: 1.5px solid $aurora-green; // was 1px solid rgba($ice, 0.15)
+  border-top: 1.5px solid $aurora-green;
 }
 
 .footer__copyright {
   margin: 0;
   text-align: center;
-  color: $aurora-green; // was rgba($ice, 0.7)
-  font-size: $font-size-xs;
+  color: $aurora-green;
+  font-size: $font-size-xxs;
 }

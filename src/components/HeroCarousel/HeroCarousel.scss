@@ -4,12 +4,21 @@
 .hero {
   position: relative;
   overflow: hidden;
-  display: none;
+  display: block;
+  height: 100vh;
+  height: 100dvh;
+  margin-top: -$header-height-mobile;
+  touch-action: pan-y;
+
+  @include tablet {
+    height: 100vh;
+    height: 100dvh;
+  }
 
   @include desktop {
-    display: block;
     height: 51.375rem;
-    margin-bottom: 2rem; // new — breathing room before the submenu tab bar
+    margin-top: -$header-height-desktop;
+    margin-bottom: 2rem;
   }
 }
 
@@ -21,104 +30,187 @@
   object-fit: cover;
 }
 
+.hero__content {
+  opacity: 1;
+  transition: opacity var(--hero-transition-duration, 300ms)
+    var(--hero-transition-easing, ease);
+
+  &--visible {
+    opacity: 1;
+  }
+}
+
 .hero__overlay {
-  display: none; // this is the dark gradient used on mobile — enabled in the next step
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba($purple-sky, 0) 35%,
+    rgba($purple-sky, 0.85) 63%,
+    $purple-sky 80%
+  );
+  pointer-events: none;
+
+  @include tablet {
+    display: none; // tablet+ uses the bordered glass card instead of the full gradient
+  }
 }
 
 .hero__card {
   position: absolute;
-  left: 4.69%;
-  bottom: 7.83%;
-  width: 33.28%;
-  max-width: 39.9375rem; // 639px, caps it on very wide screens
-  display: flex;
-  flex-direction: column;
-  gap: 1.97rem;
-  padding: 2.25rem;
-  border: 0.0985rem solid #03624c;
-  border-radius: 2.4375rem;
-  background: linear-gradient(
-    to right,
-    rgba(0, 31, 31, 0.3),
-    rgba(0, 133, 133, 0.3)
-  );
-  backdrop-filter: blur(4px);
-  color: #f1f7f6;
-  filter: drop-shadow(0 0 7px rgba(0, 0, 0, 0.8));
+  left: 1rem;
+  right: 1rem;
+  bottom: 3.75rem;
+  @include flex($direction: column, $align: stretch, $gap: 1rem);
+  color: $ice;
+
+  @include tablet {
+    left: 2rem;
+    right: auto;
+    width: 65%;
+    bottom: 4.5rem;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    border: 0.0985rem solid $aurora-deep-teal;
+    border-radius: 1.5rem;
+    background: linear-gradient(
+      to right,
+      rgba($purple-sky, 0.5),
+      rgba($aurora-deep-cyan, 0.4)
+    );
+    backdrop-filter: blur(4px);
+    @include poster-icon-shadow(7px);
+  }
+
+  @include desktop {
+    width: 40%;
+    border-radius: 2.4375rem;
+    background: linear-gradient(
+      to right,
+      rgba($purple-sky, 0.3),
+      rgba($aurora-deep-cyan, 0.3)
+    );
+  }
 }
 
 .hero__info {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+  @include flex($direction: column, $align: stretch, $gap: 0.75rem);
+  @include text-shadow;
+
+  @include desktop {
+    gap: 1.25rem;
+  }
 }
 
 .hero__titleGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  @include flex($direction: column, $align: stretch, $gap: 0.2rem);
 }
 
 .hero__title {
   margin: 0;
   font-weight: $font-weight-bold;
-  font-size: 1.75rem; // 28px
+  font-size: $font-size-lg;
   letter-spacing: -0.0525rem;
+
+  @include tablet {
+    font-size: $font-size-xl;
+  }
+
+  @include desktop {
+    font-size: $font-size-xxl;
+  }
 }
 
 .hero__genre {
   margin: 0;
   font-weight: $font-weight-medium;
-  font-size: 0.875rem; // 14px
+  font-size: $font-size-xxs;
   color: $aurora-cyan;
+  max-width: 65%;
+
+  @include tablet {
+    max-width: none;
+  }
+
+  @include desktop {
+    font-size: $font-size-xs;
+  }
 }
 
 .hero__details {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1rem; // 16px
+  @include flex($gap: 0.75rem);
+  font-size: $font-size-xxs;
+
+  @include desktop {
+    font-size: $font-size-sm;
+  }
 }
 
 .hero__rating {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
+  @include flex($gap: 0.625rem);
 }
 
 .hero__dot {
   width: 0.3125rem;
   height: 0.3125rem;
   border-radius: 50%;
-  background: #f1f7f6;
+  background: $ice;
 }
 
 .hero__synopsis {
   margin: 0;
-  font-size: 1rem; // 16px
+  font-size: $font-size-xxs;
   line-height: 1.5;
+  max-width: 75%;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  @include tablet {
+    max-width: none;
+  }
+
+  @include desktop {
+    font-size: $font-size-sm;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+  }
 }
 
 .hero__actions {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  @include flex($gap: 1rem);
+
+  @include desktop {
+    gap: 2rem;
+  }
 }
 
 .hero__pagination {
   position: absolute;
-  left: 47.24%;
-  bottom: 6.08%;
-  display: flex;
-  gap: 0.625rem;
+  left: 0;
+  right: 0;
+  bottom: 1.25rem;
+  @include flex($align: stretch, $justify: center, $gap: 0.5rem);
+
+  @include tablet {
+    bottom: 2.5rem;
+  }
 }
 
 .hero__dash {
-  width: 5rem; // 80px
-  height: 0.375rem; // 6px
+  width: 3rem;
+  height: 0.3125rem;
   border: none;
   background: $aurora-cyan;
   cursor: pointer;
+
+  @include desktop {
+    width: 5rem;
+    height: 0.375rem;
+  }
 
   &--active {
     background: $aurora-green;
@@ -126,10 +218,25 @@
 }
 
 .hero__watchlist {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
+  @include flex($gap: 0.5rem);
+  width: auto;
+  height: auto;
   color: $aurora-green;
-  font-size: 1rem;
+  font-size: $font-size-xs;
   font-weight: $font-weight-medium;
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @include desktop {
+    gap: 0.625rem;
+    font-size: $font-size-sm;
+
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
 }

@@ -6,17 +6,28 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  box-sizing: border-box;
   @include flex($justify: center);
-  @include glass-panel(0.125);
+  @include glass-panel(0.35);
   padding: 0.5rem 1rem;
   z-index: 100;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+
+  &--visible {
+    transform: translateY(0);
+  }
 
   @include desktop {
-    position: static;
+    position: sticky;
+    top: $header-height-mobile;
+    bottom: auto;
+    transform: none;
     background: none;
     backdrop-filter: none;
-    padding: 0;
+
+    &.submenuTabBar__wrapper--stuck {
+      @include glass-panel(0.25);
+    }
   }
 }
 
@@ -24,10 +35,10 @@
   @include flex($justify: space-between);
   @include glass-panel(0.9);
   width: 100%;
-  max-width: 16.25rem;
+  max-width: 18rem;
   height: 3.25rem;
   margin: 0 auto;
-  padding: 0.3125rem 0.4375rem;
+  padding: 0.3125rem 0.45rem;
   border-radius: 1.625rem;
 
   @include tablet {
@@ -38,12 +49,18 @@
     border-radius: $submenu-radius;
     gap: 0.75rem;
   }
+
+  @include desktop {
+    width: 100%;
+    max-width: 60rem;
+    padding: 0.75rem 1.5rem;
+  }
 }
 
 .submenuTabBar__tab {
   @include flex($gap: 0.125rem, $justify: center);
   height: 2.375rem;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border: none;
   background: none;
   border-radius: 1.625rem;
@@ -54,7 +71,14 @@
 
   &:hover:not(.submenuTabBar__tab--active),
   &:focus-visible:not(.submenuTabBar__tab--active) {
-    box-shadow: 0 0.125rem 3.125rem 0.375rem #0ddf81;
+    @include glow-shadow-sm;
+  }
+
+  @include desktop {
+    width: 14rem;
+    height: 3rem;
+    gap: 0.5rem;
+    border-radius: $button-radius;
   }
 
   &--active {
@@ -66,6 +90,13 @@
       height: 3rem;
       border-radius: $button-radius;
       gap: 0.5rem;
+    }
+
+    @include desktop {
+      width: 14rem;
+      height: 3rem;
+      gap: 0.5rem;
+      border-radius: $button-radius;
     }
   }
 }
@@ -80,11 +111,12 @@
   display: none;
   color: $aurora-green;
   font-family: $font-family-base;
-  font-size: $font-size-md;
+  font-size: $font-size-xs;
   font-weight: $font-weight-medium;
   white-space: nowrap;
 
   @include desktop {
+    font-size: $font-size-sm;
     display: inline;
   }
 }

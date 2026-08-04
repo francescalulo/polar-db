@@ -5,6 +5,7 @@
   width: 100%;
   min-height: 70vh;
   padding: 2rem 1rem 3rem;
+  box-sizing: border-box;
 
   @include tablet {
     padding: 2.5rem 2rem 4rem;
@@ -15,22 +16,21 @@
   }
 }
 
+.watchlist .movieGrid {
+  padding: 0;
+
+  @include desktop {
+    justify-content: start;
+  }
+}
+
 .watchlist__title {
   margin: 0 0 2rem;
   color: $aurora-green-glow;
-  font-size: $font-size-xl;
-}
-
-.watchlist__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-
-  @include tablet {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  font-size: $font-size-xxl;
 
   @include desktop {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 77.5rem;
+    margin: 0 auto 2rem;
   }
 }

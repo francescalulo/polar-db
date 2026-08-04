@@ -1,6 +1,4 @@
 import { useEffect } from 'react';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
 import wordmark from '../../assets/polar-wordmark.svg';
 import './About.scss';
 

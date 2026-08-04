@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import AddWatchlistCard from '../../components/AddWatchlistCard/AddWatchlistCard';
 import EmptyWatchlist from '../../components/EmptyWatchlist/EmptyWatchlist';
-import MovieCard from '../../components/MovieCard/MovieCard';
+import MovieGrid from '../../components/MovieGrid/MovieGrid';
 
 import './Watchlist.scss';
 
@@ -16,10 +16,7 @@ function Watchlist() {
 
   // Save the watchlist whenever the state changes
   useEffect(() => {
-    localStorage.setItem(
-      'watchlist',
-      JSON.stringify(watchlistMovies),
-    );
+    localStorage.setItem('watchlist', JSON.stringify(watchlistMovies));
   }, [watchlistMovies]);
 
   // Remove one movie from the current watchlist
@@ -36,17 +33,9 @@ function Watchlist() {
       {watchlistMovies.length === 0 ? (
         <EmptyWatchlist />
       ) : (
-        <div className="watchlist__grid">
-          {watchlistMovies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              onRemove={handleRemoveMovie}
-            />
-          ))}
-
+        <MovieGrid movies={watchlistMovies} onRemove={handleRemoveMovie}>
           <AddWatchlistCard />
-        </div>
+        </MovieGrid>
       )}
     </div>
   );

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import addIcon from '../../assets/icons/add-icon-outline.svg';
 
 import './AddWatchlistCard.scss';
 
@@ -9,7 +10,7 @@ function AddWatchlistCard() {
       className="addWatchlistCard"
       aria-label="Return to the Home page to add a movie"
     >
-      <span className="addWatchlistCard__plus">+</span>
+      <img src={addIcon} alt="" className="addWatchlistCard__plus" />
     </Link>
   );
 }
