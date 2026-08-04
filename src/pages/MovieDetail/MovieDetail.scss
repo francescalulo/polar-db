@@ -1,6 +1,45 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
+// Local values reused across this file, kept here (not in the shared
+// variables file) since they're specific to MovieDetail's card/overview
+// layout rather than global design tokens.
+$card-inset: 1.875rem;
+$overview-max-width: 50rem;
+
+// Shared "overshoot and clip" positioning for the backdrop image and its
+// gradient overlay, both occupy the exact same oversized box behind the
+// hero so .hero's overflow:hidden clips them identically.
+@mixin backdrop-fill {
+  display: none;
+  position: absolute;
+
+  @include tablet {
+    display: block;
+    grid-row: 1 / 3;
+    grid-column: 1 / -1;
+    top: -10rem;
+    left: -10rem;
+    width: calc(100% + 20rem);
+    height: calc(100% + 14.25rem);
+  }
+
+  @include desktop {
+    left: -50vw;
+    width: calc(100% + 100vw);
+  }
+}
+
+// Shared poster fade gradient, used on both the mobile hero image and
+// the tablet+ card poster.
+@mixin poster-fade {
+  background: linear-gradient(
+    to bottom,
+    rgba($overlay-navy, 0) 29.048%,
+    $overlay-navy 72.262%
+  );
+}
+
 .movieDetail--status {
   padding: 3rem 1rem;
   text-align: center;
@@ -16,6 +55,7 @@
 .movieDetail__hero {
   position: relative;
   overflow: hidden;
+  margin-top: -$header-height-mobile;
 
   @include tablet {
     display: grid;
@@ -26,18 +66,18 @@
       'trailer trailer';
     align-items: start;
     gap: 1.5rem 2rem;
-    padding: 1.5rem 2rem 2rem;
+    margin-top: -$header-height-mobile;
+    padding: calc(1.5rem + #{$header-height-mobile}) 2rem 2rem;
   }
 
   @include desktop {
-    grid-template-columns: minmax(18rem, 24rem) 1fr;
+    grid-template-columns: minmax(20rem, 30rem) 1fr;
     grid-template-areas:
       'back back'
       'card trailer'
       'overview overview';
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 2rem 3.75rem 3rem;
+    margin-top: -$header-height-desktop;
+    padding: calc(2rem + #{$header-height-desktop}) 3.75rem 3rem;
   }
 }
 
@@ -48,8 +88,7 @@
   position: relative;
   overflow: hidden;
   height: 100vh;
-  height: 100dvh;
-  margin-top: -$header-height-mobile;
+  height: 100dvh; // dvh with a vh fallback for browsers that don't support it
 
   @include tablet {
     display: contents;
@@ -58,39 +97,19 @@
 
 // Background photo behind the whole hero row for tablet/desktop only.
 .movieDetail__backdrop {
-  display: none;
-
-  @include tablet {
-    display: block;
-    grid-row: 1 / 3;
-    grid-column: 1 / -1;
-    align-self: stretch;
-    justify-self: stretch;
-    margin: -1.5rem -2rem -2rem;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
-  }
+  @include backdrop-fill;
+  z-index: -2;
+  object-fit: cover;
 }
 
 .movieDetail__backdropOverlay {
-  display: none;
-
-  @include tablet {
-    display: block;
-    grid-row: 1 / 3;
-    grid-column: 1 / -1;
-    align-self: stretch;
-    justify-self: stretch;
-    margin: -1.5rem -2rem -2rem;
-    z-index: -1;
-    background: linear-gradient(
-      to bottom,
-      rgba($night-field, 0.35),
-      rgba($night-field, 0.9) 85%
-    );
-  }
+  @include backdrop-fill;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    rgba($night-field, 0.35),
+    rgba($night-field, 0.9) 85%
+  );
 }
 
 .movieDetail__back {
@@ -154,11 +173,7 @@
 .movieDetail__heroOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba($overlay-navy, 0) 29.048%,
-    $overlay-navy 72.262%
-  );
+  @include poster-fade;
   pointer-events: none;
 
   @include tablet {
@@ -183,9 +198,10 @@
     isolation: isolate;
     aspect-ratio: 432 / 662;
     justify-content: flex-end;
-    padding: 1.875rem;
+    padding: $card-inset;
     border: 0.1rem solid $aurora-deep-teal;
     border-radius: 1.18rem;
+    @include poster-icon-shadow(7px);
   }
 }
 
@@ -211,11 +227,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(
-      to bottom,
-      rgba($overlay-navy, 0) 29.048%,
-      $overlay-navy 72.262%
-    );
+    @include poster-fade;
   }
 }
 
@@ -269,8 +281,8 @@
 
   @include tablet {
     position: absolute;
-    top: 1.875rem;
-    left: 1.875rem;
+    top: $card-inset;
+    left: $card-inset;
     z-index: 2;
     @include poster-icon-shadow;
   }
@@ -293,6 +305,7 @@
   color: $aurora-green;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
+  @include poster-icon-shadow;
 
   img {
     width: 1.25rem;
@@ -301,14 +314,16 @@
 
   @include tablet {
     position: absolute;
-    top: 1.875rem;
-    right: 1.875rem;
+    top: $card-inset;
+    right: $card-inset;
     z-index: 2;
     font-size: $font-size-xs;
   }
 }
 
 .movieDetail__share--row {
+  @include poster-icon-shadow;
+
   @include tablet {
     display: none;
   }
@@ -316,6 +331,7 @@
 
 .movieDetail__share--inline {
   display: none;
+  @include poster-icon-shadow;
 
   @include tablet {
     display: inline-flex;
@@ -328,7 +344,11 @@
 
   @include tablet {
     grid-area: trailer;
-    margin: 0;
+    margin: 3rem 0 0;
+  }
+
+  @include desktop {
+    align-self: center;
   }
 }
 
@@ -337,13 +357,13 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: $card-radius;
+  border: none;
 }
 
 .movieDetail__trailerPreview {
   position: relative;
   display: block;
   padding: 0;
-  border: none;
   cursor: pointer;
   overflow: hidden;
   background: none;
@@ -373,21 +393,18 @@
   @include flex($justify: center);
 }
 
-.movieDetail__trailerFrame {
-  border: none;
-}
-
 .movieDetail__overview {
-  padding: 1.5rem 1rem 0;
+  padding: 2rem 1rem;
 
   @include tablet {
     grid-area: overview;
     align-self: center;
-    padding: 0;
+    padding: 1.5rem 0;
+    @include text-shadow;
   }
 
   @include desktop {
-    margin: 0 -3.75rem -3rem;
+    margin: 3rem -3.75rem -3rem;
     padding: 2rem 3.75rem 3rem;
     background-color: $night-field;
   }
@@ -397,11 +414,23 @@
     color: $aurora-green;
     font-size: $font-size-md;
     text-transform: uppercase;
+
+    @include desktop {
+      max-width: $overview-max-width;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   p {
     margin: 0 0 0.75rem;
     line-height: 1.6;
     color: $ice;
+
+    @include desktop {
+      max-width: $overview-max-width;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }
