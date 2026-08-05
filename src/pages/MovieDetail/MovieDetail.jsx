@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getMovieDetails, getMovieTrailer } from '../../services/movies';
+import {
+  getMovieCredits,
+  getMovieDetails,
+  getMovieTrailer,
+} from '../../services/movies';
+
+import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import { formatRuntime } from '../../utils/formatRuntime';
 import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
 import ShareButton from '../../components/ShareButton/ShareButton';
+
 import backIcon from '../../assets/icons/back-icon-outline.svg';
+
 import './MovieDetail.scss';
 
 // TEMP placeholder until Sara/Talia add credits data (director + cast) to the API
@@ -16,6 +24,7 @@ function MovieDetail() {
   const isMobile = useIsMobile(); // below tablet breakpoint (768px)
   const isBelowDesktop = useIsMobile(1024); // below desktop breakpoint which covers tablet + mobile
   const [movie, setMovie] = useState(null);
+  const [cast, setCast] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,13 +38,17 @@ function MovieDetail() {
       setError(null);
 
       try {
-        const [details, trailerResult] = await Promise.all([
+        const [details, trailerResult, creditsResult] = await Promise.all([
           getMovieDetails(id),
           getMovieTrailer(id).catch(() => null),
+          getMovieCredits(id).catch(() => ({
+            cast: [],
+          })),
         ]);
 
         if (isMounted) {
           setMovie(details);
+          setCast(creditsResult.cast);
           setTrailer(trailerResult);
           setLoading(false);
         }
@@ -43,6 +56,7 @@ function MovieDetail() {
         if (isMounted) {
           setError(err.message);
           setMovie(null);
+          setCast([]);
           setLoading(false);
         }
       }
@@ -55,14 +69,18 @@ function MovieDetail() {
     };
   }, [id]);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="movieDetail movieDetail--status">Loading movie...</div>
     );
-  if (error)
+  }
+
+  if (error) {
     return (
       <div className="movieDetail movieDetail--status">Error: {error}</div>
     );
+  }
+
   if (!movie) return null;
 
   return (
@@ -78,6 +96,7 @@ function MovieDetail() {
             className="movieDetail__backdrop"
           />
         )}
+
         <div className="movieDetail__backdropOverlay" />
 
         <div className="movieDetail__heroBanner">
@@ -94,6 +113,7 @@ function MovieDetail() {
               className="movieDetail__heroImage"
             />
           )}
+
           <div className="movieDetail__heroOverlay" />
 
           <div className="movieDetail__card">
@@ -105,16 +125,20 @@ function MovieDetail() {
                 className="movieDetail__cardPoster"
               />
             )}
+
             <div className="movieDetail__cardOverlay" />
 
             <div className="movieDetail__info">
               <h1 className="movieDetail__title">
                 {movie.title} ({movie.releaseDate?.slice(0, 4)})
               </h1>
+
               <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
+
               <p className="movieDetail__director">
                 Directed by {TEMP_DIRECTOR}
               </p>
+
               <p className="movieDetail__release">
                 Release Date: {movie.releaseDate}
               </p>
@@ -122,7 +146,9 @@ function MovieDetail() {
               <div className="movieDetail__metaLine">
                 <span
                   className="movieDetail__rating"
-                  aria-label={`User Score: ${Math.round(movie.voteAverage * 10)}%`}
+                  aria-label={`User Score: ${Math.round(
+                    movie.voteAverage * 10,
+                  )}%`}
                 >
                   ★ {Math.round(movie.voteAverage * 10)}%
                 </span>
@@ -140,6 +166,7 @@ function MovieDetail() {
                   showLabel
                   className="movieDetail__watchlist"
                 />
+
                 <ShareButton
                   movie={movie}
                   className="movieDetail__share movieDetail__share--row"
@@ -171,6 +198,7 @@ function MovieDetail() {
                   alt=""
                   className="movieDetail__trailerThumb"
                 />
+
                 <span className="movieDetail__playButton">
                   <svg
                     viewBox="0 0 24 24"
@@ -198,7 +226,7 @@ function MovieDetail() {
         </div>
       </div>
 
-      {/* Cast section goes here */}
+      <ArtistCarousel cast={cast} />
     </div>
   );
 }

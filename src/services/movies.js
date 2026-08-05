@@ -50,6 +50,7 @@ export async function getMovieDetails(id) {
     },
   };
 }
+
 // Separate trailer call: TMDB videos endpoint isn't filtered server-side,
 // so we filter down to the first official YouTube trailer here.
 export async function getMovieTrailer(id) {
@@ -65,6 +66,27 @@ export async function getMovieTrailer(id) {
     key: trailer.key,
     youtubeUrl: `https://www.youtube.com/watch?v=${trailer.key}`,
     embedUrl: `https://www.youtube.com/embed/${trailer.key}`,
+  };
+}
+
+// Credits call which returns the movie director and cast members.
+export async function getMovieCredits(id) {
+  const data = await tmdbFetch(`/movie/${id}/credits`);
+
+  const director = data.crew.find(
+    (crewMember) => crewMember.job === 'Director',
+  );
+
+  return {
+    director: director?.name || 'Director unavailable',
+
+    cast: data.cast.map((actor) => ({
+      id: actor.id,
+      creditId: actor.credit_id,
+      name: actor.name,
+      character: actor.character,
+      profilePath: actor.profile_path,
+    })),
   };
 }
 
