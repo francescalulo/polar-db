@@ -64,7 +64,7 @@ function SubmenuTabBar({ isVisible = false, activeTab, onTabChange }) {
   // Hide the bar again once the very end of the footer scrolls into view
   useEffect(() => {
     // Footer lives in AppRouter, not inside Home/SubmenuTabBar's own tree,
-    // so we can't reach it with a normal ref — query the DOM for it instead.
+    // so we can't reach it with a normal ref, query the DOM for it instead.
     const footerEnd = document.querySelector('.footer__copyright');
     if (!footerEnd) return;
 

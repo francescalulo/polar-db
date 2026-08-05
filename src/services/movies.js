@@ -1,5 +1,6 @@
 import { tmdbFetch, getPosterUrl, getBackdropUrl } from './tmdbClient';
 import { genreMap } from '../data/genreMap';
+import { formatRuntime } from '../utils/formatRuntime';
 
 function findCertification(releaseDatesResults, countryCode = 'US') {
   const country = releaseDatesResults?.find(
@@ -11,28 +12,45 @@ function findCertification(releaseDatesResults, countryCode = 'US') {
   return withCertification?.certification || '';
 }
 
-// Main details call — includes release_dates via append_to_response so
+// Main details call which includes release_dates via append_to_response so
 // certification comes back in the same request instead of a third call.
 export async function getMovieDetails(id) {
   const data = await tmdbFetch(`/movie/${id}`, {
     append_to_response: 'release_dates',
   });
 
+  const posterUrl = getPosterUrl(data.poster_path, 'w780');
+  const genres = data.genres.map((genre) => genre.name);
+
   return {
     id: data.id,
     title: data.title,
-    posterUrl: getPosterUrl(data.poster_path),
-    backdropUrl: getBackdropUrl(data.backdrop_path, 'original'),
-    genres: data.genres.map((genre) => genre.name),
+    posterUrl,
+    backdropUrl: getBackdropUrl(data.backdrop_path, 'original'), // desktop: stretches full viewport width, needs max sharpness
+    backdropUrlTablet: getBackdropUrl(data.backdrop_path, 'w1280'), // tablet: narrower viewport, smaller download without losing visible sharpness
+    genres,
     runtime: data.runtime,
     overview: data.overview,
     voteAverage: data.vote_average,
     releaseDate: data.release_date,
     certification: findCertification(data.release_dates?.results),
+    // Same reasoning as getHeroMovies below: BookmarkButton saves whatever
+    // object it's given straight to localStorage, and the Watchlist page
+    // reads it back through MovieCard, which expects poster_path /
+    // release_date / vote_average, not this function's own posterUrl /
+    // releaseDate / voteAverage field names.
+    watchlistEntry: {
+      id: data.id,
+      title: data.title,
+      poster_path: posterUrl,
+      release_date: data.release_date,
+      vote_average: data.vote_average,
+      overview: data.overview,
+      genres,
+    },
   };
 }
-
-// Separate trailer call — TMDB videos endpoint isn't filtered server-side,
+// Separate trailer call: TMDB videos endpoint isn't filtered server-side,
 // so we filter down to the first official YouTube trailer here.
 export async function getMovieTrailer(id) {
   const data = await tmdbFetch(`/movie/${id}/videos`);
@@ -60,7 +78,7 @@ const CATEGORY_ENDPOINTS = {
 };
 
 // "Now Playing" and "Upcoming" are calculated per-region by TMDB (each
-// country has its own theatrical release calendar) — without a region
+// country has its own theatrical release calendar) without a region
 // param, TMDB falls back to a loose window that can include movies
 // released months or even years ago. CA matches our audience/institution.
 const REGION = 'CA';
@@ -91,5 +109,51 @@ export async function getMoviesByCategory(category) {
     // genre_ids -> real names; filter(Boolean) drops any id we don't
     // recognize instead of showing "undefined" in the UI
     genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
+  }));
+}
+
+const HERO_MOVIE_COUNT = 5;
+
+// Builds the small set of movies shown in Home's HeroCarousel. The carousel
+// needs certification + runtime, which only the single-movie details
+// endpoint returns (list endpoints don't include them) so this takes the
+// top N Popular movies, then fetches full details for each one in parallel
+// with getMovieDetails.
+export async function getHeroMovies(count = HERO_MOVIE_COUNT) {
+  const popular = await getMoviesByCategory('popular');
+  const topMovies = popular.slice(0, count);
+
+  const details = await Promise.all(
+    topMovies.map((movie) => getMovieDetails(movie.id)),
+  );
+
+  return details.map((movie) => ({
+    id: movie.id,
+    title: movie.title,
+    year: movie.releaseDate?.slice(0, 4),
+    genres: movie.genres,
+    rating: Math.round(movie.voteAverage * 10),
+    certification: movie.certification,
+    runtime: formatRuntime(movie.runtime),
+    synopsis: movie.overview,
+    backdrop: movie.backdropUrl,
+    backdropTablet: movie.backdropUrlTablet,
+    poster: movie.posterUrl,
+    // A SEPARATE, MovieCard-shaped copy of this same movie. This is what
+    // gets saved to localStorage if a user bookmarks straight from the
+    // hero carousel, so it matches what the Watchlist page (via MovieCard)
+    // expects to read. Without this, bookmarking from the hero would save
+    // the fields above instead (poster/synopsis/rating), which MovieCard
+    // doesn't know how to display, and the movie would show up broken on
+    // the Watchlist page.
+    watchlistEntry: {
+      id: movie.id,
+      title: movie.title,
+      poster_path: movie.posterUrl,
+      release_date: movie.releaseDate,
+      vote_average: movie.voteAverage,
+      overview: movie.overview,
+      genres: movie.genres,
+    },
   }));
 }
