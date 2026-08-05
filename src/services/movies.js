@@ -1,4 +1,5 @@
 import { tmdbFetch, getPosterUrl, getBackdropUrl } from './tmdbClient';
+import { genreMap } from '../data/genreMap';
 
 function findCertification(releaseDatesResults, countryCode = 'US') {
   const country = releaseDatesResults?.find(
@@ -47,4 +48,38 @@ export async function getMovieTrailer(id) {
     youtubeUrl: `https://www.youtube.com/watch?v=${trailer.key}`,
     embedUrl: `https://www.youtube.com/embed/${trailer.key}`,
   };
+}
+
+// Maps SubmenuTabBar's tab keys directly to their TMDB list endpoint, so
+// Home can call this with whatever tab is currently active.
+const CATEGORY_ENDPOINTS = {
+  popular: '/movie/popular',
+  upcoming: '/movie/upcoming',
+  nowPlaying: '/movie/now_playing',
+  topRated: '/movie/top_rated',
+};
+
+// Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top
+// Rated) and maps each raw TMDB result into the SAME shape mockMovies.js
+// already uses, so MovieGrid/MovieCard need zero changes to consume it.
+export async function getMoviesByCategory(category) {
+  const endpoint = CATEGORY_ENDPOINTS[category];
+
+  if (!endpoint) {
+    throw new Error(`Unknown movie category: ${category}`);
+  }
+
+  const data = await tmdbFetch(endpoint);
+
+  return data.results.map((movie) => ({
+    id: movie.id,
+    title: movie.title,
+    poster_path: getPosterUrl(movie.poster_path), // turn relative path into a full image URL
+    release_date: movie.release_date,
+    vote_average: movie.vote_average,
+    overview: movie.overview,
+    // genre_ids -> real names; filter(Boolean) drops any id we don't
+    // recognize instead of showing "undefined" in the UI
+    genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
+  }));
 }
