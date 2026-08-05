@@ -11,6 +11,10 @@
   top: 0;
   z-index: 100;
 
+  @include tablet {
+    padding: 0.75rem 2rem;
+  }
+
   @include desktop {
     padding: 0.75rem 3.75rem;
     justify-content: flex-start;
@@ -25,6 +29,11 @@
   img {
     height: 1.5rem;
     width: auto;
+  }
+
+  &:hover img,
+  &:focus-visible img {
+    @include subtle-glow;
   }
 }
 
