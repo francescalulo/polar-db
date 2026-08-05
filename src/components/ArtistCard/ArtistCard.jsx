@@ -4,15 +4,11 @@ function ArtistCard({ actor }) {
   // TODO: Replace with the team's placeholder image once it has been added.
   const profileImage = actor.profilePath
     ? `https://image.tmdb.org/t/p/w500${actor.profilePath}`
-    : '';
+    : undefined;
 
   return (
     <article className="artistCard">
-      <img
-        className="artistCard__image"
-        src={profileImage}
-        alt={actor.name}
-      />
+      <img className="artistCard__image" src={profileImage} alt={actor.name} />
 
       <div className="artistCard__info">
         <h3 className="artistCard__name">{actor.name}</h3>

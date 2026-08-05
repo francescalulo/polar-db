@@ -151,10 +151,7 @@
 }
 
 .hero__dot {
-  width: 0.3125rem;
-  height: 0.3125rem;
-  border-radius: 50%;
-  background: $ice;
+  @include dot-separator;
 }
 
 .hero__synopsis {

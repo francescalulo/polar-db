@@ -5,23 +5,21 @@ import {
   getMovieDetails,
   getMovieTrailer,
 } from '../../services/movies';
-
 import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
+import { formatRuntime } from '../../utils/formatRuntime';
+import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
 import ShareButton from '../../components/ShareButton/ShareButton';
-
 import backIcon from '../../assets/icons/back-icon-outline.svg';
-
 import './MovieDetail.scss';
-
-// TEMP placeholder until Sara/Talia add credits data (director + cast) to the API
-const TEMP_DIRECTOR = 'John Doe';
 
 function MovieDetail() {
   const { id } = useParams();
-
+  const isMobile = useIsMobile(); // below tablet breakpoint (768px)
+  const isBelowDesktop = useIsMobile(1024); // below desktop breakpoint which covers tablet + mobile
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
+  const [director, setDirector] = useState('');
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,12 +38,14 @@ function MovieDetail() {
           getMovieTrailer(id).catch(() => null),
           getMovieCredits(id).catch(() => ({
             cast: [],
+            director: 'Director unavailable',
           })),
         ]);
 
         if (isMounted) {
           setMovie(details);
           setCast(creditsResult.cast);
+          setDirector(creditsResult.director);
           setTrailer(trailerResult);
           setLoading(false);
         }
@@ -54,6 +54,7 @@ function MovieDetail() {
           setError(err.message);
           setMovie(null);
           setCast([]);
+          setDirector('');
           setLoading(false);
         }
       }
@@ -68,17 +69,13 @@ function MovieDetail() {
 
   if (loading) {
     return (
-      <div className="movieDetail movieDetail--status">
-        Loading movie...
-      </div>
+      <div className="movieDetail movieDetail--status">Loading movie...</div>
     );
   }
 
   if (error) {
     return (
-      <div className="movieDetail movieDetail--status">
-        Error: {error}
-      </div>
+      <div className="movieDetail movieDetail--status">Error: {error}</div>
     );
   }
 
@@ -87,9 +84,12 @@ function MovieDetail() {
   return (
     <div className="movieDetail">
       <div className="movieDetail__hero">
-        {movie.backdropUrl && (
+        {/* Backdrop is never shown on mobile (hidden via CSS), so skip
+            downloading it there entirely. Tablet gets the smaller w1280
+            version, desktop gets the full-resolution original. */}
+        {!isMobile && movie.backdropUrl && (
           <img
-            src={movie.backdropUrl}
+            src={isBelowDesktop ? movie.backdropUrlTablet : movie.backdropUrl}
             alt=""
             className="movieDetail__backdrop"
           />
@@ -103,7 +103,8 @@ function MovieDetail() {
             <span className="movieDetail__backLabel">Back</span>
           </Link>
 
-          {movie.posterUrl && (
+          {/* Only shown on mobile (CSS hides it at tablet+), so only load it there */}
+          {isMobile && movie.posterUrl && (
             <img
               src={movie.posterUrl}
               alt=""
@@ -114,7 +115,8 @@ function MovieDetail() {
           <div className="movieDetail__heroOverlay" />
 
           <div className="movieDetail__card">
-            {movie.posterUrl && (
+            {/* Only shown at tablet+ (CSS hides it on mobile), so only load it there */}
+            {!isMobile && movie.posterUrl && (
               <img
                 src={movie.posterUrl}
                 alt=""
@@ -129,13 +131,9 @@ function MovieDetail() {
                 {movie.title} ({movie.releaseDate?.slice(0, 4)})
               </h1>
 
-              <p className="movieDetail__genres">
-                {movie.genres.join(', ')}
-              </p>
+              <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
 
-              <p className="movieDetail__director">
-                Directed by {TEMP_DIRECTOR}
-              </p>
+              <p className="movieDetail__director">Directed by {director}</p>
 
               <p className="movieDetail__release">
                 Release Date: {movie.releaseDate}
@@ -150,13 +148,20 @@ function MovieDetail() {
                 >
                   ★ {Math.round(movie.voteAverage * 10)}%
                 </span>
-
                 {movie.certification && (
-                  <span>{movie.certification}</span>
+                  <>
+                    {isMobile && <span className="movieDetail__dot" />}
+                    <span>{movie.certification}</span>
+                  </>
                 )}
-
-                <span>{movie.runtime}m</span>
-
+                {movie.runtime && (
+                  <>
+                    {(isMobile || movie.certification) && (
+                      <span className="movieDetail__dot" />
+                    )}
+                    <span>{formatRuntime(movie.runtime)}</span>
+                  </>
+                )}
                 <ShareButton
                   movie={movie}
                   className="movieDetail__share movieDetail__share--inline"
@@ -165,7 +170,7 @@ function MovieDetail() {
 
               <div className="movieDetail__watchlistRow">
                 <BookmarkButton
-                  movie={movie}
+                  movie={movie.watchlistEntry}
                   showLabel
                   className="movieDetail__watchlist"
                 />

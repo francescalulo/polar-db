@@ -8,7 +8,7 @@ const AUTO_ADVANCE_DELAY = 8000; // ms between auto-advances
 const CLICK_TRANSITION_DURATION = 600; // ms, clicking a dash
 const AUTO_TRANSITION_DURATION = 1000; // ms, auto-advance
 const DRAG_TRANSITION_DURATION = 1000; // ms, drag or scroll
-const DRAG_THRESHOLD = 50; // px — how far you need to drag before it counts
+const DRAG_THRESHOLD = 50; // px, how far you need to drag before it counts
 const WHEEL_THRESHOLD = 10; // minimum horizontal scroll before it counts
 const WHEEL_COOLDOWN = DRAG_TRANSITION_DURATION + 200; // ms to ignore extra wheel events after one triggers
 
@@ -23,13 +23,23 @@ function HeroCarousel({ movies }) {
   const dragStartX = useRef(null);
   // Prevents one wheel/trackpad gesture from firing multiple rapid slide changes
   const wheelCooldown = useRef(false);
+  const isMobile = useIsMobile(); // below tablet breakpoint (768px)
+  const isBelowDesktop = useIsMobile(1024); // below desktop breakpoint which covers tablet + mobile
+
+  // Picks the right-sized image for the current viewport: mobile gets the
+  // portrait poster, tablet gets a mid-size backdrop, desktop gets the
+  // full-resolution backdrop (it stretches edge-to-edge on wide screens).
+  const getHeroImage = (m) => {
+    if (isMobile) return m.poster;
+    if (isBelowDesktop) return m.backdropTablet;
+    return m.backdrop;
+  };
+
   const movie = movies[currentIndex];
-  const isMobile = useIsMobile();
-  // Portrait posters fit mobile screens better than the wide backdrop images
-  const heroImage = isMobile ? movie.poster : movie.backdrop;
+  const heroImage = getHeroImage(movie);
 
   // Move to a specific slide by index. duration is split in half: half to
-  // fade the current slide out, half to fade the next one in — so the whole
+  // fade the current slide out, half to fade the next one in. So the whole
   // transition takes `duration` ms as long as the next slide's image is
   // already loaded. If it isn't, the fade-in waits for the image before
   // swapping, so the backdrop is never shown blank or stale.
@@ -43,7 +53,7 @@ function HeroCarousel({ movies }) {
     setIsVisible(false);
 
     const nextMovie = movies[targetIndex];
-    const nextImage = isMobile ? nextMovie.poster : nextMovie.backdrop;
+    const nextImage = getHeroImage(nextMovie);
     const preloadImage = new Image();
     preloadImage.src = nextImage;
 
@@ -54,7 +64,7 @@ function HeroCarousel({ movies }) {
 
     setTimeout(() => {
       if (preloadImage.complete) {
-        // already loaded (e.g. cached from a previous cycle) — swap right away
+        // already loaded (e.g. cached from a previous cycle). Swap right away
         swapAndFadeIn();
       } else {
         // wait for it to finish loading before swapping, so the backdrop
@@ -179,7 +189,7 @@ function HeroCarousel({ movies }) {
           <div className="hero__actions">
             <MoreInfoButton movieId={movie.id} className="hero__moreInfo" />
             <BookmarkButton
-              movie={movie}
+              movie={movie.watchlistEntry}
               showLabel
               className="hero__watchlist"
             />

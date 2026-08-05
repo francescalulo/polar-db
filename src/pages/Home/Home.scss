@@ -1,2 +1,8 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
+
+.home__status {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: $ice;
+}

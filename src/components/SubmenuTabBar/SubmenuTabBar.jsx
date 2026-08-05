@@ -36,8 +36,7 @@ const TABS = [
   },
 ];
 
-function SubmenuTabBar({ isVisible = false }) {
-  const [activeTab, setActiveTab] = useState('popular');
+function SubmenuTabBar({ isVisible = false, activeTab, onTabChange }) {
   const [isFooterReached, setIsFooterReached] = useState(false);
   const [isStuck, setIsStuck] = useState(false);
   const stuckSentinelRef = useRef(null);
@@ -50,7 +49,7 @@ function SubmenuTabBar({ isVisible = false }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsStuck(!entry.isIntersecting),
-      { rootMargin: `-${headerHeight}px 0px 0px 0px`, threshold: 0 },
+      { rootMargin: '-' + headerHeight + 'px 0px 0px 0px', threshold: 0 },
     );
 
     if (stuckSentinelRef.current) {
@@ -65,7 +64,7 @@ function SubmenuTabBar({ isVisible = false }) {
   // Hide the bar again once the very end of the footer scrolls into view
   useEffect(() => {
     // Footer lives in AppRouter, not inside Home/SubmenuTabBar's own tree,
-    // so we can't reach it with a normal ref — query the DOM for it instead.
+    // so we can't reach it with a normal ref, query the DOM for it instead.
     const footerEnd = document.querySelector('.footer__copyright');
     if (!footerEnd) return;
 
@@ -109,7 +108,7 @@ function SubmenuTabBar({ isVisible = false }) {
                 key={tab.key}
                 type="button"
                 className={tabClass}
-                onClick={() => setActiveTab(tab.key)}
+                onClick={() => onTabChange(tab.key)}
                 aria-label={tab.label}
               >
                 <img
