@@ -5,19 +5,13 @@ import {
   getMovieDetails,
   getMovieTrailer,
 } from '../../services/movies';
-
 import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import { formatRuntime } from '../../utils/formatRuntime';
 import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
 import ShareButton from '../../components/ShareButton/ShareButton';
-
 import backIcon from '../../assets/icons/back-icon-outline.svg';
-
 import './MovieDetail.scss';
-
-// TEMP placeholder until Sara/Talia add credits data (director + cast) to the API
-const TEMP_DIRECTOR = 'John Doe';
 
 function MovieDetail() {
   const { id } = useParams();
@@ -25,6 +19,7 @@ function MovieDetail() {
   const isBelowDesktop = useIsMobile(1024); // below desktop breakpoint which covers tablet + mobile
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
+  const [director, setDirector] = useState('');
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,12 +38,14 @@ function MovieDetail() {
           getMovieTrailer(id).catch(() => null),
           getMovieCredits(id).catch(() => ({
             cast: [],
+            director: 'Director unavailable',
           })),
         ]);
 
         if (isMounted) {
           setMovie(details);
           setCast(creditsResult.cast);
+          setDirector(creditsResult.director);
           setTrailer(trailerResult);
           setLoading(false);
         }
@@ -57,6 +54,7 @@ function MovieDetail() {
           setError(err.message);
           setMovie(null);
           setCast([]);
+          setDirector('');
           setLoading(false);
         }
       }
@@ -135,9 +133,7 @@ function MovieDetail() {
 
               <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
 
-              <p className="movieDetail__director">
-                Directed by {TEMP_DIRECTOR}
-              </p>
+              <p className="movieDetail__director">Directed by {director}</p>
 
               <p className="movieDetail__release">
                 Release Date: {movie.releaseDate}
@@ -152,8 +148,20 @@ function MovieDetail() {
                 >
                   ★ {Math.round(movie.voteAverage * 10)}%
                 </span>
-                {movie.certification && <span>{movie.certification}</span>}
-                {movie.runtime && <span>{formatRuntime(movie.runtime)}</span>}
+                {movie.certification && (
+                  <>
+                    {isMobile && <span className="movieDetail__dot" />}
+                    <span>{movie.certification}</span>
+                  </>
+                )}
+                {movie.runtime && (
+                  <>
+                    {(isMobile || movie.certification) && (
+                      <span className="movieDetail__dot" />
+                    )}
+                    <span>{formatRuntime(movie.runtime)}</span>
+                  </>
+                )}
                 <ShareButton
                   movie={movie}
                   className="movieDetail__share movieDetail__share--inline"

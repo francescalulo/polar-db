@@ -276,6 +276,10 @@ $overview-max-width: 50rem;
   }
 }
 
+.movieDetail__dot {
+  @include dot-separator;
+}
+
 .movieDetail__rating {
   color: $ice;
   font-weight: $font-weight-medium;

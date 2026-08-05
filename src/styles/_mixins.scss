@@ -123,3 +123,11 @@
 @mixin pill-button {
   border-radius: $button-radius;
 }
+
+// Small round separator dot used between inline meta items (e.g. rating • certification • runtime)
+@mixin dot-separator {
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 50%;
+  background: $ice;
+}

@@ -106,9 +106,8 @@ const CATEGORY_ENDPOINTS = {
 const REGION = 'CA';
 const CATEGORIES_NEEDING_REGION = new Set(['upcoming', 'nowPlaying']);
 
-// Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top
-// Rated) and maps each raw TMDB result into the SAME shape mockMovies.js
-// already uses, so MovieGrid/MovieCard need zero changes to consume it.
+// Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top Rated)
+// and maps each raw TMDB result, so MovieGrid/MovieCard need zero changes to consume it.
 export async function getMoviesByCategory(category) {
   const endpoint = CATEGORY_ENDPOINTS[category];
 
