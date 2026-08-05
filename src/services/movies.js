@@ -59,6 +59,13 @@ const CATEGORY_ENDPOINTS = {
   topRated: '/movie/top_rated',
 };
 
+// "Now Playing" and "Upcoming" are calculated per-region by TMDB (each
+// country has its own theatrical release calendar) — without a region
+// param, TMDB falls back to a loose window that can include movies
+// released months or even years ago. CA matches our audience/institution.
+const REGION = 'CA';
+const CATEGORIES_NEEDING_REGION = new Set(['upcoming', 'nowPlaying']);
+
 // Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top
 // Rated) and maps each raw TMDB result into the SAME shape mockMovies.js
 // already uses, so MovieGrid/MovieCard need zero changes to consume it.
@@ -69,7 +76,10 @@ export async function getMoviesByCategory(category) {
     throw new Error(`Unknown movie category: ${category}`);
   }
 
-  const data = await tmdbFetch(endpoint);
+  const params = CATEGORIES_NEEDING_REGION.has(category)
+    ? { region: REGION }
+    : {};
+  const data = await tmdbFetch(endpoint, params);
 
   return data.results.map((movie) => ({
     id: movie.id,
