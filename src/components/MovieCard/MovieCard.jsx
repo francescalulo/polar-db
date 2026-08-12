@@ -66,7 +66,9 @@ function MovieCard({ movie, onRemove }) {
 
           <p className="movieCard__date">Release Date: {movie.release_date}</p>
 
-          <p className="movieCard__overview">{movie.overview}</p>
+          <p className="movieCard__overview">
+            {movie.overview || 'No overview available.'}
+          </p>
         </div>
 
         <MoreInfoButton movieId={movie.id} className="movieCard__moreInfo" />

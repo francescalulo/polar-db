@@ -183,13 +183,23 @@ function HeroCarousel({ movies }) {
                 <img src={ratingIcon} alt="" className="hero__ratingIcon" />
                 {movie.rating}
               </span>
-              <span className="hero__dot" />
-              <span>{movie.certification}</span>
-              <span className="hero__dot" />
-              <span>{movie.runtime}</span>
+              {movie.certification && (
+                <>
+                  <span className="hero__dot" />
+                  <span>{movie.certification}</span>
+                </>
+              )}
+              {movie.runtime && (
+                <>
+                  <span className="hero__dot" />
+                  <span>{movie.runtime}</span>
+                </>
+              )}
             </div>
 
-            <p className="hero__synopsis">{movie.synopsis}</p>
+            <p className="hero__synopsis">
+              {movie.synopsis || 'No overview available.'}
+            </p>
           </div>
 
           <div className="hero__actions">

@@ -253,7 +253,7 @@ function MovieDetail() {
 
         <div className="movieDetail__overview">
           <h2>Overview</h2>
-          <p>{movie.overview}</p>
+          <p>{movie.overview || 'No overview available.'}</p>
         </div>
       </div>
 
