@@ -158,6 +158,10 @@
   @include poster-icon-shadow;
 }
 
+.movieCard__ratingIcon {
+  @include rating-icon;
+}
+
 .movieCard__share {
   position: absolute;
   right: 0.875rem;

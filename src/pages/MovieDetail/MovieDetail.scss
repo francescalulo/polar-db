@@ -281,6 +281,7 @@ $overview-max-width: 50rem;
 }
 
 .movieDetail__rating {
+  @include flex($gap: 0.3rem);
   color: $ice;
   font-weight: $font-weight-medium;
 
@@ -291,6 +292,10 @@ $overview-max-width: 50rem;
     z-index: 2;
     @include poster-icon-shadow;
   }
+}
+
+.movieDetail__ratingIcon {
+  @include rating-icon;
 }
 
 .movieDetail__watchlistRow {

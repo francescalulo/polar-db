@@ -5,12 +5,17 @@ import {
   getMovieDetails,
   getMovieTrailer,
 } from '../../services/movies';
-import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import { formatRuntime } from '../../utils/formatRuntime';
+import { formatRating } from '../../utils/formatRating';
+import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
 import ShareButton from '../../components/ShareButton/ShareButton';
 import backIcon from '../../assets/icons/back-icon-outline.svg';
+import ratingIcon from '../../assets/icons/ratings.svg';
+import posterFallback from '../../assets/fallbacks/poster-fallback.png';
+import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
+import trailerFallback from '../../assets/fallbacks/trailer-fallback.png';
 import './MovieDetail.scss';
 
 function MovieDetail() {
@@ -87,9 +92,12 @@ function MovieDetail() {
         {/* Backdrop is never shown on mobile (hidden via CSS), so skip
             downloading it there entirely. Tablet gets the smaller w1280
             version, desktop gets the full-resolution original. */}
-        {!isMobile && movie.backdropUrl && (
+        {!isMobile && (
           <img
-            src={isBelowDesktop ? movie.backdropUrlTablet : movie.backdropUrl}
+            src={
+              (isBelowDesktop ? movie.backdropUrlTablet : movie.backdropUrl) ||
+              backdropFallback
+            }
             alt=""
             className="movieDetail__backdrop"
           />
@@ -104,9 +112,9 @@ function MovieDetail() {
           </Link>
 
           {/* Only shown on mobile (CSS hides it at tablet+), so only load it there */}
-          {isMobile && movie.posterUrl && (
+          {isMobile && (
             <img
-              src={movie.posterUrl}
+              src={movie.posterUrl || posterFallback}
               alt=""
               className="movieDetail__heroImage"
             />
@@ -116,9 +124,9 @@ function MovieDetail() {
 
           <div className="movieDetail__card">
             {/* Only shown at tablet+ (CSS hides it on mobile), so only load it there */}
-            {!isMobile && movie.posterUrl && (
+            {!isMobile && (
               <img
-                src={movie.posterUrl}
+                src={movie.posterUrl || posterFallback}
                 alt=""
                 className="movieDetail__cardPoster"
               />
@@ -142,11 +150,14 @@ function MovieDetail() {
               <div className="movieDetail__metaLine">
                 <span
                   className="movieDetail__rating"
-                  aria-label={`User Score: ${Math.round(
-                    movie.voteAverage * 10,
-                  )}%`}
+                  aria-label={'User Score: ' + formatRating(movie.voteAverage)}
                 >
-                  ★ {Math.round(movie.voteAverage * 10)}%
+                  <img
+                    src={ratingIcon}
+                    alt=""
+                    className="movieDetail__ratingIcon"
+                  />
+                  {formatRating(movie.voteAverage)}
                 </span>
                 {movie.certification && (
                   <>
@@ -154,14 +165,14 @@ function MovieDetail() {
                     <span>{movie.certification}</span>
                   </>
                 )}
-                {movie.runtime && (
+                {movie.runtime ? (
                   <>
                     {(isMobile || movie.certification) && (
                       <span className="movieDetail__dot" />
                     )}
                     <span>{formatRuntime(movie.runtime)}</span>
                   </>
-                )}
+                ) : null}
                 <ShareButton
                   movie={movie}
                   className="movieDetail__share movieDetail__share--inline"
@@ -184,12 +195,12 @@ function MovieDetail() {
           </div>
         </div>
 
-        {trailer && (
+        {trailer ? (
           <div className="movieDetail__trailerWrap">
             {isTrailerPlaying ? (
               <iframe
                 src={trailer.embedUrl + '?autoplay=1'}
-                title={`${movie.title} trailer`}
+                title={movie.title + ' trailer'}
                 className="movieDetail__trailerFrame"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
@@ -199,10 +210,14 @@ function MovieDetail() {
                 type="button"
                 className="movieDetail__trailerPreview"
                 onClick={() => setIsTrailerPlaying(true)}
-                aria-label={`Play trailer for ${movie.title}`}
+                aria-label={'Play trailer for ' + movie.title}
               >
                 <img
-                  src={`https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg`}
+                  src={
+                    'https://img.youtube.com/vi/' +
+                    trailer.key +
+                    '/hqdefault.jpg'
+                  }
                   alt=""
                   className="movieDetail__trailerThumb"
                 />
@@ -226,11 +241,19 @@ function MovieDetail() {
               </button>
             )}
           </div>
+        ) : (
+          <div className="movieDetail__trailerWrap">
+            <img
+              src={trailerFallback}
+              alt=""
+              className="movieDetail__trailerFrame movieDetail__trailerThumb"
+            />
+          </div>
         )}
 
         <div className="movieDetail__overview">
           <h2>Overview</h2>
-          <p>{movie.overview}</p>
+          <p>{movie.overview || 'No overview available.'}</p>
         </div>
       </div>
 

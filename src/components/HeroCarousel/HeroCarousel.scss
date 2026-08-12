@@ -150,6 +150,10 @@
   @include flex($gap: 0.625rem);
 }
 
+.hero__ratingIcon {
+  @include rating-icon;
+}
+
 .hero__dot {
   @include dot-separator;
 }

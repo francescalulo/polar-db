@@ -1,10 +1,10 @@
+import artistFallback from '../../assets/fallbacks/artist-fallback.png';
 import './ArtistCard.scss';
 
 function ArtistCard({ actor }) {
-  // TODO: Replace with the team's placeholder image once it has been added.
   const profileImage = actor.profilePath
-    ? `https://image.tmdb.org/t/p/w500${actor.profilePath}`
-    : undefined;
+    ? 'https://image.tmdb.org/t/p/w500' + actor.profilePath
+    : artistFallback;
 
   return (
     <article className="artistCard">

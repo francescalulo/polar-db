@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
+import ratingIcon from '../../assets/icons/ratings.svg';
+import posterFallback from '../../assets/fallbacks/poster-fallback.png';
+import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
 import './HeroCarousel.scss';
 
 const AUTO_ADVANCE_DELAY = 8000; // ms between auto-advances
@@ -30,9 +33,9 @@ function HeroCarousel({ movies }) {
   // portrait poster, tablet gets a mid-size backdrop, desktop gets the
   // full-resolution backdrop (it stretches edge-to-edge on wide screens).
   const getHeroImage = (m) => {
-    if (isMobile) return m.poster;
-    if (isBelowDesktop) return m.backdropTablet;
-    return m.backdrop;
+    if (isMobile) return m.poster || posterFallback;
+    if (isBelowDesktop) return m.backdropTablet || backdropFallback;
+    return m.backdrop || backdropFallback;
   };
 
   const movie = movies[currentIndex];
@@ -176,14 +179,27 @@ function HeroCarousel({ movies }) {
             </div>
 
             <div className="hero__details">
-              <span className="hero__rating">★ {movie.rating}%</span>
-              <span className="hero__dot" />
-              <span>{movie.certification}</span>
-              <span className="hero__dot" />
-              <span>{movie.runtime}</span>
+              <span className="hero__rating">
+                <img src={ratingIcon} alt="" className="hero__ratingIcon" />
+                {movie.rating}
+              </span>
+              {movie.certification && (
+                <>
+                  <span className="hero__dot" />
+                  <span>{movie.certification}</span>
+                </>
+              )}
+              {movie.runtime && (
+                <>
+                  <span className="hero__dot" />
+                  <span>{movie.runtime}</span>
+                </>
+              )}
             </div>
 
-            <p className="hero__synopsis">{movie.synopsis}</p>
+            <p className="hero__synopsis">
+              {movie.synopsis || 'No overview available.'}
+            </p>
           </div>
 
           <div className="hero__actions">

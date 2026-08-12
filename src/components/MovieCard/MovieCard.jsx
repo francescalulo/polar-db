@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { formatRating } from '../../utils/formatRating';
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import ShareButton from '../ShareButton/ShareButton';
+import ratingIcon from '../../assets/icons/ratings.svg';
+import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import './MovieCard.scss';
 
 // Added onRemove so the Watchlist can update when a movie is removed
@@ -44,7 +47,7 @@ function MovieCard({ movie, onRemove }) {
     >
       <img
         className="movieCard__poster"
-        src={movie.poster_path}
+        src={movie.poster_path || posterFallback}
         alt={movie.title}
       />
 
@@ -63,7 +66,9 @@ function MovieCard({ movie, onRemove }) {
 
           <p className="movieCard__date">Release Date: {movie.release_date}</p>
 
-          <p className="movieCard__overview">{movie.overview}</p>
+          <p className="movieCard__overview">
+            {movie.overview || 'No overview available.'}
+          </p>
         </div>
 
         <MoreInfoButton movieId={movie.id} className="movieCard__moreInfo" />
@@ -72,9 +77,10 @@ function MovieCard({ movie, onRemove }) {
       <div className="movieCard__topRow">
         <div
           className="movieCard__rating"
-          aria-label={`User Score: ${Math.round(movie.vote_average * 10)}%`}
+          aria-label={'User Score: ' + formatRating(movie.vote_average)}
         >
-          <span>★ {Math.round(movie.vote_average * 10)}%</span>
+          <img src={ratingIcon} alt="" className="movieCard__ratingIcon" />
+          <span>{formatRating(movie.vote_average)}</span>
         </div>
 
         {/* Pass my remove function to the BookmarkButton */}
