@@ -148,6 +148,7 @@
 
 .hero__rating {
   @include flex($gap: 0.625rem);
+  @include poster-icon-shadow(6px);
 }
 
 .hero__ratingIcon {
