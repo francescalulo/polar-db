@@ -90,8 +90,8 @@
 }
 
 // Shadow
-@mixin poster-icon-shadow($blur: 3.5px) {
-  filter: drop-shadow(0 0 $blur #000000cc);
+@mixin poster-icon-shadow($blur: 3.5px, $opacity: 0.8) {
+  filter: drop-shadow(0 0 $blur rgba(#000000, $opacity));
 }
 
 @mixin text-shadow {
@@ -111,6 +111,17 @@
     rgba($overlay-navy, 0) 10%,
     rgba($overlay-navy, 0.85) 55%,
     $overlay-navy 80%
+  );
+}
+
+// Subtle vignette that darkens a poster's edges/corners while keeping the
+// center clear, so UI elements sitting near the edges (rating badge,
+// bookmark button) stay legible regardless of the poster's own contrast
+@mixin vignette {
+  background: radial-gradient(
+    ellipse at center,
+    rgba($night-field, 0) 50%,
+    rgba($night-field, 0.6) 100%
   );
 }
 

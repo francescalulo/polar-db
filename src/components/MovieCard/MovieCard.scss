@@ -67,6 +67,14 @@
   @include poster-overlay;
 }
 
+.movieCard__vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  @include vignette;
+}
+
 .movieCard__info {
   position: relative;
   z-index: 1;
@@ -156,6 +164,10 @@
   @include flex($gap: 0.625rem);
   font-size: $font-size-sm;
   @include poster-icon-shadow;
+}
+
+.movieCard__ratingValue {
+  @include poster-icon-shadow(6px, 1);
 }
 
 .movieCard__ratingIcon {

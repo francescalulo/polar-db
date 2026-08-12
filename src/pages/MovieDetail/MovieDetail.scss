@@ -220,6 +220,19 @@ $overview-max-width: 50rem;
   }
 }
 
+.movieDetail__cardVignette {
+  display: none;
+
+  @include tablet {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    @include vignette;
+  }
+}
+
 .movieDetail__cardOverlay {
   display: none;
 
@@ -290,7 +303,7 @@ $overview-max-width: 50rem;
     top: $card-inset;
     left: $card-inset;
     z-index: 2;
-    @include poster-icon-shadow;
+    @include poster-icon-shadow(6px);
   }
 }
 

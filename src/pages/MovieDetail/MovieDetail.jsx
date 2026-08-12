@@ -132,6 +132,7 @@ function MovieDetail() {
               />
             )}
 
+            <div className="movieDetail__cardVignette" />
             <div className="movieDetail__cardOverlay" />
 
             <div className="movieDetail__info">
