@@ -119,7 +119,14 @@ function Home() {
       <div ref={gridRef}>
         {isLoading && <p className="home__status">Loading movies…</p>}
         {error && <p className="home__status">Couldn't load movies: {error}</p>}
-        {!isLoading && !error && <MovieGrid movies={movies} />}
+        {!isLoading && !error && movies.length === 0 && (
+          <p className="home__status">
+            No movies available right now. Check back soon.
+          </p>
+        )}
+        {!isLoading && !error && movies.length > 0 && (
+          <MovieGrid movies={movies} />
+        )}
       </div>
     </div>
   );
