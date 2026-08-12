@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { formatRating } from '../../utils/formatRating';
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import ShareButton from '../ShareButton/ShareButton';
+import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import './MovieCard.scss';
 
@@ -73,11 +75,10 @@ function MovieCard({ movie, onRemove }) {
       <div className="movieCard__topRow">
         <div
           className="movieCard__rating"
-          aria-label={
-            'User Score: ' + Math.round(movie.vote_average * 10) + '%'
-          }
+          aria-label={'User Score: ' + formatRating(movie.vote_average)}
         >
-          <span>★ {Math.round(movie.vote_average * 10)}%</span>
+          <img src={ratingIcon} alt="" className="movieCard__ratingIcon" />
+          <span>{formatRating(movie.vote_average)}</span>
         </div>
 
         {/* Pass my remove function to the BookmarkButton */}

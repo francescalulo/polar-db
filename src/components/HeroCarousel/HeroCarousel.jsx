@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
+import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
 import './HeroCarousel.scss';
@@ -178,7 +179,10 @@ function HeroCarousel({ movies }) {
             </div>
 
             <div className="hero__details">
-              <span className="hero__rating">★ {movie.rating}%</span>
+              <span className="hero__rating">
+                <img src={ratingIcon} alt="" className="hero__ratingIcon" />
+                {movie.rating}
+              </span>
               <span className="hero__dot" />
               <span>{movie.certification}</span>
               <span className="hero__dot" />

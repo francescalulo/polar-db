@@ -1,6 +1,7 @@
 import { tmdbFetch, getPosterUrl, getBackdropUrl } from './tmdbClient';
 import { genreMap } from '../data/genreMap';
 import { formatRuntime } from '../utils/formatRuntime';
+import { formatRating } from '../utils/formatRating';
 
 function findCertification(releaseDatesResults, countryCode = 'US') {
   const country = releaseDatesResults?.find(
@@ -153,7 +154,7 @@ export async function getHeroMovies(count = HERO_MOVIE_COUNT) {
     title: movie.title,
     year: movie.releaseDate?.slice(0, 4),
     genres: movie.genres,
-    rating: Math.round(movie.voteAverage * 10),
+    rating: formatRating(movie.voteAverage),
     certification: movie.certification,
     runtime: formatRuntime(movie.runtime),
     synopsis: movie.overview,

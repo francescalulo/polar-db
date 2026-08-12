@@ -5,12 +5,14 @@ import {
   getMovieDetails,
   getMovieTrailer,
 } from '../../services/movies';
-import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import { formatRuntime } from '../../utils/formatRuntime';
+import { formatRating } from '../../utils/formatRating';
+import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
 import ShareButton from '../../components/ShareButton/ShareButton';
 import backIcon from '../../assets/icons/back-icon-outline.svg';
+import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
 import trailerFallback from '../../assets/fallbacks/trailer-fallback.png';
@@ -148,11 +150,14 @@ function MovieDetail() {
               <div className="movieDetail__metaLine">
                 <span
                   className="movieDetail__rating"
-                  aria-label={
-                    'User Score: ' + Math.round(movie.voteAverage * 10) + '%'
-                  }
+                  aria-label={'User Score: ' + formatRating(movie.voteAverage)}
                 >
-                  ★ {Math.round(movie.voteAverage * 10)}%
+                  <img
+                    src={ratingIcon}
+                    alt=""
+                    className="movieDetail__ratingIcon"
+                  />
+                  {formatRating(movie.voteAverage)}
                 </span>
                 {movie.certification && (
                   <>
