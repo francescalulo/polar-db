@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
+import posterFallback from '../../assets/fallbacks/poster-fallback.png';
+import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
 import './HeroCarousel.scss';
 
 const AUTO_ADVANCE_DELAY = 8000; // ms between auto-advances
@@ -30,9 +32,9 @@ function HeroCarousel({ movies }) {
   // portrait poster, tablet gets a mid-size backdrop, desktop gets the
   // full-resolution backdrop (it stretches edge-to-edge on wide screens).
   const getHeroImage = (m) => {
-    if (isMobile) return m.poster;
-    if (isBelowDesktop) return m.backdropTablet;
-    return m.backdrop;
+    if (isMobile) return m.poster || posterFallback;
+    if (isBelowDesktop) return m.backdropTablet || backdropFallback;
+    return m.backdrop || backdropFallback;
   };
 
   const movie = movies[currentIndex];
