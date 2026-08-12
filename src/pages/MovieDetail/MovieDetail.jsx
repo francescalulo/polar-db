@@ -165,14 +165,14 @@ function MovieDetail() {
                     <span>{movie.certification}</span>
                   </>
                 )}
-                {movie.runtime && (
+                {movie.runtime ? (
                   <>
                     {(isMobile || movie.certification) && (
                       <span className="movieDetail__dot" />
                     )}
                     <span>{formatRuntime(movie.runtime)}</span>
                   </>
-                )}
+                ) : null}
                 <ShareButton
                   movie={movie}
                   className="movieDetail__share movieDetail__share--inline"
