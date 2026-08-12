@@ -67,7 +67,7 @@ $overview-max-width: 50rem;
     align-items: start;
     gap: 1.5rem 2rem;
     margin-top: -$header-height-mobile;
-    padding: calc(1.5rem + #{$header-height-mobile}) 2rem 2rem;
+    padding: calc(1.5rem + #{$header-height-mobile}) 2rem 0.5rem;
   }
 
   @include desktop {
@@ -345,6 +345,7 @@ $overview-max-width: 50rem;
 }
 
 .movieDetail__share--row {
+  position: relative;
   @include poster-icon-shadow;
 
   @include tablet {
@@ -353,6 +354,7 @@ $overview-max-width: 50rem;
 }
 
 .movieDetail__share--inline {
+  position: relative;
   display: none;
   @include poster-icon-shadow;
 
@@ -418,7 +420,7 @@ $overview-max-width: 50rem;
 }
 
 .movieDetail__overview {
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 1rem;
 
   @include tablet {
     grid-area: overview;
@@ -429,7 +431,7 @@ $overview-max-width: 50rem;
 
   @include desktop {
     margin: 3rem -3.75rem -3rem;
-    padding: 2rem 3.75rem 3rem;
+    padding: 2rem 3.75rem 1rem;
     background-color: $night-field;
   }
 
@@ -438,23 +440,11 @@ $overview-max-width: 50rem;
     color: $aurora-green;
     font-size: $font-size-md;
     text-transform: uppercase;
-
-    @include desktop {
-      max-width: $overview-max-width;
-      margin-left: auto;
-      margin-right: auto;
-    }
   }
 
   p {
     margin: 0 0 0.75rem;
     line-height: 1.6;
     color: $ice;
-
-    @include desktop {
-      max-width: $overview-max-width;
-      margin-left: auto;
-      margin-right: auto;
-    }
   }
 }
