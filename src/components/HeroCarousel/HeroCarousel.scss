@@ -5,18 +5,10 @@
   position: relative;
   overflow: hidden;
   display: block;
-  height: 100vh;
-  height: 100dvh;
   margin-top: -$header-height-mobile;
   touch-action: pan-y;
 
-  @include tablet {
-    height: 100vh;
-    height: 100dvh;
-  }
-
   @include desktop {
-    height: 51.375rem;
     margin-top: -$header-height-desktop;
     margin-bottom: 2rem;
   }
@@ -28,9 +20,16 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  mask-image: linear-gradient(to top, transparent 0, black 12rem);
+  -webkit-mask-image: linear-gradient(to top, transparent 0, black 12rem);
 }
 
 .hero__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
   opacity: 1;
   transition: opacity var(--hero-transition-duration, 300ms)
     var(--hero-transition-easing, ease);
@@ -40,15 +39,23 @@
   }
 }
 
+.hero__inner {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: $header-height-mobile;
+
+  @include desktop {
+    padding-top: $header-height-desktop;
+  }
+}
+
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba($overlay-navy, 0) 35%,
-    rgba($overlay-navy, 0.85) 63%,
-    $overlay-navy 80%
-  );
+  @include fade-to-navy(35%, 80%, $mid: 63%);
   pointer-events: none;
 
   @include tablet {
@@ -57,18 +64,15 @@
 }
 
 .hero__card {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  bottom: 3.75rem;
+  margin: auto 1rem 3.75rem;
   @include flex($direction: column, $align: stretch, $gap: 1rem);
   color: $ice;
 
   @include tablet {
-    left: 2rem;
-    right: auto;
+    margin-left: 2rem;
+    margin-right: 0;
+    margin-bottom: 4.5rem;
     width: 65%;
-    bottom: 4.5rem;
     gap: 1.5rem;
     padding: 1.75rem;
     border: 0.0985rem solid $aurora-deep-teal;
@@ -83,6 +87,7 @@
   }
 
   @include desktop {
+    margin-left: 3.75rem;
     width: 40%;
     border-radius: 2.4375rem;
     background: linear-gradient(

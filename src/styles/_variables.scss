@@ -18,19 +18,21 @@ $font-weight-medium: 500;
 $font-weight-bold: 700;
 
 // Type Scale
-$font-size-xxs: 0.75rem; // 12px — artist mobile details
-$font-size-xs: 0.875rem; // 14px — genre tags
-$font-size-sm: 1rem; // 16px — body copy, UI text (base size)
+$font-size-xxs: 0.75rem; // artist mobile details
+$font-size-xs: 0.875rem; // genre tags
+$font-size-sm: 1rem; // body copy, UI text (base size)
 $font-size-md: 1.25rem;
 $font-size-lg: 1.375rem;
 $font-size-xl: 1.5rem;
-$font-size-xxl: 1.75rem; // 28px — large movie title
+$font-size-xxl: 1.75rem; // large movie title
 
 // Shape
 $card-radius: 0.75rem;
 $button-radius: 3.75rem;
-$search-radius: 1.875rem; // 30px
-$submenu-radius: 3.28125rem; // 52.5px
+$search-radius: 1.875rem;
+$submenu-radius: 3.28125rem;
+
+$content-max-width: 90rem; // 1440px  caps main content on very wide screens; full-bleed backdrops stay unaffected
 
 // Overlay
 $overlay-navy: #111a2e; // shared poster overlay + button gradient start
@@ -48,7 +50,7 @@ $button-pressed-gradient: linear-gradient(
   $aurora-deep-cyan 62.981%
 );
 
-// Breakpoints - used by the mixins below, mobile-first
+// Breakpoints, used by the mixins below, mobile-first
 $breakpoint-tablet: 48rem;
 $breakpoint-desktop: 64rem;
 

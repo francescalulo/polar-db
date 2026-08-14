@@ -169,46 +169,48 @@ function HeroCarousel({ movies }) {
         <img className="hero__image" src={heroImage} alt="" />
         <div className="hero__overlay" />
 
-        <div className="hero__card">
-          <div className="hero__info">
-            <div className="hero__titleGroup">
-              <h2 className="hero__title">
-                {movie.title} ({movie.year})
-              </h2>
-              <p className="hero__genre">{movie.genres.join(', ')}</p>
+        <div className="hero__inner content-width">
+          <div className="hero__card">
+            <div className="hero__info">
+              <div className="hero__titleGroup">
+                <h2 className="hero__title">
+                  {movie.title} ({movie.year})
+                </h2>
+                <p className="hero__genre">{movie.genres.join(', ')}</p>
+              </div>
+
+              <div className="hero__details">
+                <span className="hero__rating">
+                  <img src={ratingIcon} alt="" className="hero__ratingIcon" />
+                  {movie.rating}
+                </span>
+                {movie.certification && (
+                  <>
+                    <span className="hero__dot" />
+                    <span>{movie.certification}</span>
+                  </>
+                )}
+                {movie.runtime && (
+                  <>
+                    <span className="hero__dot" />
+                    <span>{movie.runtime}</span>
+                  </>
+                )}
+              </div>
+
+              <p className="hero__synopsis">
+                {movie.synopsis || 'No overview available.'}
+              </p>
             </div>
 
-            <div className="hero__details">
-              <span className="hero__rating">
-                <img src={ratingIcon} alt="" className="hero__ratingIcon" />
-                {movie.rating}
-              </span>
-              {movie.certification && (
-                <>
-                  <span className="hero__dot" />
-                  <span>{movie.certification}</span>
-                </>
-              )}
-              {movie.runtime && (
-                <>
-                  <span className="hero__dot" />
-                  <span>{movie.runtime}</span>
-                </>
-              )}
+            <div className="hero__actions">
+              <MoreInfoButton movieId={movie.id} className="hero__moreInfo" />
+              <BookmarkButton
+                movie={movie.watchlistEntry}
+                showLabel
+                className="hero__watchlist"
+              />
             </div>
-
-            <p className="hero__synopsis">
-              {movie.synopsis || 'No overview available.'}
-            </p>
-          </div>
-
-          <div className="hero__actions">
-            <MoreInfoButton movieId={movie.id} className="hero__moreInfo" />
-            <BookmarkButton
-              movie={movie.watchlistEntry}
-              showLabel
-              className="hero__watchlist"
-            />
           </div>
         </div>
       </div>

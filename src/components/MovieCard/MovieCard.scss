@@ -64,7 +64,7 @@
   inset: 0;
   border-radius: inherit;
   z-index: 0;
-  @include poster-overlay;
+  @include fade-to-navy(10%, 80%, $mid: 55%);
 }
 
 .movieCard__vignette {

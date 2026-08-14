@@ -87,7 +87,7 @@ function MovieDetail() {
   if (!movie) return null;
 
   return (
-    <div className="movieDetail">
+    <div className="movieDetail content-width">
       <div className="movieDetail__hero">
         {/* Backdrop is never shown on mobile (hidden via CSS), so skip
             downloading it there entirely. Tablet gets the smaller w1280
@@ -105,156 +105,160 @@ function MovieDetail() {
 
         <div className="movieDetail__backdropOverlay" />
 
-        <div className="movieDetail__heroBanner">
-          <Link to="/" className="movieDetail__back">
-            <img src={backIcon} alt="" />
-            <span className="movieDetail__backLabel">Back</span>
-          </Link>
+        <div className="movieDetail__heroContent content-width">
+          <div className="movieDetail__heroBanner">
+            <Link to="/" className="movieDetail__back">
+              <img src={backIcon} alt="" />
+              <span className="movieDetail__backLabel">Back</span>
+            </Link>
 
-          {/* Only shown on mobile (CSS hides it at tablet+), so only load it there */}
-          {isMobile && (
-            <img
-              src={movie.posterUrl || posterFallback}
-              alt=""
-              className="movieDetail__heroImage"
-            />
-          )}
-
-          <div className="movieDetail__heroOverlay" />
-
-          <div className="movieDetail__card">
-            {/* Only shown at tablet+ (CSS hides it on mobile), so only load it there */}
-            {!isMobile && (
+            {/* Only shown on mobile (CSS hides it at tablet+), so only load it there */}
+            {isMobile && (
               <img
                 src={movie.posterUrl || posterFallback}
                 alt=""
-                className="movieDetail__cardPoster"
+                className="movieDetail__heroImage"
               />
             )}
 
-            <div className="movieDetail__cardVignette" />
-            <div className="movieDetail__cardOverlay" />
+            <div className="movieDetail__heroOverlay" />
 
-            <div className="movieDetail__info">
-              <h1 className="movieDetail__title">
-                {movie.title} ({movie.releaseDate?.slice(0, 4)})
-              </h1>
+            <div className="movieDetail__card">
+              {/* Only shown at tablet+ (CSS hides it on mobile), so only load it there */}
+              {!isMobile && (
+                <img
+                  src={movie.posterUrl || posterFallback}
+                  alt=""
+                  className="movieDetail__cardPoster"
+                />
+              )}
 
-              <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
+              <div className="movieDetail__cardVignette" />
+              <div className="movieDetail__cardOverlay" />
 
-              <p className="movieDetail__director">Directed by {director}</p>
+              <div className="movieDetail__info">
+                <h1 className="movieDetail__title">
+                  {movie.title} ({movie.releaseDate?.slice(0, 4)})
+                </h1>
 
-              <p className="movieDetail__release">
-                Release Date: {movie.releaseDate}
-              </p>
+                <p className="movieDetail__genres">{movie.genres.join(', ')}</p>
 
-              <div className="movieDetail__metaLine">
-                <span
-                  className="movieDetail__rating"
-                  aria-label={'User Score: ' + formatRating(movie.voteAverage)}
-                >
-                  <img
-                    src={ratingIcon}
-                    alt=""
-                    className="movieDetail__ratingIcon"
+                <p className="movieDetail__director">Directed by {director}</p>
+
+                <p className="movieDetail__release">
+                  Release Date: {movie.releaseDate}
+                </p>
+
+                <div className="movieDetail__metaLine">
+                  <span
+                    className="movieDetail__rating"
+                    aria-label={
+                      'User Score: ' + formatRating(movie.voteAverage)
+                    }
+                  >
+                    <img
+                      src={ratingIcon}
+                      alt=""
+                      className="movieDetail__ratingIcon"
+                    />
+                    {formatRating(movie.voteAverage)}
+                  </span>
+                  {movie.certification && (
+                    <>
+                      {isMobile && <span className="movieDetail__dot" />}
+                      <span>{movie.certification}</span>
+                    </>
+                  )}
+                  {movie.runtime ? (
+                    <>
+                      {(isMobile || movie.certification) && (
+                        <span className="movieDetail__dot" />
+                      )}
+                      <span>{formatRuntime(movie.runtime)}</span>
+                    </>
+                  ) : null}
+                  <ShareButton
+                    movie={movie}
+                    className="movieDetail__share movieDetail__share--inline"
                   />
-                  {formatRating(movie.voteAverage)}
-                </span>
-                {movie.certification && (
-                  <>
-                    {isMobile && <span className="movieDetail__dot" />}
-                    <span>{movie.certification}</span>
-                  </>
-                )}
-                {movie.runtime ? (
-                  <>
-                    {(isMobile || movie.certification) && (
-                      <span className="movieDetail__dot" />
-                    )}
-                    <span>{formatRuntime(movie.runtime)}</span>
-                  </>
-                ) : null}
-                <ShareButton
-                  movie={movie}
-                  className="movieDetail__share movieDetail__share--inline"
-                />
-              </div>
+                </div>
 
-              <div className="movieDetail__watchlistRow">
-                <BookmarkButton
-                  movie={movie.watchlistEntry}
-                  showLabel
-                  className="movieDetail__watchlist"
-                />
+                <div className="movieDetail__watchlistRow">
+                  <BookmarkButton
+                    movie={movie.watchlistEntry}
+                    showLabel
+                    className="movieDetail__watchlist"
+                  />
 
-                <ShareButton
-                  movie={movie}
-                  className="movieDetail__share movieDetail__share--row"
-                />
+                  <ShareButton
+                    movie={movie}
+                    className="movieDetail__share movieDetail__share--row"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {trailer ? (
-          <div className="movieDetail__trailerWrap">
-            {isTrailerPlaying ? (
-              <iframe
-                src={trailer.embedUrl + '?autoplay=1'}
-                title={movie.title + ' trailer'}
-                className="movieDetail__trailerFrame"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-              />
-            ) : (
-              <button
-                type="button"
-                className="movieDetail__trailerPreview"
-                onClick={() => setIsTrailerPlaying(true)}
-                aria-label={'Play trailer for ' + movie.title}
-              >
-                <img
-                  src={
-                    'https://img.youtube.com/vi/' +
-                    trailer.key +
-                    '/hqdefault.jpg'
-                  }
-                  alt=""
-                  className="movieDetail__trailerThumb"
+          {trailer ? (
+            <div className="movieDetail__trailerWrap">
+              {isTrailerPlaying ? (
+                <iframe
+                  src={trailer.embedUrl + '?autoplay=1'}
+                  title={movie.title + ' trailer'}
+                  className="movieDetail__trailerFrame"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
                 />
+              ) : (
+                <button
+                  type="button"
+                  className="movieDetail__trailerPreview"
+                  onClick={() => setIsTrailerPlaying(true)}
+                  aria-label={'Play trailer for ' + movie.title}
+                >
+                  <img
+                    src={
+                      'https://img.youtube.com/vi/' +
+                      trailer.key +
+                      '/hqdefault.jpg'
+                    }
+                    alt=""
+                    className="movieDetail__trailerThumb"
+                  />
 
-                <span className="movieDetail__playButton">
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="28"
-                    height="28"
-                    aria-hidden="true"
-                  >
-                    <polygon
-                      points="6,4 20,12 6,20"
-                      fill="currentColor"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="movieDetail__trailerWrap">
-            <img
-              src={trailerFallback}
-              alt=""
-              className="movieDetail__trailerFrame movieDetail__trailerThumb"
-            />
-          </div>
-        )}
+                  <span className="movieDetail__playButton">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="28"
+                      height="28"
+                      aria-hidden="true"
+                    >
+                      <polygon
+                        points="6,4 20,12 6,20"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="movieDetail__trailerWrap">
+              <img
+                src={trailerFallback}
+                alt=""
+                className="movieDetail__trailerFrame movieDetail__trailerThumb"
+              />
+            </div>
+          )}
 
-        <div className="movieDetail__overview">
-          <h2>Overview</h2>
-          <p>{movie.overview || 'No overview available.'}</p>
+          <div className="movieDetail__overview">
+            <h2>Overview</h2>
+            <p>{movie.overview || 'No overview available.'}</p>
+          </div>
         </div>
       </div>
 

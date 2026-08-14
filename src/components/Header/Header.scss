@@ -2,14 +2,19 @@
 @use '../../styles/mixins' as *;
 
 .header {
-  @include flex($justify: space-between, $gap: 0.75rem);
-  padding: 0.75rem 1rem;
   height: $header-height-mobile;
   box-sizing: border-box;
   @include glass-panel;
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.header__inner {
+  @include flex($justify: space-between, $gap: 0.75rem);
+  height: 100%;
+  padding: 0.75rem 1rem;
+  box-sizing: border-box;
 
   @include tablet {
     padding: 0.75rem 2rem;

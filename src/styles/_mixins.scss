@@ -104,14 +104,24 @@
   backdrop-filter: blur(4px);
 }
 
-// Poster image overlay
-@mixin poster-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba($overlay-navy, 0) 10%,
-    rgba($overlay-navy, 0.85) 55%,
-    $overlay-navy 80%
-  );
+// Shared "fade to navy" gradient. Pass $mid for a three-stop fade (used
+// on poster cards and the home hero); omit it for a plain two-stop fade
+// (used on MovieDetail's hero/card overlays).
+@mixin fade-to-navy($start, $end, $mid: null, $mid-opacity: 0.85) {
+  @if $mid {
+    background: linear-gradient(
+      to bottom,
+      rgba($overlay-navy, 0) $start,
+      rgba($overlay-navy, $mid-opacity) $mid,
+      $overlay-navy $end
+    );
+  } @else {
+    background: linear-gradient(
+      to bottom,
+      rgba($overlay-navy, 0) $start,
+      $overlay-navy $end
+    );
+  }
 }
 
 // Subtle vignette that darkens a poster's edges/corners while keeping the

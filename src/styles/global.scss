@@ -24,6 +24,16 @@ body {
   flex: 1;
 }
 
+// Caps and centers content on wide screens. Add this class alongside a
+// component's own layout class wherever content should stop growing past
+// $content-max-width - full-bleed backgrounds (backdrops, glass bars)
+// stay on their own separate, unconstrained element.
+.content-width {
+  max-width: $content-max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 h1,
 h2,
 h3 {
