@@ -11,10 +11,14 @@ function EmptyWatchlist() {
         <p className="emptyWatchlist__heading">
           Your Watchlist is as quiet as the northern sky tonight.
         </p>
-        <p>Explore a movie and save it to light the way.</p>
+
+        <p className="emptyWatchlist__text">
+          Explore a movie and save it to light the way.
+        </p>
       </div>
     </div>
   );
 }
 
 export default EmptyWatchlist;
+

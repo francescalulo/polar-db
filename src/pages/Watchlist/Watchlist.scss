@@ -12,6 +12,8 @@
   }
 
   @include desktop {
+    max-width: 77.5rem;
+    margin: 0 auto;
     padding: 3.5rem 3.75rem 5rem;
   }
 }
@@ -28,9 +30,4 @@
   margin: 0 0 2rem;
   color: $aurora-green-glow;
   font-size: $font-size-xxl;
-
-  @include desktop {
-    max-width: 77.5rem;
-    margin: 0 auto 2rem;
-  }
 }
