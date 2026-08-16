@@ -1,51 +1,12 @@
-// @use '../../styles/variables' as *;
-// @use '../../styles/mixins' as *;
-
-// .emptyWatchlist {
-//   display: grid;
-//   grid-template-columns: auto minmax(0, 1fr);
-//   align-items: center;
-//   gap: 3rem;
-//   width: 100%;
-// }
-
-// .emptyWatchlist__message {
-//   max-width: 32rem;
-//   color: $ice;
-//   font-size: $font-size-md;
-//   line-height: 1.5;
-//   text-align: left;
-// }
-
-// .emptyWatchlist__heading {
-//   margin: 0 0 0.5rem;
-//   color: $aurora-cyan;
-//   font-weight: $font-weight-medium;
-// }
-
-// .emptyWatchlist__text {
-//   margin: 0;
-// }
-
-// @include tablet {
-//   .emptyWatchlist {
-//     gap: 4rem;
-//   }
-// }
-
-// @include desktop {
-//   .emptyWatchlist {
-//     gap: 5rem;
-//   }
-// }
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
 .emptyWatchlist {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 1fr;
+  justify-items: center;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
   width: 100%;
 }
 
@@ -55,17 +16,17 @@
   color: $ice;
   font-size: $font-size-md;
   line-height: 1.5;
-  text-align: left;
+  text-align: center;
   z-index: 0;
 
   &::before {
     content: '';
     position: absolute;
-    width: 38rem;
-    height: 38rem;
+    width: 24rem;
+    height: 24rem;
     top: 50%;
     left: 50%;
-    transform: translate(-30%, -50%);
+    transform: translate(-50%, -50%);
     background-image: url('../../assets/images/polar-db-aurora-optimized.webp');
     background-repeat: no-repeat;
     background-position: center;
@@ -88,12 +49,32 @@
 
 @include tablet {
   .emptyWatchlist {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: initial;
     gap: 4rem;
+  }
+
+  .emptyWatchlist__message {
+    text-align: left;
+
+    &::before {
+      width: 32rem;
+      height: 32rem;
+      transform: translate(-35%, -50%);
+    }
   }
 }
 
 @include desktop {
   .emptyWatchlist {
     gap: 5rem;
+  }
+
+  .emptyWatchlist__message {
+    &::before {
+      width: 38rem;
+      height: 38rem;
+      transform: translate(-30%, -50%);
+    }
   }
 }
