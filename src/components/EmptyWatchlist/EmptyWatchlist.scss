@@ -3,72 +3,21 @@
 
 .emptyWatchlist {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 12.25rem);
-  justify-content: center;
+  grid-template-columns: 1fr;
+  justify-items: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
-
-  @include tablet {
-    grid-template-columns: repeat(auto-fill, 17.125rem);
-  }
-}
-
-.emptyWatchlist__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-
-  @include tablet {
-    flex-direction: row;
-    width: max-content;
-    gap: 3rem;
-
-    > * {
-      flex-shrink: 0;
-    }
-  }
-
-  @include desktop {
-    gap: 4rem;
-  }
 }
 
 .emptyWatchlist__message {
   position: relative;
   max-width: 32rem;
-  color: $aurora-teal;
+  color: $ice;
   font-size: $font-size-md;
   line-height: 1.5;
   text-align: center;
   z-index: 0;
-
-  @include tablet {
-    text-align: left;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    display: none;
-    width: 25rem;
-    height: 25rem;
-    top: 50%;
-    left: 85%;
-    transform: translate(-30%, -50%);
-    background-image: url('../../assets/images/polar-db-aurora-optimized.webp');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    opacity: 0.3;
-    z-index: -1;
-    pointer-events: none;
-
-    @include tablet {
-      display: block;
-    }
-  }
 }
 
 .emptyWatchlist__heading {
@@ -79,4 +28,48 @@
 
 .emptyWatchlist__text {
   margin: 0;
+}
+
+@include tablet {
+  .emptyWatchlist {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: initial;
+    align-items: center;
+    column-gap: 4rem;
+  }
+
+  .emptyWatchlist__message {
+    text-align: left;
+  }
+}
+
+@include desktop {
+  .emptyWatchlist {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 5rem;
+  }
+
+  .emptyWatchlist__message {
+    position: relative;
+    text-align: left;
+    z-index: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 32rem;
+      height: 32rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-15%, -42%);
+      background-image: url('../../assets/images/polar-db-aurora-optimized.webp');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      opacity: 0.34;
+      z-index: -1;
+      pointer-events: none;
+    }
+  }
 }
