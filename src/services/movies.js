@@ -3,7 +3,7 @@ import { genreMap } from '../data/genreMap';
 import { formatRuntime } from '../utils/formatRuntime';
 import { formatRating } from '../utils/formatRating';
 
-function findCertification(releaseDatesResults, countryCode = 'US') {
+function findCertification(releaseDatesResults, countryCode = 'CA') {
   const country = releaseDatesResults?.find(
     (entry) => entry.iso_3166_1 === countryCode,
   );
@@ -100,12 +100,11 @@ const CATEGORY_ENDPOINTS = {
   topRated: '/movie/top_rated',
 };
 
-// "Now Playing" and "Upcoming" are calculated per-region by TMDB (each
-// country has its own theatrical release calendar) without a region
-// param, TMDB falls back to a loose window that can include movies
-// released months or even years ago. CA matches our audience/institution.
+// TMDB's release-date-driven lists (Upcoming, Now Playing) are calculated
+// per-region — without a region param, TMDB falls back to a loose window
+// that can include movies released months or even years ago. Passing CA
+// on every category keeps release-date info consistent across all tabs.
 const REGION = 'CA';
-const CATEGORIES_NEEDING_REGION = new Set(['upcoming', 'nowPlaying']);
 
 // Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top Rated)
 // and maps each raw TMDB result, so MovieGrid/MovieCard need zero changes to consume it.
@@ -116,10 +115,7 @@ export async function getMoviesByCategory(category) {
     throw new Error(`Unknown movie category: ${category}`);
   }
 
-  const params = CATEGORIES_NEEDING_REGION.has(category)
-    ? { region: REGION }
-    : {};
-  const data = await tmdbFetch(endpoint, params);
+  const data = await tmdbFetch(endpoint, { region: REGION });
 
   return data.results.map((movie) => ({
     id: movie.id,

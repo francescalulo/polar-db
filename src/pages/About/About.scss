@@ -2,8 +2,6 @@
 @use '../../styles/mixins' as *;
 
 .about {
-  max-width: 75rem;
-  margin: 0 auto;
   padding: 2rem 1rem;
 
   @include tablet {

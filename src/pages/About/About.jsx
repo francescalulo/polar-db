@@ -22,7 +22,7 @@ function About() {
 
   return (
     <>
-      <div className="about">
+      <div className="about content-width">
         <section className="about__intro">
           <h1 className="about__heading">
             About <img src={wordmark} alt="Polar+DB" className="about__logo" />

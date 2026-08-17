@@ -50,6 +50,7 @@ function MovieCard({ movie, onRemove }) {
         src={movie.poster_path || posterFallback}
         alt={movie.title}
       />
+      <div className="movieCard__vignette" />
 
       <div className="movieCard__details">
         <div className="movieCard__overlay" />
@@ -80,7 +81,9 @@ function MovieCard({ movie, onRemove }) {
           aria-label={'User Score: ' + formatRating(movie.vote_average)}
         >
           <img src={ratingIcon} alt="" className="movieCard__ratingIcon" />
-          <span>{formatRating(movie.vote_average)}</span>
+          <span className="movieCard__ratingValue">
+            {formatRating(movie.vote_average)}
+          </span>
         </div>
 
         {/* Pass my remove function to the BookmarkButton */}

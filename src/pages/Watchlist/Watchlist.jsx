@@ -27,7 +27,7 @@ function Watchlist() {
   };
 
   return (
-    <div className="watchlist">
+    <div className="watchlist content-width">
       <h1 className="watchlist__title">My Watchlist</h1>
 
       {watchlistMovies.length === 0 ? (

@@ -3,6 +3,9 @@
 
 .footer {
   @include glass-panel(1);
+}
+
+.footer__inner {
   padding: 1.5rem 1rem 1.25rem;
 
   @include tablet {

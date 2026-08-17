@@ -90,8 +90,8 @@
 }
 
 // Shadow
-@mixin poster-icon-shadow($blur: 3.5px) {
-  filter: drop-shadow(0 0 $blur #000000cc);
+@mixin poster-icon-shadow($blur: 3.5px, $opacity: 0.8) {
+  filter: drop-shadow(0 0 $blur rgba(#000000, $opacity));
 }
 
 @mixin text-shadow {
@@ -104,13 +104,34 @@
   backdrop-filter: blur(4px);
 }
 
-// Poster image overlay
-@mixin poster-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba($overlay-navy, 0) 10%,
-    rgba($overlay-navy, 0.85) 55%,
-    $overlay-navy 80%
+// Shared "fade to navy" gradient. Pass $mid for a three-stop fade (used
+// on poster cards and the home hero); omit it for a plain two-stop fade
+// (used on MovieDetail's hero/card overlays).
+@mixin fade-to-navy($start, $end, $mid: null, $mid-opacity: 0.85) {
+  @if $mid {
+    background: linear-gradient(
+      to bottom,
+      rgba($overlay-navy, 0) $start,
+      rgba($overlay-navy, $mid-opacity) $mid,
+      $overlay-navy $end
+    );
+  } @else {
+    background: linear-gradient(
+      to bottom,
+      rgba($overlay-navy, 0) $start,
+      $overlay-navy $end
+    );
+  }
+}
+
+// Subtle vignette that darkens a poster's edges/corners while keeping the
+// center clear, so UI elements sitting near the edges (rating badge,
+// bookmark button) stay legible regardless of the poster's own contrast
+@mixin vignette {
+  background: radial-gradient(
+    ellipse at center,
+    rgba($night-field, 0) 50%,
+    rgba($night-field, 0.6) 100%
   );
 }
 

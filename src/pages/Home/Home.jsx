@@ -115,18 +115,22 @@ function Home() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
-      {/* MovieGrid doesn't forward a ref, so wrap it, this div is what the observer above watches */}
-      <div ref={gridRef}>
-        {isLoading && <p className="home__status">Loading movies…</p>}
-        {error && <p className="home__status">Couldn't load movies: {error}</p>}
-        {!isLoading && !error && movies.length === 0 && (
-          <p className="home__status">
-            No movies available right now. Check back soon.
-          </p>
-        )}
-        {!isLoading && !error && movies.length > 0 && (
-          <MovieGrid movies={movies} />
-        )}
+      <div className="home__content content-width">
+        {/* MovieGrid doesn't forward a ref, so wrap it, this div is what the observer above watches */}
+        <div ref={gridRef}>
+          {isLoading && <p className="home__status">Loading movies…</p>}
+          {error && (
+            <p className="home__status">Couldn't load movies: {error}</p>
+          )}
+          {!isLoading && !error && movies.length === 0 && (
+            <p className="home__status">
+              No movies available right now. Check back soon.
+            </p>
+          )}
+          {!isLoading && !error && movies.length > 0 && (
+            <MovieGrid movies={movies} />
+          )}
+        </div>
       </div>
     </div>
   );
