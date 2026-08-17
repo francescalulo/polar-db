@@ -1,4 +1,5 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import logoMark from '../../assets/icons/favicon.svg';
 import wordmark from '../../assets/polar-wordmark.svg';
 import bookmarkIcon from '../../assets/icons/bookmark-icon-outline.svg';
@@ -7,6 +8,19 @@ import searchIcon from '../../assets/icons/search-icon-outline.svg';
 import './Header.scss';
 
 function Header() {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+    navigate('/search?q=' + encodeURIComponent(query.trim()));
+  };
+
+  const handleClearSearch = () => {
+    setQuery('');
+  };
+
   return (
     <header className="header">
       <div className="header__inner content-width">
@@ -15,14 +29,36 @@ function Header() {
           <img src={wordmark} alt="" className="header__logoWordmark" />
         </Link>
 
-        <div className="header__search">
+        <form
+          className="header__search"
+          onSubmit={handleSearchSubmit}
+          role="search"
+        >
           <input
             type="search"
             placeholder="Search"
             className="header__searchInput"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <img src={searchIcon} alt="" className="header__searchIcon" />
-        </div>
+          {query && (
+            <button
+              type="button"
+              className="header__searchClear"
+              aria-label="Clear search"
+              onClick={handleClearSearch}
+            >
+              ×
+            </button>
+          )}
+          <button
+            type="submit"
+            className="header__searchButton"
+            aria-label="Search"
+          >
+            <img src={searchIcon} alt="" className="header__searchIcon" />
+          </button>
+        </form>
 
         <nav className="header__nav" aria-label="Primary">
           <NavLink

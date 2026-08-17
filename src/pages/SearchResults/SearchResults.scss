@@ -1,0 +1,48 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.searchResults {
+  width: 100%;
+  min-height: 70vh;
+  padding: 2rem 1rem 3rem;
+  box-sizing: border-box;
+
+  @include tablet {
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  @include desktop {
+    padding: 3.5rem 3.75rem 5rem;
+  }
+}
+
+.searchResults .movieGrid {
+  padding: 0;
+}
+
+.searchResults__title {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 12.25rem);
+  justify-content: center;
+  gap: 1rem;
+  white-space: nowrap;
+  margin: 0 0 2rem;
+  color: $aurora-green-glow;
+  font-size: $font-size-xxl;
+
+  @include tablet {
+    grid-template-columns: repeat(auto-fill, 17.125rem);
+  }
+}
+
+.searchResults__status {
+  color: $ice;
+  font-size: $font-size-md;
+}
+
+.searchResults__end {
+  margin: 2rem 0 0;
+  text-align: center;
+  color: $aurora-teal;
+  font-size: $font-size-sm;
+}

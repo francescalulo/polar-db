@@ -5,6 +5,7 @@ import Home from '../pages/Home/Home';
 import About from '../pages/About/About';
 import MovieDetail from '../pages/MovieDetail/MovieDetail';
 import Watchlist from '../pages/Watchlist/Watchlist';
+import SearchResults from '../pages/SearchResults/SearchResults';
 import NotFound from '../pages/NotFound/NotFound';
 
 function AppRouter() {
@@ -18,6 +19,7 @@ function AppRouter() {
             <Route path="/about" element={<About />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
             <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="/search" element={<SearchResults />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -101,10 +101,17 @@ const CATEGORY_ENDPOINTS = {
 };
 
 // TMDB's release-date-driven lists (Upcoming, Now Playing) are calculated
-// per-region — without a region param, TMDB falls back to a loose window
+// per-region, without a region param, TMDB falls back to a loose window
 // that can include movies released months or even years ago. Passing CA
 // on every category keeps release-date info consistent across all tabs.
 const REGION = 'CA';
+
+// TMDB's `adult` flag only targets hardcore content specifically and is
+// inconsistently tagged, so soft-core/exploitation titles can still slip
+// through with adult: false. Those titles are almost always extremely
+// low-engagement, so a minimum vote count catches most of what the adult
+// flag alone misses.
+const MIN_SEARCH_VOTE_COUNT = 10;
 
 // Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top Rated)
 // and maps each raw TMDB result, so MovieGrid/MovieCard need zero changes to consume it.
@@ -128,6 +135,32 @@ export async function getMoviesByCategory(category) {
     // recognize instead of showing "undefined" in the UI
     genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
   }));
+}
+
+// TMDB reference: https://developer.themoviedb.org/reference/search-movie
+export async function searchMovies(query, page = 1) {
+  if (!query?.trim()) return [];
+
+  const data = await tmdbFetch('/search/movie', {
+    query: query.trim(),
+    include_adult: false, // TMDB's own content filter, excludes adult/X-rated results
+    region: REGION,
+    page,
+  });
+
+  return data.results
+    .filter((movie) => !movie.adult) // defensive second check, don't rely on include_adult alone
+    .filter((movie) => movie.poster_path) // drop posterless/junk entries
+    .filter((movie) => movie.vote_count >= MIN_SEARCH_VOTE_COUNT) // drop obscure/exploitation titles the adult flag misses
+    .map((movie) => ({
+      id: movie.id,
+      title: movie.title,
+      poster_path: getPosterUrl(movie.poster_path),
+      release_date: movie.release_date,
+      vote_average: movie.vote_average,
+      overview: movie.overview,
+      genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
+    }));
 }
 
 const HERO_MOVIE_COUNT = 5;
