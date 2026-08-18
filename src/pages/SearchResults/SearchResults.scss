@@ -2,12 +2,17 @@
 @use '../../styles/mixins' as *;
 
 .searchResults {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 12.25rem);
+  justify-content: center;
+  gap: 1rem;
   width: 100%;
   min-height: 70vh;
   padding: 2rem 1rem 3rem;
   box-sizing: border-box;
 
   @include tablet {
+    grid-template-columns: repeat(auto-fill, 17.125rem);
     padding: 2.5rem 2rem 4rem;
   }
 
@@ -16,22 +21,61 @@
   }
 }
 
+.searchResults__inner {
+  grid-column: 1 / -1;
+}
+
 .searchResults .movieGrid {
   padding: 0;
 }
 
 .searchResults__title {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 12.25rem);
-  justify-content: center;
-  gap: 1rem;
-  white-space: nowrap;
   margin: 0 0 2rem;
   color: $aurora-green-glow;
   font-size: $font-size-xxl;
+}
 
-  @include tablet {
-    grid-template-columns: repeat(auto-fill, 17.125rem);
+.searchResults__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin: 0 0 2rem;
+}
+
+.searchResults__filterLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  color: $aurora-cyan;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.searchResults__sortSelect,
+.searchResults__yearSelect {
+  height: 2.25rem;
+  border: 0.125rem solid $aurora-cyan;
+  border-radius: $search-radius;
+  background-color: rgba($night-field, 0.5);
+  color: $aurora-green;
+  font-family: $font-family-base;
+  font-size: $font-size-sm;
+  padding: 0 2.25rem 0 1rem;
+  box-sizing: border-box;
+  width: 13rem;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2379ff9c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 0.75rem;
+
+  &:focus {
+    border-color: $aurora-green-glow;
+    outline: none;
   }
 }
 
@@ -40,9 +84,43 @@
   font-size: $font-size-md;
 }
 
+.searchResults__genreNote {
+  margin: 0 0 1.5rem;
+  color: $aurora-cyan;
+  font-size: $font-size-sm;
+}
+
+.searchResults__loadMore {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.75rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  color: $ice;
+  font-family: $font-family-base;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  background-image: $button-gradient;
+  @include pill-button;
+
+  &:hover,
+  &:focus-visible {
+    @include button-hover-glow;
+  }
+
+  &:active {
+    background-image: $button-pressed-gradient;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
 .searchResults__end {
   margin: 2rem 0 0;
-  text-align: center;
-  color: $aurora-teal;
+  text-align: left;
+  color: $ice;
   font-size: $font-size-sm;
 }

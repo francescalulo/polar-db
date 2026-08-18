@@ -27,19 +27,14 @@ export async function getMovieDetails(id) {
     id: data.id,
     title: data.title,
     posterUrl,
-    backdropUrl: getBackdropUrl(data.backdrop_path, 'original'), // desktop: stretches full viewport width, needs max sharpness
-    backdropUrlTablet: getBackdropUrl(data.backdrop_path, 'w1280'), // tablet: narrower viewport, smaller download without losing visible sharpness
+    backdropUrl: getBackdropUrl(data.backdrop_path, 'original'),
+    backdropUrlTablet: getBackdropUrl(data.backdrop_path, 'w1280'),
     genres,
     runtime: data.runtime,
     overview: data.overview,
     voteAverage: data.vote_average,
     releaseDate: data.release_date,
     certification: findCertification(data.release_dates?.results),
-    // Same reasoning as getHeroMovies below: BookmarkButton saves whatever
-    // object it's given straight to localStorage, and the Watchlist page
-    // reads it back through MovieCard, which expects poster_path /
-    // release_date / vote_average, not this function's own posterUrl /
-    // releaseDate / voteAverage field names.
     watchlistEntry: {
       id: data.id,
       title: data.title,
@@ -52,8 +47,6 @@ export async function getMovieDetails(id) {
   };
 }
 
-// Separate trailer call: TMDB videos endpoint isn't filtered server-side,
-// so we filter down to the first official YouTube trailer here.
 export async function getMovieTrailer(id) {
   const data = await tmdbFetch(`/movie/${id}/videos`);
 
@@ -70,7 +63,6 @@ export async function getMovieTrailer(id) {
   };
 }
 
-// Credits call which returns the movie director and cast members.
 export async function getMovieCredits(id) {
   const data = await tmdbFetch(`/movie/${id}/credits`);
 
@@ -91,8 +83,6 @@ export async function getMovieCredits(id) {
   };
 }
 
-// Maps SubmenuTabBar's tab keys directly to their TMDB list endpoint, so
-// Home can call this with whatever tab is currently active.
 const CATEGORY_ENDPOINTS = {
   popular: '/movie/popular',
   upcoming: '/movie/upcoming',
@@ -100,21 +90,22 @@ const CATEGORY_ENDPOINTS = {
   topRated: '/movie/top_rated',
 };
 
-// TMDB's release-date-driven lists (Upcoming, Now Playing) are calculated
-// per-region, without a region param, TMDB falls back to a loose window
-// that can include movies released months or even years ago. Passing CA
-// on every category keeps release-date info consistent across all tabs.
 const REGION = 'CA';
 
-// TMDB's `adult` flag only targets hardcore content specifically and is
-// inconsistently tagged, so soft-core/exploitation titles can still slip
-// through with adult: false. Those titles are almost always extremely
-// low-engagement, so a minimum vote count catches most of what the adult
-// flag alone misses.
 const MIN_SEARCH_VOTE_COUNT = 10;
 
-// Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top Rated)
-// and maps each raw TMDB result, so MovieGrid/MovieCard need zero changes to consume it.
+const SEARCH_RESULTS_PER_PAGE = 12;
+
+// Inverted genreMap (name -> id, lowercased) so a query that matches a
+// genre name exactly can be routed to Discover instead of Search, since
+// Search only matches titles and has no way to search by genre at all.
+const GENRE_NAME_TO_ID = Object.fromEntries(
+  Object.entries(genreMap).map(([id, name]) => [
+    name.toLowerCase(),
+    Number(id),
+  ]),
+);
+
 export async function getMoviesByCategory(category) {
   const endpoint = CATEGORY_ENDPOINTS[category];
 
@@ -127,31 +118,62 @@ export async function getMoviesByCategory(category) {
   return data.results.map((movie) => ({
     id: movie.id,
     title: movie.title,
-    poster_path: getPosterUrl(movie.poster_path), // turn relative path into a full image URL
+    poster_path: getPosterUrl(movie.poster_path),
     release_date: movie.release_date,
     vote_average: movie.vote_average,
     overview: movie.overview,
-    // genre_ids -> real names; filter(Boolean) drops any id we don't
-    // recognize instead of showing "undefined" in the UI
     genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
   }));
 }
 
+const SORT_COMPARATORS = {
+  relevance: null,
+  rating: (a, b) => b.vote_average - a.vote_average,
+  newest: (a, b) => (b.release_date || '').localeCompare(a.release_date || ''),
+};
+
 // TMDB reference: https://developer.themoviedb.org/reference/search-movie
-export async function searchMovies(query, page = 1) {
+// A query that matches a genre name exactly is routed to Discover instead
+// (https://developer.themoviedb.org/reference/discover-movie), since
+// Search only matches titles and can't match by genre.
+export async function searchMovies(
+  query,
+  { page = 1, sortBy = 'relevance', primaryReleaseYear, signal } = {},
+) {
   if (!query?.trim()) return [];
 
-  const data = await tmdbFetch('/search/movie', {
-    query: query.trim(),
-    include_adult: false, // TMDB's own content filter, excludes adult/X-rated results
-    region: REGION,
-    page,
-  });
+  const trimmedQuery = query.trim();
+  const matchedGenreId = GENRE_NAME_TO_ID[trimmedQuery.toLowerCase()];
 
-  return data.results
-    .filter((movie) => !movie.adult) // defensive second check, don't rely on include_adult alone
-    .filter((movie) => movie.poster_path) // drop posterless/junk entries
-    .filter((movie) => movie.vote_count >= MIN_SEARCH_VOTE_COUNT) // drop obscure/exploitation titles the adult flag misses
+  const data = matchedGenreId
+    ? await tmdbFetch(
+        '/discover/movie',
+        {
+          with_genres: matchedGenreId,
+          region: REGION,
+          include_adult: false,
+          primary_release_year: primaryReleaseYear || undefined,
+          sort_by: 'popularity.desc',
+          page,
+        },
+        { signal },
+      )
+    : await tmdbFetch(
+        '/search/movie',
+        {
+          query: trimmedQuery,
+          include_adult: false,
+          region: REGION,
+          primary_release_year: primaryReleaseYear || undefined,
+          page,
+        },
+        { signal },
+      );
+
+  const results = data.results
+    .filter((movie) => !movie.adult)
+    .filter((movie) => movie.poster_path)
+    .filter((movie) => movie.vote_count >= MIN_SEARCH_VOTE_COUNT)
     .map((movie) => ({
       id: movie.id,
       title: movie.title,
@@ -161,15 +183,27 @@ export async function searchMovies(query, page = 1) {
       overview: movie.overview,
       genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
     }));
+
+  const comparator = SORT_COMPARATORS[sortBy];
+  const sorted = comparator ? [...results].sort(comparator) : results;
+
+  // TMDB always returns 20 results per page with no way to ask for fewer,
+  // so the 12-per-load cap is enforced here by trimming what TMDB gives us
+  // before it ever reaches the UI.
+  const movies = sorted.slice(0, SEARCH_RESULTS_PER_PAGE);
+
+  // Attach pagination info directly on the returned array (arrays are
+  // objects, this is safe) instead of changing the return shape to
+  // { movies, totalPages }. That would force Header's suggestions dropdown
+  // to be rewritten too, when only SearchResults actually needs this.
+  movies.totalPages = data.total_pages;
+  movies.isGenreMatch = Boolean(matchedGenreId);
+
+  return movies;
 }
 
 const HERO_MOVIE_COUNT = 5;
 
-// Builds the small set of movies shown in Home's HeroCarousel. The carousel
-// needs certification + runtime, which only the single-movie details
-// endpoint returns (list endpoints don't include them) so this takes the
-// top N Popular movies, then fetches full details for each one in parallel
-// with getMovieDetails.
 export async function getHeroMovies(count = HERO_MOVIE_COUNT) {
   const popular = await getMoviesByCategory('popular');
   const topMovies = popular.slice(0, count);
@@ -190,13 +224,6 @@ export async function getHeroMovies(count = HERO_MOVIE_COUNT) {
     backdrop: movie.backdropUrl,
     backdropTablet: movie.backdropUrlTablet,
     poster: movie.posterUrl,
-    // A SEPARATE, MovieCard-shaped copy of this same movie. This is what
-    // gets saved to localStorage if a user bookmarks straight from the
-    // hero carousel, so it matches what the Watchlist page (via MovieCard)
-    // expects to read. Without this, bookmarking from the hero would save
-    // the fields above instead (poster/synopsis/rating), which MovieCard
-    // doesn't know how to display, and the movie would show up broken on
-    // the Watchlist page.
     watchlistEntry: {
       id: movie.id,
       title: movie.title,

@@ -4,7 +4,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
 
 // Shared fetch helper for all TMDB calls, so everyone hits the same base
 // URL/key/error-handling instead of writing it separately per component.
-export async function tmdbFetch(endpoint, params = {}) {
+export async function tmdbFetch(endpoint, params = {}, { signal } = {}) {
   const url = new URL(`${BASE_URL}${endpoint}`);
   url.searchParams.set('api_key', API_KEY);
 
@@ -14,7 +14,7 @@ export async function tmdbFetch(endpoint, params = {}) {
     }
   });
 
-  const response = await fetch(url);
+  const response = await fetch(url, { signal });
 
   if (!response.ok) {
     throw new Error(`TMDB request failed (${response.status}): ${endpoint}`);
