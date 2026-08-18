@@ -94,7 +94,7 @@ const REGION = 'CA';
 
 const MIN_SEARCH_VOTE_COUNT = 10;
 
-const SEARCH_RESULTS_PER_PAGE = 12;
+const RESULTS_PER_PAGE = 12;
 
 // Inverted genreMap (name -> id, lowercased) so a query that matches a
 // genre name exactly can be routed to Discover instead of Search, since
@@ -106,16 +106,19 @@ const GENRE_NAME_TO_ID = Object.fromEntries(
   ]),
 );
 
-export async function getMoviesByCategory(category) {
+// Fetches one page of a movie list (Popular / Upcoming / Now Playing / Top
+// Rated), capped to 12 results, and maps each raw TMDB result so
+// MovieGrid/MovieCard need zero changes to consume it.
+export async function getMoviesByCategory(category, { page = 1 } = {}) {
   const endpoint = CATEGORY_ENDPOINTS[category];
 
   if (!endpoint) {
     throw new Error(`Unknown movie category: ${category}`);
   }
 
-  const data = await tmdbFetch(endpoint, { region: REGION });
+  const data = await tmdbFetch(endpoint, { region: REGION, page });
 
-  return data.results.map((movie) => ({
+  const movies = data.results.slice(0, RESULTS_PER_PAGE).map((movie) => ({
     id: movie.id,
     title: movie.title,
     poster_path: getPosterUrl(movie.poster_path),
@@ -124,6 +127,10 @@ export async function getMoviesByCategory(category) {
     overview: movie.overview,
     genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
   }));
+
+  movies.totalPages = data.total_pages;
+
+  return movies;
 }
 
 const SORT_COMPARATORS = {
