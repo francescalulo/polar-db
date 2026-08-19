@@ -158,3 +158,43 @@
   width: auto;
   height: 1.65rem;
 }
+
+// Shared poster-grid layout: repeat(auto-fill) + justify-content:center
+// keeps cards centered as a group and auto-computes however many columns
+// fit at any width. Used by MovieGrid, SearchResults, and Watchlist's
+// heading (so the heading's own grid tracks line up with the real grid).
+@mixin card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 12.25rem);
+  justify-content: center;
+  gap: 1rem;
+
+  @include tablet {
+    grid-template-columns: repeat(auto-fill, 17.125rem);
+  }
+}
+
+// Shared gradient pill button: Load More (Home + SearchResults), More Info,
+// and 404's back-home link all use this same look and interaction states.
+@mixin gradient-button {
+  background-image: $button-gradient;
+  @include pill-button;
+
+  &:hover,
+  &:focus-visible {
+    @include button-hover-glow;
+  }
+
+  &:active {
+    background-image: $button-pressed-gradient;
+  }
+}
+
+// Shared message heading: a colored, medium-weight line sitting above a
+// plain supporting text line. Used by EmptyWatchlist and SearchResults'
+// status/end messages.
+@mixin message-heading($color, $margin-bottom: 0.5rem) {
+  margin: 0 0 $margin-bottom;
+  color: $color;
+  font-weight: $font-weight-medium;
+}

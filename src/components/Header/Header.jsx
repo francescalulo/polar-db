@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import logoMark from '../../assets/icons/favicon.svg';
 import wordmark from '../../assets/polar-wordmark.svg';
@@ -14,18 +14,49 @@ const SUGGESTION_LIMIT = 5;
 const SUGGESTION_MIN_LENGTH = 2;
 const SUGGESTION_DEBOUNCE_MS = 300;
 
+// Wraps the part of a suggestion's title that matches the typed query in a
+// styled span. Falls back to the plain title untouched when there's no
+// substring match at all, which happens for genre-matched suggestions
+// (e.g. typing "Comedy" won't literally appear inside most comedy titles).
+function highlightMatch(title, query) {
+  const trimmedQuery = query.trim();
+  if (!trimmedQuery) return title;
+
+  const matchIndex = title.toLowerCase().indexOf(trimmedQuery.toLowerCase());
+  if (matchIndex === -1) return title;
+
+  const before = title.slice(0, matchIndex);
+  const match = title.slice(matchIndex, matchIndex + trimmedQuery.length);
+  const after = title.slice(matchIndex + trimmedQuery.length);
+
+  return (
+    <>
+      {before}
+      <span className="header__suggestionMatch">{match}</span>
+      {after}
+    </>
+  );
+}
+
 function Header() {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (!query.trim()) return;
     setIsSuggestionsOpen(false);
-    navigate('/search?q=' + encodeURIComponent(query.trim()));
+
+    const trimmedQuery = query.trim();
+    navigate(
+      trimmedQuery
+        ? '/search?q=' + encodeURIComponent(trimmedQuery)
+        : '/search',
+    );
   };
 
   const handleClearSearch = () => {
@@ -71,6 +102,13 @@ function Header() {
     };
   }, [query]);
 
+  // Whenever the suggestions list itself changes (new results, cleared,
+  // etc.) drop any keyboard highlight from the previous list -- covers
+  // every case in one place instead of resetting it at each call site
+  useEffect(() => {
+    setHighlightedIndex(-1);
+  }, [suggestions]);
+
   // Close the dropdown on an outside click
   useEffect(() => {
     if (!isSuggestionsOpen) return;
@@ -87,6 +125,20 @@ function Header() {
       document.removeEventListener('pointerdown', handleOutsideClick);
     };
   }, [isSuggestionsOpen]);
+
+  // Header stays mounted across every route, so without this the search
+  // bar would keep showing a stale query after navigating away from the
+  // results page. Only clears on an actual route change, not while typing
+  // (query changes don't touch location.pathname), and it also correctly
+  // leaves the bar alone while adjusting filters/sort on the results page
+  // itself, since that only changes the URL's query string, not its path.
+  useEffect(() => {
+    if (location.pathname !== '/search') {
+      setQuery('');
+      setSuggestions([]);
+      setIsSuggestionsOpen(false);
+    }
+  }, [location.pathname]);
 
   return (
     <header className="header">
@@ -113,7 +165,25 @@ function Header() {
             }}
             onBlur={() => setIsInputFocused(false)}
             onKeyDown={(e) => {
-              if (e.key === 'Escape') setIsSuggestionsOpen(false);
+              if (e.key === 'Escape') {
+                setIsSuggestionsOpen(false);
+                return;
+              }
+
+              if (!isSuggestionsOpen || suggestions.length === 0) return;
+
+              if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setHighlightedIndex((prev) => (prev + 1) % suggestions.length);
+              } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setHighlightedIndex((prev) =>
+                  prev <= 0 ? suggestions.length - 1 : prev - 1,
+                );
+              } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+                e.preventDefault();
+                handleSuggestionClick(suggestions[highlightedIndex].id);
+              }
             }}
           />
           {query && (
@@ -140,11 +210,16 @@ function Header() {
 
           {isSuggestionsOpen && suggestions.length > 0 && (
             <ul className="header__suggestions">
-              {suggestions.map((movie) => (
+              {suggestions.map((movie, index) => (
                 <li key={movie.id}>
                   <button
                     type="button"
-                    className="header__suggestionItem"
+                    className={
+                      'header__suggestionItem' +
+                      (index === highlightedIndex
+                        ? ' header__suggestionItem--active'
+                        : '')
+                    }
                     onClick={() => handleSuggestionClick(movie.id)}
                   >
                     <img
@@ -154,7 +229,7 @@ function Header() {
                     />
                     <span className="header__suggestionInfo">
                       <span className="header__suggestionTitle">
-                        {movie.title}
+                        {highlightMatch(movie.title, query)}
                       </span>
                       <span className="header__suggestionYear">
                         {movie.release_date

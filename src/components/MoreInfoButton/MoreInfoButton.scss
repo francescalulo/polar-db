@@ -15,15 +15,5 @@
   color: $ice;
   font-weight: $font-weight-medium;
   font-size: $font-size-sm;
-  background-image: $button-gradient;
-  @include pill-button;
-
-  &:hover,
-  &:focus-visible {
-    @include button-hover-glow;
-  }
-
-  &:active {
-    background-image: $button-pressed-gradient;
-  }
+  @include gradient-button;
 }

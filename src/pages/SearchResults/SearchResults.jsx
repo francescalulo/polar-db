@@ -83,6 +83,15 @@ function SearchResults() {
     setSearchParams(nextParams);
   };
 
+  const hasActiveFilters = sortBy !== 'relevance' || Boolean(year);
+
+  const handleClearFilters = () => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('sort');
+    nextParams.delete('year');
+    setSearchParams(nextParams);
+  };
+
   const handleLoadMore = async () => {
     const nextPage = page + 1;
     setIsLoadingMore(true);
@@ -114,8 +123,26 @@ function SearchResults() {
     <div className="searchResults content-width">
       <div className="searchResults__inner">
         <h1 className="searchResults__title">
-          {query ? 'Results for “' + query + '”' : 'Search'}
+          {query ? (
+            <>
+              Results for “<span className="searchResults__query">{query}</span>
+              ”
+            </>
+          ) : (
+            'Search'
+          )}
         </h1>
+
+        {!query && (
+          <div className="searchResults__prompt">
+            <p className="searchResults__promptHeading">
+              The northern sky is waiting.
+            </p>
+            <p className="searchResults__promptText">
+              Type a title or genre above to find your next watch.
+            </p>
+          </div>
+        )}
 
         {query && (
           <div className="searchResults__filters">
@@ -147,26 +174,45 @@ function SearchResults() {
                 ))}
               </select>
             </label>
+
+            {hasActiveFilters && (
+              <button
+                type="button"
+                className="searchResults__clearFilters"
+                onClick={handleClearFilters}
+              >
+                Clear filters
+              </button>
+            )}
           </div>
         )}
 
         {!isLoading && !error && isGenreMatch && (
           <p className="searchResults__genreNote">
-            Showing movies in the “{query}” genre.
+            Showing movies in the “
+            <span className="searchResults__query">{query}</span>” genre.
           </p>
         )}
 
-        {isLoading && <p className="searchResults__status">Searching…</p>}
-        {error && (
-          <p className="searchResults__status">
-            Couldn't load results: {error}
-          </p>
-        )}
-        {!isLoading && !error && query && movies.length === 0 && (
-          <p className="searchResults__status">
-            No movies found for “{query}”.
-          </p>
-        )}
+        <div aria-live="polite" aria-atomic="true">
+          {isLoading && <p className="searchResults__status">Searching…</p>}
+          {error && (
+            <p className="searchResults__status">
+              Couldn't load results: {error}
+            </p>
+          )}
+          {!isLoading && !error && query && movies.length === 0 && (
+            <div className="searchResults__status">
+              <p className="searchResults__statusHeading">
+                No lights on the horizon for “
+                <span className="searchResults__query">{query}</span>”.
+              </p>
+              <p className="searchResults__statusText">
+                Try a different title or genre to find your next watch.
+              </p>
+            </div>
+          )}
+        </div>
         {!isLoading && !error && movies.length > 0 && (
           <>
             <MovieGrid movies={movies} />
@@ -183,9 +229,15 @@ function SearchResults() {
             )}
 
             {!hasMore && (
-              <p className="searchResults__end">
-                You've reached the end of the search results.
-              </p>
+              <div className="searchResults__end">
+                <p className="searchResults__endHeading">
+                  You've reached the edge of the northern sky.
+                </p>
+                <p className="searchResults__endText">
+                  That's everything we found for “
+                  <span className="searchResults__query">{query}</span>”.
+                </p>
+              </div>
             )}
           </>
         )}

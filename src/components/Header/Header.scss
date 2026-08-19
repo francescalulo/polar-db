@@ -178,7 +178,8 @@
   cursor: pointer;
 
   &:hover,
-  &:focus-visible {
+  &:focus-visible,
+  &.header__suggestionItem--active {
     background-color: rgba($aurora-cyan, 0.12);
   }
 }
@@ -205,6 +206,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.header__suggestionMatch {
+  color: $aurora-green;
+  font-weight: $font-weight-bold;
 }
 
 .header__suggestionYear {

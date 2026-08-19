@@ -2,17 +2,13 @@
 @use '../../styles/mixins' as *;
 
 .searchResults {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 12.25rem);
-  justify-content: center;
-  gap: 1rem;
+  @include card-grid;
   width: 100%;
   min-height: 70vh;
   padding: 2rem 1rem 3rem;
   box-sizing: border-box;
 
   @include tablet {
-    grid-template-columns: repeat(auto-fill, 17.125rem);
     padding: 2.5rem 2rem 4rem;
   }
 
@@ -31,8 +27,20 @@
 
 .searchResults__title {
   margin: 0 0 2rem;
-  color: $aurora-green-glow;
+  color: $aurora-green;
   font-size: $font-size-xxl;
+}
+
+.searchResults__prompt {
+  font-size: $font-size-sm;
+}
+
+.searchResults__promptHeading {
+  @include message-heading($aurora-cyan);
+}
+
+.searchResults__promptText {
+  margin: 0;
 }
 
 .searchResults__filters {
@@ -79,9 +87,36 @@
   }
 }
 
+.searchResults__clearFilters {
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: $aurora-cyan;
+  font-family: $font-family-base;
+  font-size: $font-size-sm;
+
+  &:hover,
+  &:focus-visible {
+    @include subtle-glow;
+  }
+}
+
+.searchResults__query {
+  font-weight: $font-weight-bold;
+}
+
 .searchResults__status {
-  color: $ice;
-  font-size: $font-size-md;
+  font-size: $font-size-sm;
+}
+
+.searchResults__statusHeading {
+  @include message-heading($aurora-green);
+}
+
+.searchResults__statusText {
+  margin: 0;
 }
 
 .searchResults__genreNote {
@@ -100,17 +135,7 @@
   font-family: $font-family-base;
   font-weight: $font-weight-medium;
   font-size: $font-size-sm;
-  background-image: $button-gradient;
-  @include pill-button;
-
-  &:hover,
-  &:focus-visible {
-    @include button-hover-glow;
-  }
-
-  &:active {
-    background-image: $button-pressed-gradient;
-  }
+  @include gradient-button;
 
   &:disabled {
     opacity: 0.6;
@@ -119,8 +144,19 @@
 }
 
 .searchResults__end {
-  margin: 2rem 0 0;
-  text-align: left;
-  color: $ice;
-  font-size: $font-size-sm;
+  margin-top: 2rem;
+}
+
+.searchResults__endHeading {
+  @include message-heading($aurora-green, 0.25rem);
+}
+
+.searchResults__endHeading {
+  margin: 0 0 0.25rem;
+  color: $aurora-green;
+  font-weight: $font-weight-medium;
+}
+
+.searchResults__endText {
+  margin: 0;
 }
