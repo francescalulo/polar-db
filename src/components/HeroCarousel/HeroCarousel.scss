@@ -154,12 +154,7 @@
   font-size: $font-size-xxs;
   line-height: 1.5;
   max-width: 85%;
-  display: -webkit-box;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
-  box-orient: vertical;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  @include line-clamp(3);
 
   @include tablet {
     max-width: none;
@@ -167,8 +162,7 @@
 
   @include desktop {
     font-size: $font-size-sm;
-    line-clamp: 4;
-    -webkit-line-clamp: 4;
+    @include line-clamp(4);
   }
 }
 

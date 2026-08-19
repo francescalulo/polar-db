@@ -178,6 +178,18 @@
   background: $ice;
 }
 
+// Multi-line text truncation with a trailing ellipsis, instead of an
+// abrupt cutoff. Used for synopsis/overview text in the hero and movie
+// cards.
+@mixin line-clamp($lines) {
+  display: -webkit-box;
+  line-clamp: $lines;
+  -webkit-line-clamp: $lines;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 // Inline rating icon (the tweaked Polar DB sparkle mark)
 @mixin rating-icon {
   width: auto;
