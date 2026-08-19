@@ -197,7 +197,7 @@ export async function searchMovies(
   // TMDB always returns 20 results per page with no way to ask for fewer,
   // so the 12-per-load cap is enforced here by trimming what TMDB gives us
   // before it ever reaches the UI.
-  const movies = sorted.slice(0, SEARCH_RESULTS_PER_PAGE);
+  const movies = sorted.slice(0, RESULTS_PER_PAGE);
 
   // Attach pagination info directly on the returned array (arrays are
   // objects, this is safe) instead of changing the return shape to
