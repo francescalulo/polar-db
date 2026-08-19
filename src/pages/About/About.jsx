@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import wordmark from '../../assets/polar-wordmark.svg';
+import tmdbLogo from '../../assets/icons/tmdb-logo.svg';
 import './About.scss';
 
 function About() {
@@ -78,13 +79,14 @@ function About() {
           </div>
 
           <div className="about__infoItem">
-            <h3>TMDB Attribution</h3>
+            <h3>
+              <img src={tmdbLogo} alt="TMDb" className="about__logo" />{' '}
+              Attribution
+            </h3>
             <p>
-              This product uses the TMDB API but is not endorsed or certified by
-              TMDB.
+              This product uses the TMDb API but is not endorsed or certified by
+              TMDb.
             </p>
-            {/* TODO: add the official TMDb attribution logo here, sized smaller than our app logo.
-                Download from https://www.themoviedb.org/about/logos-attribution and drop into src/assets/. */}
           </div>
         </section>
       </div>

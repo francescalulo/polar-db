@@ -87,7 +87,11 @@ function MovieCard({ movie, onRemove }) {
         </div>
 
         {/* Pass my remove function to the BookmarkButton */}
-        <BookmarkButton movie={movie} onRemove={onRemove} />
+        <BookmarkButton
+          movie={movie}
+          onRemove={onRemove}
+          className="movieCard__bookmark"
+        />
       </div>
 
       <ShareButton movie={movie} className="movieCard__share" />
