@@ -25,6 +25,21 @@
   }
 }
 
+// Shared page-container padding: used by any full-page content wrapper
+// (Home, SearchResults, Watchlist) that needs the same responsive
+// top/side/bottom spacing.
+@mixin page-padding {
+  padding: 2rem 1rem 3rem;
+
+  @include tablet {
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  @include desktop {
+    padding: 3.5rem 3.75rem 5rem;
+  }
+}
+
 // Reusable square icon button (bookmark, share, and future icon buttons)
 @mixin icon-button($size: 1.5rem) {
   width: $size;
@@ -124,6 +139,16 @@
   }
 }
 
+// Two-stop purple-to-cyan glass gradient behind the hero card. Only the
+// opacity of each stop changes between tablet and desktop.
+@mixin hero-card-gradient($purple-alpha, $cyan-alpha) {
+  background: linear-gradient(
+    to right,
+    rgba($purple-sky, $purple-alpha),
+    rgba($aurora-deep-cyan, $cyan-alpha)
+  );
+}
+
 // Subtle vignette that darkens a poster's edges/corners while keeping the
 // center clear, so UI elements sitting near the edges (rating badge,
 // bookmark button) stay legible regardless of the poster's own contrast
@@ -156,7 +181,11 @@
 // Inline rating icon (the tweaked Polar DB sparkle mark)
 @mixin rating-icon {
   width: auto;
-  height: 1.65rem;
+  height: 1.25rem;
+
+  @include tablet {
+    height: 1.65rem;
+  }
 }
 
 // Shared poster-grid layout: repeat(auto-fill) + justify-content:center
