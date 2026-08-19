@@ -9,23 +9,18 @@ function Home() {
   const gridRef = useRef(null);
   const [isGridVisible, setIsGridVisible] = useState(false);
 
-  // Which SubmenuTabBar tab is active, lifted up from SubmenuTabBar so both
-  // it and the fetch below can read/change the same value
   const [activeTab, setActiveTab] = useState('popular');
 
-  // The fetched movie list, loading, and error states for that tab
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
-  // Hero carousel's own movie list, fetched once on mount. It always
-  // shows the same handful of Popular movies, independent of whichever
-  // SubmenuTabBar tab is currently active, so it gets its own state
-  // instead of sharing the grid's.
   const [heroMovies, setHeroMovies] = useState([]);
   const [isHeroLoading, setIsHeroLoading] = useState(true);
 
-  // Set this page's title and meta description on mount (for browser tab + SEO)
   useEffect(() => {
     document.title = 'Polar DB | Home';
 
@@ -43,7 +38,6 @@ function Home() {
     }
   }, []);
 
-  // Fetch the hero carousel's movies once when Home first mounts
   useEffect(() => {
     const fetchHeroMovies = async () => {
       setIsHeroLoading(true);
@@ -53,8 +47,6 @@ function Home() {
         setHeroMovies(data);
         setIsHeroLoading(false);
       } catch (err) {
-        // If the hero fetch fails, just leave heroMovies empty and the rest
-        // of the page (tabs + grid) still works fine without it
         console.error('Failed to load hero movies:', err.message);
         setHeroMovies([]);
         setIsHeroLoading(false);
@@ -64,8 +56,9 @@ function Home() {
     fetchHeroMovies();
   }, []);
 
-  // Refetch the movie list whenever activeTab changes (tab click -> new
-  // category -> new API call)
+  // Refetch the movie list whenever activeTab changes, always resetting
+  // back to page 1 -- "load more" below is the only thing allowed to
+  // advance it
   useEffect(() => {
     const fetchMovies = async () => {
       setIsLoading(true);
@@ -74,10 +67,13 @@ function Home() {
       try {
         const data = await getMoviesByCategory(activeTab);
         setMovies(data);
+        setTotalPages(data.totalPages || 0);
+        setPage(1);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
         setMovies([]);
+        setTotalPages(0);
         setIsLoading(false);
       }
     };
@@ -85,7 +81,6 @@ function Home() {
     fetchMovies();
   }, [activeTab]);
 
-  // Show the submenu bar once the movie grid scrolls into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -103,10 +98,26 @@ function Home() {
     };
   }, []);
 
+  const handleLoadMore = async () => {
+    const nextPage = page + 1;
+    setIsLoadingMore(true);
+
+    try {
+      const data = await getMoviesByCategory(activeTab, { page: nextPage });
+      setMovies((prev) => [...prev, ...data]);
+      setTotalPages(data.totalPages || 0);
+      setPage(nextPage);
+    } catch (err) {
+      console.error('Failed to load more movies:', err.message);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
+  const hasMore = page < totalPages;
+
   return (
     <div className="home">
-      {/* Only render once loaded, since HeroCarousel reads
-          movies[currentIndex] immediately and would break on an empty array */}
       {!isHeroLoading && heroMovies.length > 0 && (
         <HeroCarousel movies={heroMovies} />
       )}
@@ -116,7 +127,6 @@ function Home() {
         onTabChange={setActiveTab}
       />
       <div className="home__content content-width">
-        {/* MovieGrid doesn't forward a ref, so wrap it, this div is what the observer above watches */}
         <div ref={gridRef}>
           {isLoading && <p className="home__status">Loading movies…</p>}
           {error && (
@@ -128,7 +138,20 @@ function Home() {
             </p>
           )}
           {!isLoading && !error && movies.length > 0 && (
-            <MovieGrid movies={movies} />
+            <>
+              <MovieGrid movies={movies} />
+
+              {hasMore && (
+                <button
+                  type="button"
+                  className="home__loadMore"
+                  onClick={handleLoadMore}
+                  disabled={isLoadingMore}
+                >
+                  {isLoadingMore ? 'Loading…' : 'Load More'}
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>

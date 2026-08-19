@@ -21,16 +21,9 @@
 }
 
 .watchlist__title {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 12.25rem);
-  justify-content: center;
-  gap: 1rem;
+  @include card-grid;
   white-space: nowrap;
   margin: 0 0 2rem;
   color: $aurora-green-glow;
   font-size: $font-size-xxl;
-
-  @include tablet {
-    grid-template-columns: repeat(auto-fill, 17.125rem);
-  }
 }

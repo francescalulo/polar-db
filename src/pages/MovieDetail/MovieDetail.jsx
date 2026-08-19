@@ -107,9 +107,13 @@ function MovieDetail() {
 
         <div className="movieDetail__heroContent content-width">
           <div className="movieDetail__heroBanner">
-            <Link to="/" className="movieDetail__back">
+            <Link
+              to="/"
+              className="movieDetail__back"
+              aria-label="Back to Home"
+            >
               <img src={backIcon} alt="" />
-              <span className="movieDetail__backLabel">Back</span>
+              <span className="movieDetail__backLabel">Back to Home</span>
             </Link>
 
             {/* Only shown on mobile (CSS hides it at tablet+), so only load it there */}

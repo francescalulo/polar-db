@@ -69,9 +69,7 @@
 }
 
 .emptyWatchlist__heading {
-  margin: 0 0 0.5rem;
-  color: $aurora-cyan;
-  font-weight: $font-weight-medium;
+  @include message-heading($aurora-cyan);
 }
 
 .emptyWatchlist__text {
