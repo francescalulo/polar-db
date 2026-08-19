@@ -92,6 +92,8 @@ const CATEGORY_ENDPOINTS = {
 
 const REGION = 'CA';
 
+// Minimum vote count required for a movie to be shown, used by both
+// searchMovies and getMoviesByCategory as a content-safety/quality floor.
 const MIN_SEARCH_VOTE_COUNT = 10;
 
 const RESULTS_PER_PAGE = 12;
@@ -111,14 +113,24 @@ const GENRE_NAME_TO_ID = Object.fromEntries(
 // MovieGrid/MovieCard need zero changes to consume it.
 export async function getMoviesByCategory(category, { page = 1 } = {}) {
   const endpoint = CATEGORY_ENDPOINTS[category];
-
   if (!endpoint) {
     throw new Error(`Unknown movie category: ${category}`);
   }
+  const data = await tmdbFetch(endpoint, {
+    region: REGION,
+    include_adult: false,
+    page,
+  });
 
-  const data = await tmdbFetch(endpoint, { region: REGION, page });
-
-  const movies = data.results.slice(0, RESULTS_PER_PAGE).map((movie) => ({
+  // Same content-safety filters as searchMovies: TMDB's own include_adult
+  // flag is inconsistently tagged and only targets hardcore content, so we
+  // back it up with our own checks. Applied here too (not just search) so
+  // the Home page category tabs get the same protection.
+  const safeResults = data.results
+    .filter((movie) => !movie.adult)
+    .filter((movie) => movie.poster_path)
+    .filter((movie) => movie.vote_count >= MIN_SEARCH_VOTE_COUNT);
+  const movies = safeResults.slice(0, RESULTS_PER_PAGE).map((movie) => ({
     id: movie.id,
     title: movie.title,
     poster_path: getPosterUrl(movie.poster_path),
@@ -127,9 +139,7 @@ export async function getMoviesByCategory(category, { page = 1 } = {}) {
     overview: movie.overview,
     genres: movie.genre_ids.map((id) => genreMap[id]).filter(Boolean),
   }));
-
   movies.totalPages = data.total_pages;
-
   return movies;
 }
 
