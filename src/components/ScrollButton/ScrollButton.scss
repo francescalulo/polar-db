@@ -1,0 +1,51 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.scrollButton {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  @include icon-button(2.5rem);
+
+  &:hover,
+  &:focus-visible {
+    filter: none;
+  }
+
+  @include tablet {
+    right: 2rem;
+    bottom: 2rem;
+  }
+
+  // Lifts the button clear of Home's fixed bottom submenu bar, which is
+  // only fixed-to-bottom at mobile/tablet -- at desktop it becomes sticky
+  // near the top instead, so no extra clearance is needed there.
+  &--raised {
+    bottom: 6rem;
+
+    @include tablet {
+      bottom: 5.5rem;
+    }
+
+    @include desktop {
+      bottom: 2rem;
+    }
+  }
+}
+
+.scrollButton__icon {
+  animation: chevron-fade 2.5s linear infinite;
+}
+
+.scrollButton:hover .scrollButton__icon,
+.scrollButton:focus-visible .scrollButton__icon {
+  @include subtle-glow;
+}
+
+// Matches Font Awesome's own "fade" animation effect.
+@keyframes chevron-fade {
+  50% {
+    opacity: 0.4;
+  }
+}

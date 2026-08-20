@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
 import { searchMovies } from '../../services/movies';
 import './SearchResults.scss';
@@ -121,6 +122,7 @@ function SearchResults() {
 
   return (
     <div className="searchResults content-width">
+      <ScrollButton hasHero={false} />
       <div className="searchResults__inner">
         <h1 className="searchResults__title">
           {query ? (

@@ -7,6 +7,7 @@ import {
 } from '../../services/movies';
 import { formatRuntime } from '../../utils/formatRuntime';
 import { formatRating } from '../../utils/formatRating';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
@@ -88,6 +89,7 @@ function MovieDetail() {
 
   return (
     <div className="movieDetail content-width">
+      <ScrollButton />
       <div className="movieDetail__hero">
         {/* Backdrop is never shown on mobile (hidden via CSS), so skip
             downloading it there entirely. Tablet gets the smaller w1280

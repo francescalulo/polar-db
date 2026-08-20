@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import AddWatchlistCard from '../../components/AddWatchlistCard/AddWatchlistCard';
 import EmptyWatchlist from '../../components/EmptyWatchlist/EmptyWatchlist';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
@@ -28,6 +29,7 @@ function Watchlist() {
 
   return (
     <div className="watchlist content-width">
+      <ScrollButton hasHero={false} />
       <h1 className="watchlist__title">My Watchlist</h1>
 
       {watchlistMovies.length === 0 ? (

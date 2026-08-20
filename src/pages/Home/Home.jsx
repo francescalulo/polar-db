@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './Home.scss';
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import SubmenuTabBar from '../../components/SubmenuTabBar/SubmenuTabBar';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
 import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
@@ -118,6 +119,7 @@ function Home() {
 
   return (
     <div className="home">
+      <ScrollButton hasBottomBar />
       {!isHeroLoading && heroMovies.length > 0 && (
         <HeroCarousel movies={heroMovies} />
       )}
