@@ -36,7 +36,12 @@ const TABS = [
   },
 ];
 
-function SubmenuTabBar({ isVisible = false, activeTab, onTabChange }) {
+function SubmenuTabBar({
+  isVisible = false,
+  activeTab,
+  onTabChange,
+  onVisibilityChange,
+}) {
   const [isFooterReached, setIsFooterReached] = useState(false);
   const [isStuck, setIsStuck] = useState(false);
   const stuckSentinelRef = useRef(null);
@@ -85,6 +90,15 @@ function SubmenuTabBar({ isVisible = false, activeTab, onTabChange }) {
   // Only show the bar once the grid is reached (isVisible, from Home) AND
   // before the footer's end has scrolled into view (isFooterReached, above)
   const showBar = isVisible && !isFooterReached;
+
+  // Report the actual visible/hidden state up to Home, so other elements
+  // (like ScrollButton) can react to the same state instead of duplicating
+  // this footer-detection logic themselves.
+  useEffect(() => {
+    if (onVisibilityChange) {
+      onVisibilityChange(showBar);
+    }
+  }, [showBar, onVisibilityChange]);
 
   return (
     <>

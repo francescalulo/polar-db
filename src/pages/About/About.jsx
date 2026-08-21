@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import wordmark from '../../assets/polar-wordmark.svg';
 import tmdbLogo from '../../assets/icons/tmdb-logo.svg';
 import './About.scss';
@@ -23,6 +24,7 @@ function About() {
 
   return (
     <>
+      <ScrollButton hasHero={false} />
       <div className="about content-width">
         <section className="about__intro">
           <h1 className="about__heading">

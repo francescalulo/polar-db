@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import useIsMobile from '../../hooks/useIsMobile';
 import chevronUpIcon from '../../assets/icons/chevron-up-icon.svg';
 import chevronDownIcon from '../../assets/icons/chevron-down-icon.svg';
 import './ScrollButton.scss';
 
-const SCROLL_DURATION = 700; // ms, how long the scroll animation takes
+const SCROLL_DURATION = 1100; // ms, how long the scroll animation takes
 
 // Smooth ease-in-out curve so the scroll starts and ends gently instead of
 // snapping at a constant speed.
@@ -34,6 +35,7 @@ function smoothScrollTo(targetY, duration) {
 }
 
 function ScrollButton({ hasHero = true, hasBottomBar = false }) {
+  const isMobile = useIsMobile(); // below tablet breakpoint (768px)
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
@@ -46,18 +48,25 @@ function ScrollButton({ hasHero = true, hasBottomBar = false }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const prefersReducedMotion = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const handleClick = () => {
-    if (hasScrolled) {
-      smoothScrollTo(0, SCROLL_DURATION);
+    const targetY = hasScrolled ? 0 : window.innerHeight;
+
+    if (prefersReducedMotion()) {
+      window.scrollTo(0, targetY); // instant jump, no animation
     } else {
-      smoothScrollTo(window.innerHeight, SCROLL_DURATION);
+      smoothScrollTo(targetY, SCROLL_DURATION);
     }
   };
 
-  // Pages without a hero have no "scroll down" state to hint at -- only
-  // show the button once the user has actually scrolled, and only ever
-  // as a scroll-to-top control.
-  if (!hasHero && !hasScrolled) {
+  // Only hero pages ever show a "scroll down" hint at all -- pages
+  // without a hero are always up-only. So mobile suppression only needs
+  // to apply on the hero pages themselves.
+  const suppressDownHint = hasHero ? isMobile : true;
+
+  if (suppressDownHint && !hasScrolled) {
     return null;
   }
 
