@@ -23,6 +23,20 @@ function SearchResults() {
     document.title = query
       ? 'Polar DB | Search: ' + query
       : 'Polar DB | Search';
+
+    const metaTag = document.querySelector('meta[name="description"]');
+    const description = query
+      ? 'Search results for "' + query + '" on Polar DB.'
+      : 'Search for movies by title, genre, or year on Polar DB.';
+
+    if (metaTag) {
+      metaTag.setAttribute('content', description);
+    } else {
+      const newMetaTag = document.createElement('meta');
+      newMetaTag.name = 'description';
+      newMetaTag.content = description;
+      document.head.appendChild(newMetaTag);
+    }
   }, [query]);
 
   // Runs on the query itself or any filter change, and always resets back

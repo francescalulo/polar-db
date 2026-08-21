@@ -73,6 +73,26 @@ function MovieDetail() {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!movie) return;
+
+    document.title = 'Polar DB | ' + movie.title;
+
+    const metaTag = document.querySelector('meta[name="description"]');
+    const description = movie.overview
+      ? movie.overview
+      : 'Details for ' + movie.title + ' on Polar DB.';
+
+    if (metaTag) {
+      metaTag.setAttribute('content', description);
+    } else {
+      const newMetaTag = document.createElement('meta');
+      newMetaTag.name = 'description';
+      newMetaTag.content = description;
+      document.head.appendChild(newMetaTag);
+    }
+  }, [movie]);
+
   if (loading) {
     return (
       <div className="movieDetail movieDetail--status">Loading movie...</div>

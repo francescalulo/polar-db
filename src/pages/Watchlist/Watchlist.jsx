@@ -8,6 +8,23 @@ import MovieGrid from '../../components/MovieGrid/MovieGrid';
 import './Watchlist.scss';
 
 function Watchlist() {
+  useEffect(() => {
+    document.title = 'Polar DB | Watchlist';
+
+    const metaTag = document.querySelector('meta[name="description"]');
+    const description =
+      'View and manage the movies you have saved to your Polar DB watchlist.';
+
+    if (metaTag) {
+      metaTag.setAttribute('content', description);
+    } else {
+      const newMetaTag = document.createElement('meta');
+      newMetaTag.name = 'description';
+      newMetaTag.content = description;
+      document.head.appendChild(newMetaTag);
+    }
+  }, []);
+
   // Read the saved watchlist when the state is first created
   const [watchlistMovies, setWatchlistMovies] = useState(() => {
     const savedMovies = localStorage.getItem('watchlist');
