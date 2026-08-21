@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import wordmark from '../../assets/polar-wordmark.svg';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
+import wordmark from '../../assets/images/polar-wordmark.svg';
+import tmdbLogo from '../../assets/images/tmdb-logo.svg';
 import './About.scss';
 
 function About() {
@@ -22,6 +24,7 @@ function About() {
 
   return (
     <>
+      <ScrollButton hasHero={false} />
       <div className="about content-width">
         <section className="about__intro">
           <h1 className="about__heading">
@@ -78,13 +81,14 @@ function About() {
           </div>
 
           <div className="about__infoItem">
-            <h3>TMDB Attribution</h3>
+            <h3>
+              <img src={tmdbLogo} alt="TMDb" className="about__logo" />{' '}
+              Attribution
+            </h3>
             <p>
-              This product uses the TMDB API but is not endorsed or certified by
-              TMDB.
+              This product uses the TMDb API but is not endorsed or certified by
+              TMDb.
             </p>
-            {/* TODO: add the official TMDb attribution logo here, sized smaller than our app logo.
-                Download from https://www.themoviedb.org/about/logos-attribution and drop into src/assets/. */}
           </div>
         </section>
       </div>

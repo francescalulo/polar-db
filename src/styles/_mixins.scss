@@ -13,7 +13,7 @@
   }
 }
 
-// Flexible flex layout - pass only what differs from the defaults
+// Flexible flex layout, pass only what differs from the defaults
 @mixin flex($direction: row, $align: center, $justify: flex-start, $gap: 0) {
   display: flex;
   flex-direction: $direction;
@@ -22,6 +22,36 @@
 
   @if $gap != 0 {
     gap: $gap;
+  }
+}
+
+// Shared page-container padding: used by any full-page content wrapper
+// (Home, SearchResults, Watchlist) that needs the same responsive
+// top/side/bottom spacing.
+@mixin page-padding {
+  padding: 2rem 1rem 3rem;
+
+  @include tablet {
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  @include desktop {
+    padding: 3.5rem 3.75rem 5rem;
+  }
+}
+
+// Tablet+ absolutely-positioned layer that fills its container, hidden
+// below tablet. Used for the stacked poster/vignette/overlay behind the
+// MovieDetail card. Pass the layer's z-index; put unique styles in the block.
+@mixin tablet-layer($z-index) {
+  display: none;
+
+  @include tablet {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: $z-index;
+    @content;
   }
 }
 
@@ -124,6 +154,16 @@
   }
 }
 
+// Two-stop purple-to-cyan glass gradient behind the hero card. Only the
+// opacity of each stop changes between tablet and desktop.
+@mixin hero-card-gradient($purple-alpha, $cyan-alpha) {
+  background: linear-gradient(
+    to right,
+    rgba($purple-sky, $purple-alpha),
+    rgba($aurora-deep-cyan, $cyan-alpha)
+  );
+}
+
 // Subtle vignette that darkens a poster's edges/corners while keeping the
 // center clear, so UI elements sitting near the edges (rating badge,
 // bookmark button) stay legible regardless of the poster's own contrast
@@ -153,10 +193,26 @@
   background: $ice;
 }
 
+// Multi-line text truncation with a trailing ellipsis, instead of an
+// abrupt cutoff. Used for synopsis/overview text in the hero and movie
+// cards.
+@mixin line-clamp($lines) {
+  display: -webkit-box;
+  line-clamp: $lines;
+  -webkit-line-clamp: $lines;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 // Inline rating icon (the tweaked Polar DB sparkle mark)
 @mixin rating-icon {
   width: auto;
-  height: 1.65rem;
+  height: 1.25rem;
+
+  @include tablet {
+    height: 1.65rem;
+  }
 }
 
 // Shared poster-grid layout: repeat(auto-fill) + justify-content:center

@@ -64,9 +64,8 @@
 }
 
 .hero__card {
-  margin: auto 1rem 3.75rem;
+  margin: auto 0.75rem 3.75rem;
   @include flex($direction: column, $align: stretch, $gap: 1rem);
-  color: $ice;
 
   @include tablet {
     margin-left: 2rem;
@@ -75,13 +74,9 @@
     width: 65%;
     gap: 1.5rem;
     padding: 1.75rem;
-    border: 0.0985rem solid $aurora-deep-teal;
+    border: 0.1rem solid $aurora-deep-teal;
     border-radius: 1.5rem;
-    background: linear-gradient(
-      to right,
-      rgba($purple-sky, 0.5),
-      rgba($aurora-deep-cyan, 0.4)
-    );
+    @include hero-card-gradient(0.5, 0.4);
     backdrop-filter: blur(4px);
     @include poster-icon-shadow(7px);
   }
@@ -90,11 +85,7 @@
     margin-left: 3.75rem;
     width: 40%;
     border-radius: 2.4375rem;
-    background: linear-gradient(
-      to right,
-      rgba($purple-sky, 0.3),
-      rgba($aurora-deep-cyan, 0.3)
-    );
+    @include hero-card-gradient(0.3, 0.3);
   }
 }
 
@@ -113,7 +104,6 @@
 
 .hero__title {
   margin: 0;
-  font-weight: $font-weight-bold;
   font-size: $font-size-lg;
   letter-spacing: -0.0525rem;
 
@@ -131,11 +121,6 @@
   font-weight: $font-weight-medium;
   font-size: $font-size-xxs;
   color: $aurora-cyan;
-  max-width: 65%;
-
-  @include tablet {
-    max-width: none;
-  }
 
   @include desktop {
     font-size: $font-size-xs;
@@ -168,13 +153,8 @@
   margin: 0;
   font-size: $font-size-xxs;
   line-height: 1.5;
-  max-width: 75%;
-  display: -webkit-box;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
-  box-orient: vertical;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  max-width: 85%;
+  @include line-clamp(3);
 
   @include tablet {
     max-width: none;
@@ -182,8 +162,7 @@
 
   @include desktop {
     font-size: $font-size-sm;
-    line-clamp: 4;
-    -webkit-line-clamp: 4;
+    @include line-clamp(4);
   }
 }
 

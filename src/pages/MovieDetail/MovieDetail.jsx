@@ -7,6 +7,7 @@ import {
 } from '../../services/movies';
 import { formatRuntime } from '../../utils/formatRuntime';
 import { formatRating } from '../../utils/formatRating';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import useIsMobile from '../../hooks/useIsMobile';
 import BookmarkButton from '../../components/BookmarkButton/BookmarkButton';
@@ -72,6 +73,26 @@ function MovieDetail() {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!movie) return;
+
+    document.title = 'Polar DB | ' + movie.title;
+
+    const metaTag = document.querySelector('meta[name="description"]');
+    const description = movie.overview
+      ? movie.overview
+      : 'Details for ' + movie.title + ' on Polar DB.';
+
+    if (metaTag) {
+      metaTag.setAttribute('content', description);
+    } else {
+      const newMetaTag = document.createElement('meta');
+      newMetaTag.name = 'description';
+      newMetaTag.content = description;
+      document.head.appendChild(newMetaTag);
+    }
+  }, [movie]);
+
   if (loading) {
     return (
       <div className="movieDetail movieDetail--status">Loading movie...</div>
@@ -88,6 +109,7 @@ function MovieDetail() {
 
   return (
     <div className="movieDetail content-width">
+      <ScrollButton />
       <div className="movieDetail__hero">
         {/* Backdrop is never shown on mobile (hidden via CSS), so skip
             downloading it there entirely. Tablet gets the smaller w1280

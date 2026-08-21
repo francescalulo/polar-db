@@ -33,11 +33,12 @@
   img {
     height: 1.5rem;
     width: auto;
+    @include poster-icon-shadow;
   }
 
   &:hover img,
   &:focus-visible img {
-    @include subtle-glow;
+    @include subtle-glow(6px, 0.7);
   }
 }
 

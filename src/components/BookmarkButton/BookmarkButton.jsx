@@ -1,54 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useWatchlist } from '../../hooks/useWatchlist';
 import bookmarkOutline from '../../assets/icons/bookmark-icon-outline.svg';
 import bookmarkFilled from '../../assets/icons/bookmark-icon-filled.svg';
 import './BookmarkButton.scss';
 
-function BookmarkButton({ movie, className, onRemove, showLabel = false }) {
-  // Keep track of whether this movie is bookmarked
-  const [isBookmarked, setIsBookmarked] = useState(false);
+function BookmarkButton({ movie, className, showLabel = false }) {
+  const { watchlist, addMovie, removeMovie } = useWatchlist();
 
-  // Check localStorage when the movie card loads
-  useEffect(() => {
-    const savedMovies = JSON.parse(localStorage.getItem('watchlist')) || [];
+  // Check whether this movie is already in the watchlist
+  const isBookmarked = watchlist.some(
+    (savedMovie) => savedMovie.id === movie.id,
+  );
 
-    const movieIsSaved = savedMovies.some(
-      (savedMovie) => savedMovie.id === movie.id,
-    );
-
-    setIsBookmarked(movieIsSaved);
-  }, [movie.id]);
-
-  // Add or remove the movie when the bookmark is clicked
   const handleClick = () => {
-    const savedMovies = JSON.parse(localStorage.getItem('watchlist')) || [];
-
     if (isBookmarked) {
-      // Remove this movie from the saved movies
-      const updatedMovies = savedMovies.filter(
-        (savedMovie) => savedMovie.id !== movie.id,
-      );
-
-      localStorage.setItem('watchlist', JSON.stringify(updatedMovies));
-
-      setIsBookmarked(false);
-
-      // Update the Watchlist page right away
-      if (onRemove) {
-        onRemove(movie.id);
-      }
+      removeMovie(movie.id);
     } else {
-      // Check that the movie is not already saved
-      const alreadySaved = savedMovies.some(
-        (savedMovie) => savedMovie.id === movie.id,
-      );
-
-      if (!alreadySaved) {
-        const updatedMovies = [...savedMovies, movie];
-
-        localStorage.setItem('watchlist', JSON.stringify(updatedMovies));
-      }
-
-      setIsBookmarked(true);
+      addMovie(movie);
     }
   };
 

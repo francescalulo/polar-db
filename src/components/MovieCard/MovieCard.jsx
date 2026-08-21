@@ -8,8 +8,7 @@ import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import './MovieCard.scss';
 
-// Added onRemove so the Watchlist can update when a movie is removed
-function MovieCard({ movie, onRemove }) {
+function MovieCard({ movie }) {
   const [isActive, setIsActive] = useState(false);
   const cardRef = useRef(null);
   const isBelowDesktop = useIsMobile(1024); // tablet + mobile tap to reveal; desktop keeps hover
@@ -86,8 +85,7 @@ function MovieCard({ movie, onRemove }) {
           </span>
         </div>
 
-        {/* Pass my remove function to the BookmarkButton */}
-        <BookmarkButton movie={movie} onRemove={onRemove} />
+        <BookmarkButton movie={movie} className="movieCard__bookmark" />
       </div>
 
       <ShareButton movie={movie} className="movieCard__share" />

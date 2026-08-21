@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
 import { searchMovies } from '../../services/movies';
 import './SearchResults.scss';
@@ -22,6 +23,20 @@ function SearchResults() {
     document.title = query
       ? 'Polar DB | Search: ' + query
       : 'Polar DB | Search';
+
+    const metaTag = document.querySelector('meta[name="description"]');
+    const description = query
+      ? 'Search results for "' + query + '" on Polar DB.'
+      : 'Search for movies by title, genre, or year on Polar DB.';
+
+    if (metaTag) {
+      metaTag.setAttribute('content', description);
+    } else {
+      const newMetaTag = document.createElement('meta');
+      newMetaTag.name = 'description';
+      newMetaTag.content = description;
+      document.head.appendChild(newMetaTag);
+    }
   }, [query]);
 
   // Runs on the query itself or any filter change, and always resets back
@@ -121,6 +136,7 @@ function SearchResults() {
 
   return (
     <div className="searchResults content-width">
+      <ScrollButton hasHero={false} />
       <div className="searchResults__inner">
         <h1 className="searchResults__title">
           {query ? (

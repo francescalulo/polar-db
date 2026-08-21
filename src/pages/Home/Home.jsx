@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './Home.scss';
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
+import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import SubmenuTabBar from '../../components/SubmenuTabBar/SubmenuTabBar';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
 import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
@@ -8,6 +9,7 @@ import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
 function Home() {
   const gridRef = useRef(null);
   const [isGridVisible, setIsGridVisible] = useState(false);
+  const [isBarVisible, setIsBarVisible] = useState(false);
 
   const [activeTab, setActiveTab] = useState('popular');
 
@@ -118,6 +120,7 @@ function Home() {
 
   return (
     <div className="home">
+      <ScrollButton hasBottomBar={isBarVisible} />
       {!isHeroLoading && heroMovies.length > 0 && (
         <HeroCarousel movies={heroMovies} />
       )}
@@ -125,6 +128,7 @@ function Home() {
         isVisible={isGridVisible}
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        onVisibilityChange={setIsBarVisible}
       />
       <div className="home__content content-width">
         <div ref={gridRef}>
