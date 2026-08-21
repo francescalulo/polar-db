@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
-import wordmark from '../../assets/polar-wordmark.svg';
-import tmdbLogo from '../../assets/icons/tmdb-logo.svg';
+import wordmark from '../../assets/images/polar-wordmark.svg';
+import tmdbLogo from '../../assets/images/tmdb-logo.svg';
 import './About.scss';
 
 function About() {

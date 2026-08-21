@@ -1,7 +1,7 @@
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import logoMark from '../../assets/icons/favicon.svg';
-import wordmark from '../../assets/polar-wordmark.svg';
+import logoMark from '../../assets/images/polar-logo.svg';
+import wordmark from '../../assets/images/polar-wordmark.svg';
 import bookmarkIcon from '../../assets/icons/bookmark-icon-outline.svg';
 import aboutIcon from '../../assets/icons/about-icon-outline.svg';
 import searchIcon from '../../assets/icons/search-icon-outline.svg';

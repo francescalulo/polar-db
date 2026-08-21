@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useWatchlist } from '../../hooks/useWatchlist';
 
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import AddWatchlistCard from '../../components/AddWatchlistCard/AddWatchlistCard';
@@ -25,34 +26,17 @@ function Watchlist() {
     }
   }, []);
 
-  // Read the saved watchlist when the state is first created
-  const [watchlistMovies, setWatchlistMovies] = useState(() => {
-    const savedMovies = localStorage.getItem('watchlist');
-
-    return savedMovies ? JSON.parse(savedMovies) : [];
-  });
-
-  // Save the watchlist whenever the state changes
-  useEffect(() => {
-    localStorage.setItem('watchlist', JSON.stringify(watchlistMovies));
-  }, [watchlistMovies]);
-
-  // Remove one movie from the current watchlist
-  const handleRemoveMovie = (movieId) => {
-    setWatchlistMovies((currentMovies) =>
-      currentMovies.filter((movie) => movie.id !== movieId),
-    );
-  };
+  const { watchlist } = useWatchlist();
 
   return (
     <div className="watchlist content-width">
       <ScrollButton hasHero={false} />
       <h1 className="watchlist__title">My Watchlist</h1>
 
-      {watchlistMovies.length === 0 ? (
+      {watchlist.length === 0 ? (
         <EmptyWatchlist />
       ) : (
-        <MovieGrid movies={watchlistMovies} onRemove={handleRemoveMovie}>
+        <MovieGrid movies={watchlist}>
           <AddWatchlistCard />
         </MovieGrid>
       )}

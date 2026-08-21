@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import wordmark from '../../assets/polar-wordmark.svg';
+import wordmark from '../../assets/images/polar-wordmark.svg';
 import './Footer.scss';
 
 function Footer() {
