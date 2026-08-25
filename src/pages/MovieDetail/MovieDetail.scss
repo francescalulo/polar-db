@@ -14,14 +14,14 @@ $hero-fade-end: 72.262%;
   mask-image: linear-gradient(
     to top,
     transparent 0,
-    transparent 15rem,
-    black 20rem
+    transparent 5rem,
+    black 10rem
   );
   -webkit-mask-image: linear-gradient(
     to top,
     transparent 0,
-    transparent 15rem,
-    black 20rem
+    transparent 5rem,
+    black 10rem
   );
 
   @include tablet {
@@ -31,7 +31,7 @@ $hero-fade-end: 72.262%;
     top: -10rem;
     left: -10rem;
     width: calc(100% + 20rem);
-    height: calc(100% + 14.5rem);
+    height: calc(100% + 15rem);
   }
 
   @include desktop {
@@ -59,11 +59,6 @@ $hero-fade-end: 72.262%;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   margin-top: -$header-height-mobile;
-
-  @include tablet {
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
 
   @include desktop {
     margin-top: -$header-height-desktop;
