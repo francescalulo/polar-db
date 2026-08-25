@@ -8,9 +8,12 @@
   z-index: 20;
   @include icon-button(2.5rem);
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     filter: none;
+  }
+
+  @include focus-hover(' .scrollButton__icon') {
+    @include subtle-glow;
   }
 
   @include tablet {
@@ -42,11 +45,6 @@
   .scrollButton__icon {
     animation: none;
   }
-}
-
-.scrollButton:hover .scrollButton__icon,
-.scrollButton:focus-visible .scrollButton__icon {
-  @include subtle-glow;
 }
 
 // Matches Font Awesome's own "fade" animation effect.

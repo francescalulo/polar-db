@@ -36,8 +36,7 @@
     @include poster-icon-shadow;
   }
 
-  &:hover img,
-  &:focus-visible img {
+  @include focus-hover(' img') {
     @include subtle-glow(6px, 0.7);
   }
 }
@@ -118,8 +117,7 @@
   align-items: center;
   justify-content: center;
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 }
@@ -137,8 +135,7 @@
   cursor: pointer;
   display: flex;
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 }
@@ -178,8 +175,10 @@
   text-align: left;
   cursor: pointer;
 
-  &:hover,
-  &:focus-visible,
+  @include focus-hover {
+    background-color: rgba($aurora-cyan, 0.12);
+  }
+
   &.header__suggestionItem--active {
     background-color: rgba($aurora-cyan, 0.12);
   }

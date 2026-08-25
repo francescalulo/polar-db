@@ -145,8 +145,7 @@ $hero-fade-end: 72.262%;
     height: 1.25rem;
   }
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 
@@ -387,8 +386,7 @@ $hero-fade-end: 72.262%;
   overflow: hidden;
   background: none;
 
-  &:hover .movieDetail__playButton,
-  &:focus-visible .movieDetail__playButton {
+  @include focus-hover(' .movieDetail__playButton') {
     @include subtle-glow;
   }
 }

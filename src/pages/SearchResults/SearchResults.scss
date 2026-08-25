@@ -89,8 +89,7 @@
   font-family: $font-family-base;
   font-size: $font-size-sm;
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include subtle-glow;
   }
 }

@@ -55,6 +55,30 @@
   }
 }
 
+// Media query gate: content only applies on devices with a real
+// hover-capable pointer (mouse/trackpad), never on touch.
+@mixin hover-only {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Applies an effect on focus (always, for keyboard users) and on hover
+// (only for hover-capable devices, via hover-only above) -- write the
+// effect once, it's applied to both states automatically. Pass $suffix
+// for a descendant or modifier selector, e.g. ' img' or ':not(.foo)'.
+@mixin focus-hover($suffix: '') {
+  &:focus-visible#{$suffix} {
+    @content;
+  }
+
+  @include hover-only {
+    &:hover#{$suffix} {
+      @content;
+    }
+  }
+}
+
 // Reusable square icon button (bookmark, share, and future icon buttons)
 @mixin icon-button($size: 1.5rem) {
   width: $size;
@@ -65,8 +89,7 @@
   cursor: pointer;
   @include poster-icon-shadow;
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 
@@ -236,8 +259,7 @@
   background-image: $button-gradient;
   @include pill-button;
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include button-hover-glow;
   }
 

@@ -44,8 +44,7 @@
   text-decoration: none;
   color: inherit;
 
-  &:hover img,
-  &:focus-visible img {
+  @include focus-hover(' img') {
     @include subtle-glow;
   }
 }
@@ -93,8 +92,7 @@
     font-size: $font-size-sm;
   }
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 }

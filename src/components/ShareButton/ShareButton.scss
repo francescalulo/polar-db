@@ -37,8 +37,7 @@
     text-decoration: none;
     cursor: pointer;
 
-    &:hover,
-    &:focus-visible {
+    @include focus-hover {
       background: rgba($aurora-cyan, 0.15);
       color: $aurora-cyan;
     }
