@@ -155,6 +155,16 @@ function Header() {
         >
           <input
             type="search"
+            aria-label="Search movies"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={isSuggestionsOpen && suggestions.length > 0}
+            aria-controls="header__suggestionsList"
+            aria-activedescendant={
+              highlightedIndex >= 0
+                ? 'header__suggestion-' + suggestions[highlightedIndex].id
+                : undefined
+            }
             placeholder={isInputFocused ? 'Search titles or genres' : 'Search'}
             className="header__searchInput"
             value={query}
@@ -209,11 +219,22 @@ function Header() {
           </button>
 
           {isSuggestionsOpen && suggestions.length > 0 && (
-            <ul className="header__suggestions">
+            <ul
+              className="header__suggestions"
+              id="header__suggestionsList"
+              role="listbox"
+              aria-label="Search suggestions"
+            >
               {suggestions.map((movie, index) => (
-                <li key={movie.id}>
+                <li
+                  key={movie.id}
+                  id={'header__suggestion-' + movie.id}
+                  role="option"
+                  aria-selected={index === highlightedIndex}
+                >
                   <button
                     type="button"
+                    tabIndex={-1}
                     className={
                       'header__suggestionItem' +
                       (index === highlightedIndex

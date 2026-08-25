@@ -75,7 +75,8 @@
 
   &:focus {
     border-color: $aurora-green-glow;
-    outline: none;
+    outline: 2px solid $aurora-green-glow;
+    outline-offset: 2px;
   }
 }
 

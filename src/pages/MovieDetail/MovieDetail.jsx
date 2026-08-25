@@ -275,7 +275,7 @@ function MovieDetail() {
             <div className="movieDetail__trailerWrap">
               <img
                 src={trailerFallback}
-                alt=""
+                alt="Trailer not available"
                 className="movieDetail__trailerFrame movieDetail__trailerThumb"
               />
             </div>

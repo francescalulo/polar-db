@@ -187,7 +187,10 @@ function HeroCarousel({ movies }) {
               </div>
 
               <div className="hero__details">
-                <span className="hero__rating">
+                <span
+                  className="hero__rating"
+                  aria-label={'User Score: ' + movie.rating}
+                >
                   <img src={ratingIcon} alt="" className="hero__ratingIcon" />
                   {movie.rating}
                 </span>

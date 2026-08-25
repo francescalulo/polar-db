@@ -129,8 +129,9 @@ function SearchResults() {
 
   const hasMore = page < totalPages;
   const currentYear = new Date().getFullYear();
+  const EARLIEST_YEAR = 1920; // covers the classic/Golden Age film era onward
   const yearOptions = Array.from(
-    { length: currentYear - 1900 + 1 },
+    { length: currentYear - EARLIEST_YEAR + 1 },
     (_, index) => currentYear - index,
   );
 

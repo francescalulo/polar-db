@@ -124,6 +124,7 @@ function SubmenuTabBar({
                 className={tabClass}
                 onClick={() => onTabChange(tab.key)}
                 aria-label={tab.label}
+                aria-pressed={isActive}
               >
                 <img
                   src={isActive ? tab.filled : tab.outline}
