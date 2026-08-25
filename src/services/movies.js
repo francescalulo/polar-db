@@ -3,7 +3,7 @@ import { genreMap } from '../data/genreMap';
 import { formatRuntime } from '../utils/formatRuntime';
 import { formatRating } from '../utils/formatRating';
 
-function findCertification(releaseDatesResults, countryCode = 'CA') {
+function findCertification(releaseDatesResults, countryCode = 'US') {
   const country = releaseDatesResults?.find(
     (entry) => entry.iso_3166_1 === countryCode,
   );
@@ -90,11 +90,16 @@ const CATEGORY_ENDPOINTS = {
   topRated: '/movie/top_rated',
 };
 
-const REGION = 'CA';
+const REGION = 'US';
 
 // Minimum vote count required for a movie to be shown, used by both
 // searchMovies and getMoviesByCategory as a content-safety/quality floor.
-const MIN_SEARCH_VOTE_COUNT = 10;
+const MIN_SEARCH_VOTE_COUNT = 5;
+
+// Categories where movies are too new to have accumulated votes yet --
+// exempted from the floor above instead of hardcoding one category name
+// in the filter logic below.
+const RECENCY_CATEGORIES = ['upcoming', 'nowPlaying'];
 
 const RESULTS_PER_PAGE = 12;
 
@@ -126,10 +131,20 @@ export async function getMoviesByCategory(category, { page = 1 } = {}) {
   // flag is inconsistently tagged and only targets hardcore content, so we
   // back it up with our own checks. Applied here too (not just search) so
   // the Home page category tabs get the same protection.
+
+  // Upcoming and Now Playing movies haven't been out long enough (or out
+  // at all) to collect meaningful votes yet, so the usual floor would
+  // wrongly filter most of them out -- Popular and Top Rated are always
+  // already-established, widely-voted movies, so it's still a useful
+  // spam/quality filter there.
+  const minVoteCount = RECENCY_CATEGORIES.includes(category)
+    ? 0
+    : MIN_SEARCH_VOTE_COUNT;
+
   const safeResults = data.results
     .filter((movie) => !movie.adult)
     .filter((movie) => movie.poster_path)
-    .filter((movie) => movie.vote_count >= MIN_SEARCH_VOTE_COUNT);
+    .filter((movie) => movie.vote_count >= minVoteCount);
   const movies = safeResults.slice(0, RESULTS_PER_PAGE).map((movie) => ({
     id: movie.id,
     title: movie.title,

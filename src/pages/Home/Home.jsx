@@ -155,6 +155,17 @@ function Home() {
                   {isLoadingMore ? 'Loading…' : 'Load More'}
                 </button>
               )}
+
+              {!hasMore && (
+                <div className="home__end">
+                  <p className="home__endHeading">
+                    You've reached the edge of the aurora.
+                  </p>
+                  <p className="home__endText">
+                    That's every movie we've got in this list for now.
+                  </p>
+                </div>
+              )}
             </>
           )}
         </div>

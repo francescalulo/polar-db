@@ -32,3 +32,17 @@
     cursor: default;
   }
 }
+
+.home__end {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.home__endHeading {
+  @include message-heading($aurora-green, 0.25rem);
+}
+
+.home__endText {
+  margin: 0;
+  color: $ice;
+}
