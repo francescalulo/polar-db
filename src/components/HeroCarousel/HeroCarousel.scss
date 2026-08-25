@@ -226,3 +226,9 @@
     }
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__content {
+    transition: none;
+  }
+}

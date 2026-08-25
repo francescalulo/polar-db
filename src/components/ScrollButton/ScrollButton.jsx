@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { prefersReducedMotion } from '../../utils/prefersReducedMotion';
 import useIsMobile from '../../hooks/useIsMobile';
 import chevronUpIcon from '../../assets/icons/chevron-up-icon.svg';
 import chevronDownIcon from '../../assets/icons/chevron-down-icon.svg';
@@ -47,9 +48,6 @@ function ScrollButton({ hasHero = true, hasBottomBar = false }) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const prefersReducedMotion = () =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const handleClick = () => {
     const targetY = hasScrolled ? 0 : window.innerHeight;

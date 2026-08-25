@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { prefersReducedMotion } from '../../utils/prefersReducedMotion';
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
@@ -51,7 +52,9 @@ function HeroCarousel({ movies }) {
       return;
     }
 
-    setTransitionDuration(duration / 2);
+    const effectiveDuration = prefersReducedMotion() ? 0 : duration;
+
+    setTransitionDuration(effectiveDuration / 2);
     setTransitionEasing(easing);
     setIsVisible(false);
 
@@ -75,7 +78,7 @@ function HeroCarousel({ movies }) {
         preloadImage.onload = swapAndFadeIn;
         preloadImage.onerror = swapAndFadeIn; // don't get stuck if it fails to load
       }
-    }, duration / 2);
+    }, effectiveDuration / 2);
   };
 
   const goToNext = (duration, easing = 'ease') => {
@@ -93,6 +96,10 @@ function HeroCarousel({ movies }) {
   // Auto-advance every 8 seconds; resets whenever the slide changes,
   // whether that change came from the timer, a click, a drag, or a scroll
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      return; // don't auto-advance -- manual dashes/drag/scroll still work
+    }
+
     const timer = setTimeout(() => {
       goToNext(AUTO_TRANSITION_DURATION);
     }, AUTO_ADVANCE_DELAY);
