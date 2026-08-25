@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '../../utils/prefersReducedMotion';
 import useIsMobile from '../../hooks/useIsMobile';
 import chevronUpIcon from '../../assets/icons/chevron-up-icon.svg';
@@ -6,6 +6,7 @@ import chevronDownIcon from '../../assets/icons/chevron-down-icon.svg';
 import './ScrollButton.scss';
 
 const SCROLL_DURATION = 1100; // ms, how long the scroll animation takes
+const IDLE_DELAY = 2500; // ms of no scrolling before the text label reveals
 
 // Smooth ease-in-out curve so the scroll starts and ends gently instead of
 // snapping at a constant speed.
@@ -38,15 +39,26 @@ function smoothScrollTo(targetY, duration) {
 function ScrollButton({ hasHero = true, hasBottomBar = false }) {
   const isMobile = useIsMobile(); // below tablet breakpoint (768px)
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isIdle, setIsIdle] = useState(true);
+  const idleTimer = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 0);
+
+      // Reveal the text label once scrolling has paused for a bit, so the
+      // button doesn't rely on the icon alone to be noticed.
+      setIsIdle(false);
+      clearTimeout(idleTimer.current);
+      idleTimer.current = setTimeout(() => setIsIdle(true), IDLE_DELAY);
     };
 
     handleScroll(); // set the correct state right away, don't wait for a scroll event
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(idleTimer.current);
+    };
   }, []);
 
   const handleClick = () => {
@@ -68,13 +80,24 @@ function ScrollButton({ hasHero = true, hasBottomBar = false }) {
     return null;
   }
 
+  // Kept identical to the aria-label so the visible text always matches
+  // the accessible name (WCAG 2.5.3, Label in Name).
+  const label = hasScrolled ? 'Scroll to top' : 'Scroll down';
+
   return (
     <button
       type="button"
-      className={'scrollButton ' + (hasBottomBar ? 'scrollButton--raised' : '')}
-      aria-label={hasScrolled ? 'Scroll to top' : 'Scroll down'}
+      className={
+        'scrollButton ' +
+        (hasBottomBar ? 'scrollButton--raised ' : '') +
+        (isIdle ? 'scrollButton--idle' : '')
+      }
+      aria-label={label}
       onClick={handleClick}
     >
+      <span className="scrollButton__label" aria-hidden="true">
+        {label}
+      </span>
       <img
         src={hasScrolled ? chevronUpIcon : chevronDownIcon}
         alt=""
