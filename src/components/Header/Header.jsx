@@ -249,7 +249,10 @@ function Header() {
                       className="header__suggestionPoster"
                     />
                     <span className="header__suggestionInfo">
-                      <span className="header__suggestionTitle">
+                      <span
+                        className="header__suggestionTitle"
+                        title={movie.title}
+                      >
                         {highlightMatch(movie.title, query)}
                       </span>
                       <span className="header__suggestionYear">

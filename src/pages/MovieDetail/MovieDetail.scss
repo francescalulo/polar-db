@@ -206,7 +206,7 @@ $hero-fade-end: 72.262%;
     aspect-ratio: 432 / 662;
     justify-content: flex-end;
     padding: $card-inset;
-    border: 0.1rem solid $aurora-deep-teal;
+    border: 0.1rem solid $aurora-deep-teal-border;
     border-radius: 1.18rem;
     @include poster-icon-shadow(7px);
   }

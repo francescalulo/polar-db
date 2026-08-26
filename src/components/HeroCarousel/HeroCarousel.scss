@@ -74,7 +74,7 @@
     width: 65%;
     gap: 1.5rem;
     padding: 1.75rem;
-    border: 0.1rem solid $aurora-deep-teal;
+    border: 0.1rem solid $aurora-deep-teal-border;
     border-radius: 1.5rem;
     @include hero-card-gradient(0.5, 0.4);
     backdrop-filter: blur(4px);
