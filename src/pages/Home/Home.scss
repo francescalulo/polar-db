@@ -5,6 +5,9 @@
   @include page-padding;
 }
 
+// MovieGrid has its own built-in padding for standalone use, but
+// .home__content above already applies page-padding around it - without
+// this override the two would stack and double the gutter.
 .home__content .movieGrid {
   padding: 0;
 }

@@ -104,7 +104,7 @@ const REGION = 'US';
 // searchMovies and getMoviesByCategory as a content-safety/quality floor.
 const MIN_SEARCH_VOTE_COUNT = 5;
 
-// Categories where movies are too new to have accumulated votes yet --
+// Categories where movies are too new to have accumulated votes yet -
 // exempted from the floor above instead of hardcoding one category name
 // in the filter logic below.
 const RECENCY_CATEGORIES = ['upcoming', 'nowPlaying'];
@@ -162,7 +162,7 @@ export async function getMoviesByCategory(category, { page = 1 } = {}) {
 
   // Upcoming and Now Playing movies haven't been out long enough (or out
   // at all) to collect meaningful votes yet, so the usual floor would
-  // wrongly filter most of them out -- Popular and Top Rated are always
+  // wrongly filter most of them out - Popular and Top Rated are always
   // already-established, widely-voted movies, so it's still a useful
   // spam/quality filter there.
   const minVoteCount = RECENCY_CATEGORIES.includes(category)

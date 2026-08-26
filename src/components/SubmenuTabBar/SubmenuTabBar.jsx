@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+
 import popularOutline from '../../assets/icons/popular-icon-outline.svg';
 import popularFilled from '../../assets/icons/popular-icon-filled.svg';
 import upcomingOutline from '../../assets/icons/upcoming-icon-outline.svg';
@@ -7,6 +8,7 @@ import nowPlayingOutline from '../../assets/icons/nowPlaying-icon-outline.svg';
 import nowPlayingFilled from '../../assets/icons/nowPlaying-icon-filled.svg';
 import topRatedOutline from '../../assets/icons/topRated-icon-outline.svg';
 import topRatedFilled from '../../assets/icons/topRated-icon-filled.svg';
+
 import './SubmenuTabBar.scss';
 
 const TABS = [

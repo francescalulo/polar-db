@@ -64,7 +64,7 @@
 }
 
 // Applies an effect on focus (always, for keyboard users) and on hover
-// (only for hover-capable devices, via hover-only above) -- write the
+// (only for hover-capable devices, via hover-only above) write the
 // effect once, it's applied to both states automatically. Pass $suffix
 // for a descendant or modifier selector, e.g. ' img' or ':not(.foo)'.
 @mixin focus-hover($suffix: '') {
@@ -110,7 +110,7 @@
     0 0 0.3375rem $aurora-green-glow;
 }
 
-// The glow effect used on card hover
+// The glow effect used on card hover (MovieCard)
 @mixin glow-shadow {
   box-shadow:
     0 4px 200px rgba($aurora-green-glow, 0.7),
@@ -120,7 +120,7 @@
     inset 0 2px 5px rgba($aurora-deep-teal, 0.6);
 }
 
-// Smaller glow, used on the active submenu tab
+// Smaller glow, used on the active submenu tab and AddWatchlistCard's hover
 @mixin glow-shadow-sm {
   box-shadow:
     0 4px 100px rgba($aurora-green-glow, 0.7),
@@ -130,7 +130,8 @@
     inset 0 2px 5px rgba($aurora-deep-teal, 0.6);
 }
 
-// Navigation glow
+// Green glow highlight, used on hover/focus for nav links, the footer
+// logo, icon buttons, and other accent elements across the app
 @mixin text-glow {
   filter: drop-shadow(0 0 5px $aurora-green-glow);
 }
@@ -142,11 +143,14 @@
   filter: drop-shadow(0 0 $blur rgba($ice, $opacity));
 }
 
-// Shadow
+// Soft drop shadow behind icons/buttons sitting on top of photos (poster
+// overlays, hero actions) so they stay legible against any image behind them
 @mixin poster-icon-shadow($blur: 3.5px, $opacity: 0.8) {
   filter: drop-shadow(0 0 $blur rgba(#000000, $opacity));
 }
 
+// Soft shadow behind text sitting directly on top of a photo/backdrop,
+// for legibility (hero/card info blocks, MovieDetail's overview)
 @mixin text-shadow {
   text-shadow: 0 4px 29px #00000040;
 }

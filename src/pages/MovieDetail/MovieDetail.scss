@@ -2,6 +2,11 @@
 @use '../../styles/mixins' as *;
 
 $card-inset: 1.875rem;
+
+// Fade zone for the poster's gradient-to-navy overlay - tuned specifically
+// for this card's aspect ratio (432/662, see .movieDetail__card), reused by
+// both the mobile heroImage overlay and the tablet+ card overlay below so
+// the poster fade looks identical across both responsive layouts.
 $hero-fade-start: 29.048%;
 $hero-fade-end: 72.262%;
 
@@ -52,6 +57,9 @@ $hero-fade-end: 72.262%;
   padding-bottom: 3rem;
 }
 
+// Full-bleed hero: breaks out of .content-width's max-width to span the
+// full viewport, and pulls up under the fixed header via a negative
+// top margin equal to the header's own height.
 .movieDetail__hero {
   position: relative;
   overflow: hidden;
@@ -65,6 +73,9 @@ $hero-fade-end: 72.262%;
   }
 }
 
+// Reflows the hero's layout areas per breakpoint - at tablet the overview
+// sits beside the card, at desktop it moves under the trailer instead so
+// the card/trailer pair reads as one row.
 .movieDetail__heroContent {
   @include tablet {
     display: grid;
@@ -157,6 +168,9 @@ $hero-fade-end: 72.262%;
   }
 }
 
+// Icon-only circle button on mobile; label text appears at tablet+ (see
+// MovieDetail.jsx - the Link keeps an aria-label as a fallback for when
+// this is hidden, since accessible-name computation skips display:none text)
 .movieDetail__backLabel {
   display: none;
 
@@ -202,6 +216,9 @@ $hero-fade-end: 72.262%;
     bottom: auto;
     grid-area: card;
     overflow: hidden;
+    // New stacking context so the poster/vignette/overlay layers below
+    // (via tablet-layer's negative z-index) only stack against each
+    // other, not against the rest of the page.
     isolation: isolate;
     aspect-ratio: 432 / 662;
     justify-content: flex-end;
@@ -332,18 +349,21 @@ $hero-fade-end: 72.262%;
   }
 }
 
+// Two ShareButton placements for the same button - only one is ever
+// visible at a time, toggled by the opposite tablet breakpoint on each.
 .movieDetail__share--row {
   position: relative;
   @include poster-icon-shadow;
 
   @include tablet {
-    display: none;
+    display: none; // tablet+ uses -inline instead
   }
 }
 
 .movieDetail__share--inline {
   position: relative;
-  display: none;
+  display: none; // mobile uses -row instead
+
   @include poster-icon-shadow;
 
   @include tablet {
@@ -406,6 +426,9 @@ $hero-fade-end: 72.262%;
   @include flex($justify: center);
 }
 
+// At desktop, the overview bleeds out of the grid's own padding to form
+// a full-width band with its own background, rather than staying inside
+// the card/trailer column.
 .movieDetail__overview {
   padding: 2rem 1rem 1rem;
 

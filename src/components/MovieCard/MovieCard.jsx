@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { formatRating } from '../../utils/formatRating';
+
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import ShareButton from '../ShareButton/ShareButton';
 import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
+
 import './MovieCard.scss';
 
 function MovieCard({ movie }) {
@@ -56,7 +58,7 @@ function MovieCard({ movie }) {
 
         <div className="movieCard__info">
           <div className="movieCard__titleGroup">
-            <h3 className="movieCard__title">{movie.title}</h3>
+            <h2 className="movieCard__title">{movie.title}</h2>
 
             <p className="movieCard__genre">
               {movie.genres?.slice(0, genreLimit).join(', ') ||

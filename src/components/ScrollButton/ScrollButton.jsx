@@ -71,7 +71,7 @@ function ScrollButton({ hasHero = true, hasBottomBar = false }) {
     }
   };
 
-  // Only hero pages ever show a "scroll down" hint at all -- pages
+  // Only hero pages ever show a "scroll down" hint at all - pages
   // without a hero are always up-only. So mobile suppression only needs
   // to apply on the hero pages themselves.
   const suppressDownHint = hasHero ? isMobile : true;

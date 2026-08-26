@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-// Shared "revealed" look -- used whenever the label should be showing
+// Shared "revealed" look - used whenever the label should be showing
 // (idle, hover, or focus), so the expand behaviour is only written once.
 @mixin reveal-label {
   padding-inline: 1rem;
@@ -52,7 +52,7 @@
   }
 
   // Lifts the button clear of Home's fixed bottom submenu bar, which is
-  // only fixed-to-bottom at mobile/tablet -- at desktop it becomes sticky
+  // only fixed-to-bottom at mobile/tablet - at desktop it becomes sticky
   // near the top instead, so no extra clearance is needed there.
   &--raised {
     bottom: 4rem;

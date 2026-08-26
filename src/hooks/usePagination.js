@@ -3,7 +3,7 @@ import { useState } from 'react';
 // Shared "page / totalPages / load more" state and logic for the two
 // paginated movie lists (Home's category tabs, SearchResults' results).
 // Each page still owns its own initial fetch (SearchResults needs its own
-// AbortController, Home doesn't) -- this only covers the load-more part,
+// AbortController, Home doesn't) - this only covers the load-more part,
 // which was identical in both.
 export function usePagination() {
   const [movies, setMovies] = useState([]);

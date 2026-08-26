@@ -9,23 +9,23 @@ import MovieGrid from '../../components/MovieGrid/MovieGrid';
 import './SearchResults.scss';
 
 function SearchResults() {
+  // URL-driven filters - kept in the URL (not local state) so results are
+  // shareable/bookmarkable and survive a page refresh
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const sortBy = searchParams.get('sort') || 'relevance';
   const year = searchParams.get('year') || '';
 
-  const {
-    movies,
-    setMovies,
-    isLoadingMore,
-    hasMore,
-    setInitialResults,
-    loadMore,
-  } = usePagination();
+  // Paginated search results - state and load-more logic come from the
+  // shared hook, loading/error/isGenreMatch stay local since they're
+  // specific to this page's own fetch effect below
+  const { movies, isLoadingMore, hasMore, setInitialResults, loadMore } =
+    usePagination();
   const [isGenreMatch, setIsGenreMatch] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Sets the tab title and meta description, updates whenever the query changes
   useEffect(() => {
     document.title = query
       ? 'Polar DB | Search: ' + query
@@ -47,7 +47,7 @@ function SearchResults() {
   }, [query]);
 
   // Runs on the query itself or any filter change, and always resets back
-  // to page 1 -- "load more" below is the only thing allowed to advance it
+  // to page 1. The "load more" below is the only thing allowed to advance it
   useEffect(() => {
     if (!query.trim()) {
       setInitialResults([]);
@@ -198,6 +198,7 @@ function SearchResults() {
           </p>
         )}
 
+        {/* Announces loading/error/empty-result state changes to screen readers */}
         <div aria-live="polite" aria-atomic="true">
           {isLoading && <p className="searchResults__status">Searching…</p>}
           {error && (

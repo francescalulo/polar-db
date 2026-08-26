@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '../../utils/prefersReducedMotion';
+
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
+
 import './HeroCarousel.scss';
 
 const AUTO_ADVANCE_DELAY = 8000; // ms between auto-advances
@@ -17,6 +19,10 @@ const WHEEL_THRESHOLD = 10; // minimum horizontal scroll before it counts
 const WHEEL_COOLDOWN = DRAG_TRANSITION_DURATION + 200; // ms to ignore extra wheel events after one triggers
 
 function HeroCarousel({ movies }) {
+  // Which movie is showing, whether it's mid-fade, and the transition's
+  // speed/easing - duration and easing change per interaction (click vs
+  // drag vs auto-advance all feel different), so they're state rather
+  // than fixed CSS
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [transitionDuration, setTransitionDuration] = useState(
@@ -24,7 +30,7 @@ function HeroCarousel({ movies }) {
   );
   const [transitionEasing, setTransitionEasing] = useState('ease');
 
-  const dragStartX = useRef(null);
+  const dragStartX = useRef(null); // pointer's x position when a drag begins, null when not dragging
   // Prevents one wheel/trackpad gesture from firing multiple rapid slide changes
   const wheelCooldown = useRef(false);
   const isMobile = useIsMobile(); // below tablet breakpoint (768px)
@@ -97,7 +103,7 @@ function HeroCarousel({ movies }) {
   // whether that change came from the timer, a click, a drag, or a scroll
   useEffect(() => {
     if (prefersReducedMotion()) {
-      return; // don't auto-advance -- manual dashes/drag/scroll still work
+      return; // don't auto-advance - manual dashes/drag/scroll still work
     }
 
     const timer = setTimeout(() => {
@@ -112,6 +118,9 @@ function HeroCarousel({ movies }) {
     goToSlide(index, CLICK_TRANSITION_DURATION);
   };
 
+  // Drag-to-swipe gesture pair: records the starting x position on press,
+  // compares it to the release position to decide direction and whether
+  // the drag was long enough to count (see DRAG_THRESHOLD)
   const handlePointerDown = (e) => {
     dragStartX.current = e.clientX;
   };
@@ -160,6 +169,8 @@ function HeroCarousel({ movies }) {
   return (
     <section
       className="hero"
+      aria-roledescription="carousel"
+      aria-label="Featured movies"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onWheel={handleWheel}
