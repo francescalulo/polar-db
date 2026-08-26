@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { APP_FOLDER_NAME } from '../globals/globalVariables';
 
 import WatchlistProvider from '../context/WatchlistProvider';
 import Header from '../components/Header/Header';
@@ -12,7 +13,7 @@ import NotFound from '../pages/NotFound/NotFound';
 
 function AppRouter() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={'/' + APP_FOLDER_NAME}>
       <WatchlistProvider>
         <div className="wrapper">
           <Header />

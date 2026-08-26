@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Colour
 $night-field: #0d0b22; // page background
 $purple-sky: #1e1334; // card background, mobile hero gradient overlay base, hero card gradient start (tablet/desktop)
@@ -8,18 +10,27 @@ $aurora-cyan: #00c3d5; // secondary accent (genre tags, links)
 $aurora-deep-cyan: #008585; // used in hover gradient
 $aurora-teal: #26e4b0; // Secondary Header Color, Artist Name Color
 $aurora-deep-teal: #03624c; // hero card border, tablet/desktop
-$aurora-deep-teal-border: lighten(
+$aurora-deep-teal-border: color.adjust(
   $aurora-deep-teal,
-  10%
+  $lightness: 10%
 ); // 5.01:1 vs $night-field
 
 // Darkened variants of the aurora accents above, used only as gradient
 // button backgrounds where $ice text needs to sit directly on top of
 // them. The originals are too light to clear WCAG's 4.5:1 minimum for
 // text contrast, verified against $ice for each value below.
-$aurora-teal-button: darken($aurora-teal, 26%); // 5.01:1 with $ice
-$aurora-green-glow-button: darken($aurora-green-glow, 22%); // 4.84:1 with $ice
-$aurora-deep-cyan-button: darken($aurora-deep-cyan, 4%); // 5.30:1 with $ice
+$aurora-teal-button: color.adjust(
+  $aurora-teal,
+  $lightness: -26%
+); // 5.01:1 with $ice
+$aurora-green-glow-button: color.adjust(
+  $aurora-green-glow,
+  $lightness: -22%
+); // 4.84:1 with $ice
+$aurora-deep-cyan-button: color.adjust(
+  $aurora-deep-cyan,
+  $lightness: -4%
+); // 5.30:1 with $ice
 
 $glass-overlay: #003c3b; // header and footer
 

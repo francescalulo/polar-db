@@ -16,4 +16,9 @@ const ACTIONS = {
   REMOVE_MOVIE: 'REMOVE_MOVIE',
 };
 
-export { watchlistStorageName, initialState, ACTIONS };
+// Deployed subfolder name must match vite.config.js's base/outDir and
+// the folder name used on the FTP server, so routing and asset paths
+// stay in sync no matter where this value is read from.
+const APP_FOLDER_NAME = 'polar-db';
+
+export { watchlistStorageName, initialState, ACTIONS, APP_FOLDER_NAME };

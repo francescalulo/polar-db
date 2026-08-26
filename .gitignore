@@ -9,6 +9,9 @@ node_modules
 dist
 dist-ssr
 
+# build output (subfolder deployment)
+polar-db
+
 # editor / OS
 .vscode/*
 !.vscode/extensions.json
