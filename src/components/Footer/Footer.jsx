@@ -7,15 +7,12 @@ function Footer() {
     <footer className="footer">
       <div className="footer__inner content-width">
         <div className="footer__top">
-          <div className="footer__brand">
-            <Link to="/" className="footer__brand" aria-label="Polar DB Home">
-              <img src={wordmark} alt="Polar+DB" className="footer__logo" />
-              <p className="footer__tagline">
-                Find your next film by the{' '}
-                <span>light of the northern sky.</span>
-              </p>
-            </Link>
-          </div>
+          <Link to="/" className="footer__brand" aria-label="Polar DB Home">
+            <img src={wordmark} alt="" className="footer__logo" />
+            <p className="footer__tagline">
+              Find your next film by the <span>light of the northern sky.</span>
+            </p>
+          </Link>
 
           <nav className="footer__nav" aria-label="Footer">
             <NavLink to="/">Home</NavLink>

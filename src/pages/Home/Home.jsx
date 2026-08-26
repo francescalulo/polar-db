@@ -1,28 +1,38 @@
 import { useEffect, useRef, useState } from 'react';
-import './Home.scss';
+import { usePagination } from '../../hooks/usePagination';
+import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
+
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import SubmenuTabBar from '../../components/SubmenuTabBar/SubmenuTabBar';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
-import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
+
+import './Home.scss';
 
 function Home() {
+  // Tracks when the movie grid scrolls into view, so SubmenuTabBar and
+  // ScrollButton know when to reveal themselves
   const gridRef = useRef(null);
   const [isGridVisible, setIsGridVisible] = useState(false);
   const [isBarVisible, setIsBarVisible] = useState(false);
 
+  // Which category tab (Popular/Upcoming/Now Playing/Top Rated) is active
   const [activeTab, setActiveTab] = useState('popular');
 
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  // Paginated, tab-driven movie list - state and load-more logic come
+  // from the shared hook, loading/error stay local since they're specific
+  // to this page's own fetch effect below
+  const { movies, isLoadingMore, hasMore, setInitialResults, loadMore } =
+    usePagination();
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
+  // Hero carousel's movie list - separate from the tab-driven list above,
+  // fetched once on mount and never re-fetched
   const [heroMovies, setHeroMovies] = useState([]);
   const [isHeroLoading, setIsHeroLoading] = useState(true);
 
+  // Sets the tab title and meta description for this page
   useEffect(() => {
     document.title = 'Polar DB | Home';
 
@@ -40,6 +50,7 @@ function Home() {
     }
   }, []);
 
+  // Fetches the hero carousel's movies once, on mount
   useEffect(() => {
     const fetchHeroMovies = async () => {
       setIsHeroLoading(true);
@@ -59,7 +70,7 @@ function Home() {
   }, []);
 
   // Refetch the movie list whenever activeTab changes, always resetting
-  // back to page 1 -- "load more" below is the only thing allowed to
+  // back to page 1. The "load more" below is the only thing allowed to
   // advance it
   useEffect(() => {
     const fetchMovies = async () => {
@@ -68,14 +79,11 @@ function Home() {
 
       try {
         const data = await getMoviesByCategory(activeTab);
-        setMovies(data);
-        setTotalPages(data.totalPages || 0);
-        setPage(1);
+        setInitialResults(data);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
-        setMovies([]);
-        setTotalPages(0);
+        setInitialResults([]);
         setIsLoading(false);
       }
     };
@@ -83,6 +91,7 @@ function Home() {
     fetchMovies();
   }, [activeTab]);
 
+  // Watches whether the movie grid has scrolled into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -100,26 +109,12 @@ function Home() {
     };
   }, []);
 
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    setIsLoadingMore(true);
-
-    try {
-      const data = await getMoviesByCategory(activeTab, { page: nextPage });
-      setMovies((prev) => [...prev, ...data]);
-      setTotalPages(data.totalPages || 0);
-      setPage(nextPage);
-    } catch (err) {
-      console.error('Failed to load more movies:', err.message);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  };
-
-  const hasMore = page < totalPages;
+  const handleLoadMore = () =>
+    loadMore((nextPage) => getMoviesByCategory(activeTab, { page: nextPage }));
 
   return (
     <div className="home">
+      <h1 className="visually-hidden">Discover Movies</h1>
       <ScrollButton hasBottomBar={isBarVisible} />
       {!isHeroLoading && heroMovies.length > 0 && (
         <HeroCarousel movies={heroMovies} />
@@ -132,15 +127,19 @@ function Home() {
       />
       <div className="home__content content-width">
         <div ref={gridRef}>
-          {isLoading && <p className="home__status">Loading movies…</p>}
-          {error && (
-            <p className="home__status">Couldn't load movies: {error}</p>
-          )}
-          {!isLoading && !error && movies.length === 0 && (
-            <p className="home__status">
-              No movies available right now. Check back soon.
-            </p>
-          )}
+          {/* Announces loading/error/empty state changes to screen readers */}
+          <div aria-live="polite" aria-atomic="true">
+            {isLoading && <p className="home__status">Loading movies…</p>}
+            {error && (
+              <p className="home__status">Couldn't load movies: {error}</p>
+            )}
+            {!isLoading && !error && movies.length === 0 && (
+              <p className="home__status">
+                No movies available right now. Check back soon.
+              </p>
+            )}
+          </div>
+
           {!isLoading && !error && movies.length > 0 && (
             <>
               <MovieGrid movies={movies} />
@@ -154,6 +153,17 @@ function Home() {
                 >
                   {isLoadingMore ? 'Loading…' : 'Load More'}
                 </button>
+              )}
+
+              {!hasMore && (
+                <div className="home__end">
+                  <p className="home__endHeading">
+                    You've reached the edge of the aurora.
+                  </p>
+                  <p className="home__endText">
+                    That's every movie we've got in this list for now.
+                  </p>
+                </div>
               )}
             </>
           )}

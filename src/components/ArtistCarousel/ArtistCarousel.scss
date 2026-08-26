@@ -53,8 +53,7 @@
     border-radius: 50%;
   }
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 }

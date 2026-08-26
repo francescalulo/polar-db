@@ -1,16 +1,49 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
+// Shared "revealed" look - used whenever the label should be showing
+// (idle, hover, or focus), so the expand behaviour is only written once.
+@mixin reveal-label {
+  padding-inline: 1rem;
+  background-color: rgba($glass-overlay, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  .scrollButton__label {
+    max-width: 10rem;
+    opacity: 1;
+    margin-right: 0.75rem;
+  }
+}
+
 .scrollButton {
   position: fixed;
   right: 1rem;
   bottom: 1.5rem;
   z-index: 20;
-  @include icon-button(2.5rem);
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 999px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    padding 0.3s ease;
+  @include poster-icon-shadow;
 
-  &:hover,
-  &:focus-visible {
-    filter: none;
+  @include focus-hover(' .scrollButton__icon') {
+    @include subtle-glow;
+  }
+
+  @include focus-hover {
+    @include reveal-label;
+  }
+
+  &--idle {
+    @include reveal-label;
   }
 
   @include tablet {
@@ -19,7 +52,7 @@
   }
 
   // Lifts the button clear of Home's fixed bottom submenu bar, which is
-  // only fixed-to-bottom at mobile/tablet -- at desktop it becomes sticky
+  // only fixed-to-bottom at mobile/tablet - at desktop it becomes sticky
   // near the top instead, so no extra clearance is needed there.
   &--raised {
     bottom: 4rem;
@@ -35,18 +68,36 @@
 }
 
 .scrollButton__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
   animation: chevron-fade 1.5s linear infinite;
+}
+
+.scrollButton__label {
+  max-width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $aurora-teal;
+  transition:
+    max-width 0.3s ease,
+    opacity 0.3s ease,
+    margin-left 0.3s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scrollButton__icon {
     animation: none;
   }
-}
 
-.scrollButton:hover .scrollButton__icon,
-.scrollButton:focus-visible .scrollButton__icon {
-  @include subtle-glow;
+  .scrollButton,
+  .scrollButton__label {
+    transition: none;
+  }
 }
 
 // Matches Font Awesome's own "fade" animation effect.

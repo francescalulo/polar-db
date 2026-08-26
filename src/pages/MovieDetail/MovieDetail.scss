@@ -2,6 +2,11 @@
 @use '../../styles/mixins' as *;
 
 $card-inset: 1.875rem;
+
+// Fade zone for the poster's gradient-to-navy overlay - tuned specifically
+// for this card's aspect ratio (432/662, see .movieDetail__card), reused by
+// both the mobile heroImage overlay and the tablet+ card overlay below so
+// the poster fade looks identical across both responsive layouts.
 $hero-fade-start: 29.048%;
 $hero-fade-end: 72.262%;
 
@@ -14,14 +19,14 @@ $hero-fade-end: 72.262%;
   mask-image: linear-gradient(
     to top,
     transparent 0,
-    transparent 15rem,
-    black 20rem
+    transparent 5rem,
+    black 10rem
   );
   -webkit-mask-image: linear-gradient(
     to top,
     transparent 0,
-    transparent 15rem,
-    black 20rem
+    transparent 5rem,
+    black 10rem
   );
 
   @include tablet {
@@ -31,7 +36,7 @@ $hero-fade-end: 72.262%;
     top: -10rem;
     left: -10rem;
     width: calc(100% + 20rem);
-    height: calc(100% + 14.5rem);
+    height: calc(100% + 15rem);
   }
 
   @include desktop {
@@ -52,6 +57,9 @@ $hero-fade-end: 72.262%;
   padding-bottom: 3rem;
 }
 
+// Full-bleed hero: breaks out of .content-width's max-width to span the
+// full viewport, and pulls up under the fixed header via a negative
+// top margin equal to the header's own height.
 .movieDetail__hero {
   position: relative;
   overflow: hidden;
@@ -60,16 +68,14 @@ $hero-fade-end: 72.262%;
   margin-right: calc(50% - 50vw);
   margin-top: -$header-height-mobile;
 
-  @include tablet {
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
-
   @include desktop {
     margin-top: -$header-height-desktop;
   }
 }
 
+// Reflows the hero's layout areas per breakpoint - at tablet the overview
+// sits beside the card, at desktop it moves under the trailer instead so
+// the card/trailer pair reads as one row.
 .movieDetail__heroContent {
   @include tablet {
     display: grid;
@@ -145,8 +151,7 @@ $hero-fade-end: 72.262%;
     height: 1.25rem;
   }
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include text-glow;
   }
 
@@ -163,6 +168,9 @@ $hero-fade-end: 72.262%;
   }
 }
 
+// Icon-only circle button on mobile; label text appears at tablet+ (see
+// MovieDetail.jsx - the Link keeps an aria-label as a fallback for when
+// this is hidden, since accessible-name computation skips display:none text)
 .movieDetail__backLabel {
   display: none;
 
@@ -208,11 +216,14 @@ $hero-fade-end: 72.262%;
     bottom: auto;
     grid-area: card;
     overflow: hidden;
+    // New stacking context so the poster/vignette/overlay layers below
+    // (via tablet-layer's negative z-index) only stack against each
+    // other, not against the rest of the page.
     isolation: isolate;
     aspect-ratio: 432 / 662;
     justify-content: flex-end;
     padding: $card-inset;
-    border: 0.1rem solid $aurora-deep-teal;
+    border: 0.1rem solid $aurora-deep-teal-border;
     border-radius: 1.18rem;
     @include poster-icon-shadow(7px);
   }
@@ -338,18 +349,21 @@ $hero-fade-end: 72.262%;
   }
 }
 
+// Two ShareButton placements for the same button - only one is ever
+// visible at a time, toggled by the opposite tablet breakpoint on each.
 .movieDetail__share--row {
   position: relative;
   @include poster-icon-shadow;
 
   @include tablet {
-    display: none;
+    display: none; // tablet+ uses -inline instead
   }
 }
 
 .movieDetail__share--inline {
   position: relative;
-  display: none;
+  display: none; // mobile uses -row instead
+
   @include poster-icon-shadow;
 
   @include tablet {
@@ -387,8 +401,7 @@ $hero-fade-end: 72.262%;
   overflow: hidden;
   background: none;
 
-  &:hover .movieDetail__playButton,
-  &:focus-visible .movieDetail__playButton {
+  @include focus-hover(' .movieDetail__playButton') {
     @include subtle-glow;
   }
 }
@@ -413,6 +426,9 @@ $hero-fade-end: 72.262%;
   @include flex($justify: center);
 }
 
+// At desktop, the overview bleeds out of the grid's own padding to form
+// a full-width band with its own background, rather than staying inside
+// the card/trailer column.
 .movieDetail__overview {
   padding: 2rem 1rem 1rem;
 

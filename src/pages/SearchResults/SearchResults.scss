@@ -2,6 +2,11 @@
 @use '../../styles/mixins' as *;
 
 .searchResults {
+  // Reuses the same grid definition as the movie-card grids elsewhere
+  // (MovieGrid, Watchlist) purely so this page's content area lines up
+  // with them - __inner below spans all the generated columns as one
+  // cell; the actual movie cards render in MovieGrid's own separate grid
+  // further down, not in this one.
   @include card-grid;
   width: 100%;
   min-height: 70vh;
@@ -13,6 +18,9 @@
   grid-column: 1 / -1;
 }
 
+// MovieGrid has its own built-in padding for standalone use, but
+// page-padding above already applies padding around it - without this
+// override the two would stack and double the gutter.
 .searchResults .movieGrid {
   padding: 0;
 }
@@ -68,6 +76,9 @@
   width: 13rem;
   appearance: none;
   -webkit-appearance: none;
+  // Custom dropdown chevron (native <select> arrows can't be styled
+  // directly) - colour is hardcoded to match $aurora-green since Sass
+  // variables can't be interpolated into this data URI as easily.
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2379ff9c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
@@ -75,7 +86,8 @@
 
   &:focus {
     border-color: $aurora-green-glow;
-    outline: none;
+    outline: 2px solid $aurora-green-glow;
+    outline-offset: 2px;
   }
 }
 
@@ -89,8 +101,7 @@
   font-family: $font-family-base;
   font-size: $font-size-sm;
 
-  &:hover,
-  &:focus-visible {
+  @include focus-hover {
     @include subtle-glow;
   }
 }
@@ -141,12 +152,6 @@
 
 .searchResults__endHeading {
   @include message-heading($aurora-green, 0.25rem);
-}
-
-.searchResults__endHeading {
-  margin: 0 0 0.25rem;
-  color: $aurora-green;
-  font-weight: $font-weight-medium;
 }
 
 .searchResults__endText {

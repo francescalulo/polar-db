@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
+import { prefersReducedMotion } from '../../utils/prefersReducedMotion';
+
 import useIsMobile from '../../hooks/useIsMobile';
 import MoreInfoButton from '../MoreInfoButton/MoreInfoButton';
 import BookmarkButton from '../BookmarkButton/BookmarkButton';
 import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
+
 import './HeroCarousel.scss';
 
 const AUTO_ADVANCE_DELAY = 8000; // ms between auto-advances
@@ -16,6 +19,10 @@ const WHEEL_THRESHOLD = 10; // minimum horizontal scroll before it counts
 const WHEEL_COOLDOWN = DRAG_TRANSITION_DURATION + 200; // ms to ignore extra wheel events after one triggers
 
 function HeroCarousel({ movies }) {
+  // Which movie is showing, whether it's mid-fade, and the transition's
+  // speed/easing - duration and easing change per interaction (click vs
+  // drag vs auto-advance all feel different), so they're state rather
+  // than fixed CSS
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [transitionDuration, setTransitionDuration] = useState(
@@ -23,7 +30,7 @@ function HeroCarousel({ movies }) {
   );
   const [transitionEasing, setTransitionEasing] = useState('ease');
 
-  const dragStartX = useRef(null);
+  const dragStartX = useRef(null); // pointer's x position when a drag begins, null when not dragging
   // Prevents one wheel/trackpad gesture from firing multiple rapid slide changes
   const wheelCooldown = useRef(false);
   const isMobile = useIsMobile(); // below tablet breakpoint (768px)
@@ -51,7 +58,9 @@ function HeroCarousel({ movies }) {
       return;
     }
 
-    setTransitionDuration(duration / 2);
+    const effectiveDuration = prefersReducedMotion() ? 0 : duration;
+
+    setTransitionDuration(effectiveDuration / 2);
     setTransitionEasing(easing);
     setIsVisible(false);
 
@@ -75,7 +84,7 @@ function HeroCarousel({ movies }) {
         preloadImage.onload = swapAndFadeIn;
         preloadImage.onerror = swapAndFadeIn; // don't get stuck if it fails to load
       }
-    }, duration / 2);
+    }, effectiveDuration / 2);
   };
 
   const goToNext = (duration, easing = 'ease') => {
@@ -93,6 +102,10 @@ function HeroCarousel({ movies }) {
   // Auto-advance every 8 seconds; resets whenever the slide changes,
   // whether that change came from the timer, a click, a drag, or a scroll
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      return; // don't auto-advance - manual dashes/drag/scroll still work
+    }
+
     const timer = setTimeout(() => {
       goToNext(AUTO_TRANSITION_DURATION);
     }, AUTO_ADVANCE_DELAY);
@@ -105,6 +118,9 @@ function HeroCarousel({ movies }) {
     goToSlide(index, CLICK_TRANSITION_DURATION);
   };
 
+  // Drag-to-swipe gesture pair: records the starting x position on press,
+  // compares it to the release position to decide direction and whether
+  // the drag was long enough to count (see DRAG_THRESHOLD)
   const handlePointerDown = (e) => {
     dragStartX.current = e.clientX;
   };
@@ -153,6 +169,8 @@ function HeroCarousel({ movies }) {
   return (
     <section
       className="hero"
+      aria-roledescription="carousel"
+      aria-label="Featured movies"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onWheel={handleWheel}
@@ -180,7 +198,10 @@ function HeroCarousel({ movies }) {
               </div>
 
               <div className="hero__details">
-                <span className="hero__rating">
+                <span
+                  className="hero__rating"
+                  aria-label={'User Score: ' + movie.rating}
+                >
                   <img src={ratingIcon} alt="" className="hero__ratingIcon" />
                   {movie.rating}
                 </span>

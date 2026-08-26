@@ -7,6 +7,7 @@ import {
 } from '../../services/movies';
 import { formatRuntime } from '../../utils/formatRuntime';
 import { formatRating } from '../../utils/formatRating';
+
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import ArtistCarousel from '../../components/ArtistCarousel/ArtistCarousel';
 import useIsMobile from '../../hooks/useIsMobile';
@@ -17,20 +18,32 @@ import ratingIcon from '../../assets/icons/ratings.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
 import backdropFallback from '../../assets/fallbacks/backdrop-fallback.png';
 import trailerFallback from '../../assets/fallbacks/trailer-fallback.png';
+
 import './MovieDetail.scss';
 
 function MovieDetail() {
   const { id } = useParams();
   const isMobile = useIsMobile(); // below tablet breakpoint (768px)
   const isBelowDesktop = useIsMobile(1024); // below desktop breakpoint which covers tablet + mobile
+
+  // Movie details plus its related data (cast, director, trailer) - all
+  // fetched together in one effect below, since the page needs all three
+  // before it can render anything meaningful
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [director, setDirector] = useState('');
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Local UI state - whether the trailer thumbnail has been swapped for
+  // the playing embed, unrelated to the fetch above
   const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
 
+  // Fetches the movie's details, trailer, and credits together whenever
+  // the route's :id changes. Trailer/credits failures are caught locally
+  // and fall back to empty/placeholder values instead of failing the
+  // whole page, since a movie can be missing a trailer or full credits
   useEffect(() => {
     let isMounted = true;
 
@@ -73,6 +86,7 @@ function MovieDetail() {
     };
   }, [id]);
 
+  // Sets the tab title and meta description once the movie has loaded
   useEffect(() => {
     if (!movie) return;
 
@@ -95,13 +109,17 @@ function MovieDetail() {
 
   if (loading) {
     return (
-      <div className="movieDetail movieDetail--status">Loading movie...</div>
+      <div className="movieDetail movieDetail--status" role="status">
+        Loading movie…
+      </div>
     );
   }
 
   if (error) {
     return (
-      <div className="movieDetail movieDetail--status">Error: {error}</div>
+      <div className="movieDetail movieDetail--status" role="status">
+        Error: {error}
+      </div>
     );
   }
 
@@ -275,7 +293,7 @@ function MovieDetail() {
             <div className="movieDetail__trailerWrap">
               <img
                 src={trailerFallback}
-                alt=""
+                alt="Trailer not available"
                 className="movieDetail__trailerFrame movieDetail__trailerThumb"
               />
             </div>

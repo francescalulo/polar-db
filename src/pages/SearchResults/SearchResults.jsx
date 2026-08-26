@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { searchMovies } from '../../services/movies';
+import { usePagination } from '../../hooks/usePagination';
+
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
-import { searchMovies } from '../../services/movies';
+
 import './SearchResults.scss';
 
 function SearchResults() {
+  // URL-driven filters - kept in the URL (not local state) so results are
+  // shareable/bookmarkable and survive a page refresh
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const sortBy = searchParams.get('sort') || 'relevance';
   const year = searchParams.get('year') || '';
 
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  // Paginated search results - state and load-more logic come from the
+  // shared hook, loading/error/isGenreMatch stay local since they're
+  // specific to this page's own fetch effect below
+  const { movies, isLoadingMore, hasMore, setInitialResults, loadMore } =
+    usePagination();
   const [isGenreMatch, setIsGenreMatch] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
+  // Sets the tab title and meta description, updates whenever the query changes
   useEffect(() => {
     document.title = query
       ? 'Polar DB | Search: ' + query
@@ -40,11 +47,10 @@ function SearchResults() {
   }, [query]);
 
   // Runs on the query itself or any filter change, and always resets back
-  // to page 1 -- "load more" below is the only thing allowed to advance it
+  // to page 1. The "load more" below is the only thing allowed to advance it
   useEffect(() => {
     if (!query.trim()) {
-      setMovies([]);
-      setTotalPages(0);
+      setInitialResults([]);
       setIsGenreMatch(false);
       setIsLoading(false);
       return;
@@ -62,16 +68,13 @@ function SearchResults() {
           primaryReleaseYear: year,
           signal: controller.signal,
         });
-        setMovies(data);
-        setTotalPages(data.totalPages || 0);
+        setInitialResults(data);
         setIsGenreMatch(Boolean(data.isGenreMatch));
-        setPage(1);
         setIsLoading(false);
       } catch (err) {
         if (err.name === 'AbortError') return;
         setError(err.message);
-        setMovies([]);
-        setTotalPages(0);
+        setInitialResults([]);
         setIsGenreMatch(false);
         setIsLoading(false);
       }
@@ -107,30 +110,15 @@ function SearchResults() {
     setSearchParams(nextParams);
   };
 
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    setIsLoadingMore(true);
+  const handleLoadMore = () =>
+    loadMore((nextPage) =>
+      searchMovies(query, { page: nextPage, sortBy, primaryReleaseYear: year }),
+    );
 
-    try {
-      const data = await searchMovies(query, {
-        page: nextPage,
-        sortBy,
-        primaryReleaseYear: year,
-      });
-      setMovies((prev) => [...prev, ...data]);
-      setTotalPages(data.totalPages || 0);
-      setPage(nextPage);
-    } catch (err) {
-      console.error('Failed to load more results:', err.message);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  };
-
-  const hasMore = page < totalPages;
   const currentYear = new Date().getFullYear();
+  const EARLIEST_YEAR = 1920; // covers the classic/Golden Age film era onward
   const yearOptions = Array.from(
-    { length: currentYear - 1900 + 1 },
+    { length: currentYear - EARLIEST_YEAR + 1 },
     (_, index) => currentYear - index,
   );
 
@@ -210,6 +198,7 @@ function SearchResults() {
           </p>
         )}
 
+        {/* Announces loading/error/empty-result state changes to screen readers */}
         <div aria-live="polite" aria-atomic="true">
           {isLoading && <p className="searchResults__status">Searching…</p>}
           {error && (
