@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import './Home.scss';
+import { usePagination } from '../../hooks/usePagination';
+import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
+
 import HeroCarousel from '../../components/HeroCarousel/HeroCarousel';
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import SubmenuTabBar from '../../components/SubmenuTabBar/SubmenuTabBar';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
-import { getMoviesByCategory, getHeroMovies } from '../../services/movies';
+
+import './Home.scss';
 
 function Home() {
   const gridRef = useRef(null);
@@ -13,11 +16,15 @@ function Home() {
 
   const [activeTab, setActiveTab] = useState('popular');
 
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const {
+    movies,
+    setMovies,
+    isLoadingMore,
+    hasMore,
+    setInitialResults,
+    loadMore,
+  } = usePagination();
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
   const [heroMovies, setHeroMovies] = useState([]);
@@ -68,14 +75,11 @@ function Home() {
 
       try {
         const data = await getMoviesByCategory(activeTab);
-        setMovies(data);
-        setTotalPages(data.totalPages || 0);
-        setPage(1);
+        setInitialResults(data);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
-        setMovies([]);
-        setTotalPages(0);
+        setInitialResults([]);
         setIsLoading(false);
       }
     };
@@ -100,23 +104,8 @@ function Home() {
     };
   }, []);
 
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    setIsLoadingMore(true);
-
-    try {
-      const data = await getMoviesByCategory(activeTab, { page: nextPage });
-      setMovies((prev) => [...prev, ...data]);
-      setTotalPages(data.totalPages || 0);
-      setPage(nextPage);
-    } catch (err) {
-      console.error('Failed to load more movies:', err.message);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  };
-
-  const hasMore = page < totalPages;
+  const handleLoadMore = () =>
+    loadMore((nextPage) => getMoviesByCategory(activeTab, { page: nextPage }));
 
   return (
     <div className="home">

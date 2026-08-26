@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { searchMovies } from '../../services/movies';
+import { usePagination } from '../../hooks/usePagination';
+
 import ScrollButton from '../../components/ScrollButton/ScrollButton';
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
-import { searchMovies } from '../../services/movies';
+
 import './SearchResults.scss';
 
 function SearchResults() {
@@ -11,12 +14,16 @@ function SearchResults() {
   const sortBy = searchParams.get('sort') || 'relevance';
   const year = searchParams.get('year') || '';
 
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const {
+    movies,
+    setMovies,
+    isLoadingMore,
+    hasMore,
+    setInitialResults,
+    loadMore,
+  } = usePagination();
   const [isGenreMatch, setIsGenreMatch] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -43,8 +50,7 @@ function SearchResults() {
   // to page 1 -- "load more" below is the only thing allowed to advance it
   useEffect(() => {
     if (!query.trim()) {
-      setMovies([]);
-      setTotalPages(0);
+      setInitialResults([]);
       setIsGenreMatch(false);
       setIsLoading(false);
       return;
@@ -62,16 +68,13 @@ function SearchResults() {
           primaryReleaseYear: year,
           signal: controller.signal,
         });
-        setMovies(data);
-        setTotalPages(data.totalPages || 0);
+        setInitialResults(data);
         setIsGenreMatch(Boolean(data.isGenreMatch));
-        setPage(1);
         setIsLoading(false);
       } catch (err) {
         if (err.name === 'AbortError') return;
         setError(err.message);
-        setMovies([]);
-        setTotalPages(0);
+        setInitialResults([]);
         setIsGenreMatch(false);
         setIsLoading(false);
       }
@@ -107,27 +110,11 @@ function SearchResults() {
     setSearchParams(nextParams);
   };
 
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    setIsLoadingMore(true);
+  const handleLoadMore = () =>
+    loadMore((nextPage) =>
+      searchMovies(query, { page: nextPage, sortBy, primaryReleaseYear: year }),
+    );
 
-    try {
-      const data = await searchMovies(query, {
-        page: nextPage,
-        sortBy,
-        primaryReleaseYear: year,
-      });
-      setMovies((prev) => [...prev, ...data]);
-      setTotalPages(data.totalPages || 0);
-      setPage(nextPage);
-    } catch (err) {
-      console.error('Failed to load more results:', err.message);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  };
-
-  const hasMore = page < totalPages;
   const currentYear = new Date().getFullYear();
   const EARLIEST_YEAR = 1920; // covers the classic/Golden Age film era onward
   const yearOptions = Array.from(
