@@ -1,0 +1,33 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.addWatchlistCard {
+  @include flex($align: center, $justify: center);
+
+  width: 12.25rem;
+  height: 18.25rem;
+  border: 2px dashed $aurora-green-glow;
+  border-radius: $card-radius;
+  background-color: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  @include tablet {
+    width: 17.125rem;
+    height: 26.25rem;
+  }
+
+  @include focus-hover {
+    @include glow-shadow-sm;
+    transform: scale(1.03);
+  }
+}
+
+.addWatchlistCard__plus {
+  width: 2rem;
+  height: 2rem;
+}

@@ -1,0 +1,282 @@
+@use 'variables' as *;
+
+// Mobile-first breakpoint helpers
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+// Flexible flex layout, pass only what differs from the defaults
+@mixin flex($direction: row, $align: center, $justify: flex-start, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// Shared page-container padding: used by any full-page content wrapper
+// (Home, SearchResults, Watchlist) that needs the same responsive
+// top/side/bottom spacing.
+@mixin page-padding {
+  padding: 2rem 1rem 3rem;
+
+  @include tablet {
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  @include desktop {
+    padding: 3.5rem 3.75rem 5rem;
+  }
+}
+
+// Tablet+ absolutely-positioned layer that fills its container, hidden
+// below tablet. Used for the stacked poster/vignette/overlay behind the
+// MovieDetail card. Pass the layer's z-index; put unique styles in the block.
+@mixin tablet-layer($z-index) {
+  display: none;
+
+  @include tablet {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: $z-index;
+    @content;
+  }
+}
+
+// Media query gate: content only applies on devices with a real
+// hover-capable pointer (mouse/trackpad), never on touch.
+@mixin hover-only {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Applies an effect on focus (always, for keyboard users) and on hover
+// (only for hover-capable devices, via hover-only above) write the
+// effect once, it's applied to both states automatically. Pass $suffix
+// for a descendant or modifier selector, e.g. ' img' or ':not(.foo)'.
+@mixin focus-hover($suffix: '') {
+  &:focus-visible#{$suffix} {
+    @content;
+  }
+
+  @include hover-only {
+    &:hover#{$suffix} {
+      @content;
+    }
+  }
+}
+
+// Reusable square icon button (bookmark, share, and future icon buttons)
+@mixin icon-button($size: 1.5rem) {
+  width: $size;
+  height: $size;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  @include poster-icon-shadow;
+
+  @include focus-hover {
+    @include text-glow;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Hover glow used on solid pill buttons (More Info, and likely other action buttons later)
+@mixin button-hover-glow {
+  background-image: $button-hover-gradient;
+  box-shadow:
+    0 0 7.8125rem $aurora-green-glow,
+    0 0 4.725rem $aurora-green-glow,
+    0 0 2.3625rem $aurora-green-glow,
+    0 0 0.675rem $aurora-green-glow,
+    0 0 0.3375rem $aurora-green-glow;
+}
+
+// The glow effect used on card hover (MovieCard)
+@mixin glow-shadow {
+  box-shadow:
+    0 4px 200px rgba($aurora-green-glow, 0.7),
+    0 2px 50px $aurora-green-glow,
+    inset -2px -8px 10px rgba($aurora-green-glow, 0.25),
+    inset 0 3px 10px #ffffff66,
+    inset 0 2px 5px rgba($aurora-deep-teal, 0.6);
+}
+
+// Smaller glow, used on the active submenu tab and AddWatchlistCard's hover
+@mixin glow-shadow-sm {
+  box-shadow:
+    0 4px 100px rgba($aurora-green-glow, 0.7),
+    0 2px 25px $aurora-green-glow,
+    inset -2px -8px 10px rgba($aurora-green-glow, 0.25),
+    inset 0 3px 10px #ffffff66,
+    inset 0 2px 5px rgba($aurora-deep-teal, 0.6);
+}
+
+// Green glow highlight, used on hover/focus for nav links, the footer
+// logo, icon buttons, and other accent elements across the app
+@mixin text-glow {
+  filter: drop-shadow(0 0 5px $aurora-green-glow);
+}
+
+// Subtle white glow on hover highlight for elements (like the logo or an
+// accent button) where the site's usual green glow would clash with their
+// own color
+@mixin subtle-glow($blur: 4px, $opacity: 0.5) {
+  filter: drop-shadow(0 0 $blur rgba($ice, $opacity));
+}
+
+// Soft drop shadow behind icons/buttons sitting on top of photos (poster
+// overlays, hero actions) so they stay legible against any image behind them
+@mixin poster-icon-shadow($blur: 3.5px, $opacity: 0.8) {
+  filter: drop-shadow(0 0 $blur rgba(#000000, $opacity));
+}
+
+// Soft shadow behind text sitting directly on top of a photo/backdrop,
+// for legibility (hero/card info blocks, MovieDetail's overview)
+@mixin text-shadow {
+  text-shadow: 0 4px 29px #00000040;
+}
+
+// Frosted glass look
+@mixin glass-panel($opacity: 0.5) {
+  background-color: rgba($glass-overlay, $opacity);
+  backdrop-filter: blur(4px);
+}
+
+// Shared "fade to navy" gradient. Pass $mid for a three-stop fade (used
+// on poster cards and the home hero); omit it for a plain two-stop fade
+// (used on MovieDetail's hero/card overlays).
+@mixin fade-to-navy($start, $end, $mid: null, $mid-opacity: 0.85) {
+  @if $mid {
+    background: linear-gradient(
+      to bottom,
+      rgba($overlay-navy, 0) $start,
+      rgba($overlay-navy, $mid-opacity) $mid,
+      $overlay-navy $end
+    );
+  } @else {
+    background: linear-gradient(
+      to bottom,
+      rgba($overlay-navy, 0) $start,
+      $overlay-navy $end
+    );
+  }
+}
+
+// Two-stop purple-to-cyan glass gradient behind the hero card. Only the
+// opacity of each stop changes between tablet and desktop.
+@mixin hero-card-gradient($purple-alpha, $cyan-alpha) {
+  background: linear-gradient(
+    to right,
+    rgba($purple-sky, $purple-alpha),
+    rgba($aurora-deep-cyan, $cyan-alpha)
+  );
+}
+
+// Subtle vignette that darkens a poster's edges/corners while keeping the
+// center clear, so UI elements sitting near the edges (rating badge,
+// bookmark button) stay legible regardless of the poster's own contrast
+@mixin vignette {
+  background: radial-gradient(
+    ellipse at center,
+    rgba($night-field, 0) 50%,
+    rgba($night-field, 0.6) 100%
+  );
+}
+
+// Cast photos stay black & white
+@mixin grayscale-photo {
+  filter: grayscale(100%);
+}
+
+// Pill-shaped button corners
+@mixin pill-button {
+  border-radius: $button-radius;
+}
+
+// Small round separator dot used between inline meta items (e.g. rating • certification • runtime)
+@mixin dot-separator {
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 50%;
+  background: $ice;
+}
+
+// Multi-line text truncation with a trailing ellipsis, instead of an
+// abrupt cutoff. Used for synopsis/overview text in the hero and movie
+// cards.
+@mixin line-clamp($lines) {
+  display: -webkit-box;
+  line-clamp: $lines;
+  -webkit-line-clamp: $lines;
+  box-orient: vertical;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Inline rating icon (the tweaked Polar DB sparkle mark)
+@mixin rating-icon {
+  width: auto;
+  height: 1.25rem;
+
+  @include tablet {
+    height: 1.65rem;
+  }
+}
+
+// Shared poster-grid layout: repeat(auto-fill) + justify-content:center
+// keeps cards centered as a group and auto-computes however many columns
+// fit at any width. Used by MovieGrid, SearchResults, and Watchlist's
+// heading (so the heading's own grid tracks line up with the real grid).
+@mixin card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 12.25rem);
+  justify-content: center;
+  gap: 1rem;
+
+  @include tablet {
+    grid-template-columns: repeat(auto-fill, 17.125rem);
+  }
+}
+
+// Shared gradient pill button: Load More (Home + SearchResults), More Info,
+// and 404's back-home link all use this same look and interaction states.
+@mixin gradient-button {
+  background-image: $button-gradient;
+  @include pill-button;
+
+  @include focus-hover {
+    @include button-hover-glow;
+  }
+
+  &:active {
+    background-image: $button-pressed-gradient;
+  }
+}
+
+// Shared message heading: a colored, medium-weight line sitting above a
+// plain supporting text line. Used by EmptyWatchlist and SearchResults'
+// status/end messages.
+@mixin message-heading($color, $margin-bottom: 0.5rem) {
+  margin: 0 0 $margin-bottom;
+  color: $color;
+  font-weight: $font-weight-medium;
+}

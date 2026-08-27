@@ -1,0 +1,37 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.artistCard {
+  @include flex($direction: column);
+
+  flex-shrink: 0;
+}
+
+.artistCard__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: $card-radius;
+  background-color: $purple-sky;
+
+  @include grayscale-photo;
+}
+
+.artistCard__info {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.artistCard__name {
+  margin: 0;
+  color: $aurora-green-glow;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.artistCard__character {
+  margin: 0.25rem 0 0;
+  color: $ice;
+  font-size: $font-size-sm;
+}

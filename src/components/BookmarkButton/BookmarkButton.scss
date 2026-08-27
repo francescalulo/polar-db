@@ -1,0 +1,10 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.bookmarkButton {
+  @include icon-button;
+}
+
+.bookmarkButton__label {
+  white-space: nowrap;
+}

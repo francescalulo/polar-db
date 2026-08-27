@@ -1,0 +1,234 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin-top: -$header-height-mobile;
+  touch-action: pan-y;
+
+  @include desktop {
+    margin-top: -$header-height-desktop;
+    margin-bottom: 2rem;
+  }
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mask-image: linear-gradient(to top, transparent 0, black 15rem);
+  -webkit-mask-image: linear-gradient(to top, transparent 0, black 15rem);
+}
+
+.hero__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  opacity: 1;
+  transition: opacity var(--hero-transition-duration, 300ms)
+    var(--hero-transition-easing, ease);
+
+  &--visible {
+    opacity: 1;
+  }
+}
+
+.hero__inner {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: $header-height-mobile;
+
+  @include desktop {
+    padding-top: $header-height-desktop;
+  }
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  @include fade-to-navy(35%, 80%, $mid: 63%);
+  pointer-events: none;
+
+  @include tablet {
+    display: none; // tablet+ uses the bordered glass card instead of the full gradient
+  }
+}
+
+.hero__card {
+  margin: auto 0.75rem 3.75rem;
+  @include flex($direction: column, $align: stretch, $gap: 1rem);
+
+  @include tablet {
+    margin-left: 2rem;
+    margin-right: 0;
+    margin-bottom: 4.5rem;
+    width: 65%;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    border: 0.1rem solid $aurora-deep-teal-border;
+    border-radius: 1.5rem;
+    @include hero-card-gradient(0.5, 0.4);
+    backdrop-filter: blur(4px);
+    @include poster-icon-shadow(7px);
+  }
+
+  @include desktop {
+    margin-left: 3.75rem;
+    width: 40%;
+    border-radius: 2.4375rem;
+    @include hero-card-gradient(0.3, 0.3);
+  }
+}
+
+.hero__info {
+  @include flex($direction: column, $align: stretch, $gap: 0.75rem);
+  @include text-shadow;
+
+  @include desktop {
+    gap: 1.25rem;
+  }
+}
+
+.hero__titleGroup {
+  @include flex($direction: column, $align: stretch, $gap: 0.2rem);
+}
+
+.hero__title {
+  margin: 0;
+  font-size: $font-size-lg;
+  letter-spacing: -0.0525rem;
+
+  @include tablet {
+    font-size: $font-size-xl;
+  }
+
+  @include desktop {
+    font-size: $font-size-xxl;
+  }
+}
+
+.hero__genre {
+  margin: 0;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-xxs;
+  color: $aurora-cyan;
+
+  @include desktop {
+    font-size: $font-size-xs;
+  }
+}
+
+.hero__details {
+  @include flex($gap: 0.75rem);
+  font-size: $font-size-xxs;
+
+  @include desktop {
+    font-size: $font-size-sm;
+  }
+}
+
+.hero__rating {
+  @include flex($gap: 0.625rem);
+  @include poster-icon-shadow(6px);
+}
+
+.hero__ratingIcon {
+  @include rating-icon;
+}
+
+.hero__dot {
+  @include dot-separator;
+}
+
+.hero__synopsis {
+  margin: 0;
+  font-size: $font-size-xxs;
+  line-height: 1.5;
+  max-width: 85%;
+  @include line-clamp(3);
+
+  @include tablet {
+    max-width: none;
+  }
+
+  @include desktop {
+    font-size: $font-size-sm;
+    @include line-clamp(4);
+  }
+}
+
+.hero__actions {
+  @include flex($gap: 1rem);
+
+  @include desktop {
+    gap: 2rem;
+  }
+}
+
+.hero__pagination {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.25rem;
+  @include flex($align: stretch, $justify: center, $gap: 0.5rem);
+
+  @include tablet {
+    bottom: 2.5rem;
+  }
+}
+
+.hero__dash {
+  width: 3rem;
+  height: 0.3125rem;
+  border: none;
+  background: $aurora-cyan;
+  cursor: pointer;
+
+  @include desktop {
+    width: 5rem;
+    height: 0.375rem;
+  }
+
+  &--active {
+    background: $aurora-green;
+  }
+}
+
+.hero__watchlist {
+  @include flex($gap: 0.5rem);
+  width: auto;
+  height: auto;
+  color: $aurora-green;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @include desktop {
+    gap: 0.625rem;
+    font-size: $font-size-sm;
+
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__content {
+    transition: none;
+  }
+}

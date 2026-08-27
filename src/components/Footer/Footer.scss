@@ -1,0 +1,107 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.footer {
+  @include glass-panel(1);
+}
+
+.footer__inner {
+  padding: 1.5rem 1rem 1.25rem;
+
+  @include tablet {
+    padding: 2.5rem 2rem 1.5rem;
+  }
+
+  @include desktop {
+    padding: 3rem 3.75rem 1.75rem;
+  }
+}
+
+.footer--home {
+  padding-bottom: 5.75rem;
+
+  @include tablet {
+    padding-bottom: 7rem;
+  }
+
+  @include desktop {
+    padding-bottom: 1.75rem;
+  }
+}
+
+.footer__top {
+  @include flex($justify: space-between, $align: flex-start, $gap: 1.5rem);
+}
+
+.footer__brand {
+  display: block;
+  max-width: 8.5rem;
+
+  @include tablet {
+    max-width: 20rem; // restore the roomier width once there's more space
+  }
+
+  text-decoration: none;
+  color: inherit;
+
+  @include focus-hover(' img') {
+    @include subtle-glow;
+  }
+}
+
+.footer__logo {
+  height: 1.5rem;
+  width: auto;
+  margin-bottom: 0.5rem;
+}
+
+.footer__tagline {
+  margin: 0;
+  color: $ice;
+  font-size: $font-size-xxs;
+
+  @include tablet {
+    font-size: $font-size-xs;
+  }
+
+  line-height: 1.25;
+}
+
+.footer__tagline span {
+  display: block;
+}
+
+.footer__nav {
+  @include flex($direction: column, $align: flex-start, $gap: 0.5rem);
+
+  @include tablet {
+    align-items: flex-end;
+  }
+}
+
+.footer__nav a {
+  color: $aurora-green;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-xs;
+  @include tablet {
+    font-size: $font-size-sm;
+  }
+
+  @include focus-hover {
+    @include text-glow;
+  }
+}
+
+.footer__divider {
+  margin: 2.5625rem 0;
+  border: none;
+  border-top: 1.5px solid $aurora-green;
+}
+
+.footer__copyright {
+  margin: 0;
+  text-align: center;
+  color: $aurora-green;
+  font-size: $font-size-xxs;
+}

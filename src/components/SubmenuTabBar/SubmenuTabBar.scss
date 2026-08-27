@@ -1,0 +1,141 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.submenuTabBar__wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  @include flex($justify: center);
+  @include glass-panel(0.35);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+
+  &--visible {
+    transform: translateY(0);
+  }
+
+  @include desktop {
+    position: sticky;
+    top: $header-height-mobile;
+    bottom: auto;
+    transform: none;
+    background: none;
+    backdrop-filter: none;
+
+    &.submenuTabBar__wrapper--stuck {
+      background: transparent;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); // Safari needs the prefix
+        mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          black 70%,
+          transparent 100%
+        ); // Safari needs the prefix
+      }
+    }
+  }
+}
+
+.submenuTabBar {
+  @include flex($justify: space-between);
+  @include glass-panel(0.9);
+  width: 100%;
+  max-width: 18rem;
+  height: 3.25rem;
+  margin: 0 auto;
+  padding: 0.3125rem 0.45rem;
+  border-radius: 1.625rem;
+
+  @include tablet {
+    max-width: none;
+    width: fit-content;
+    height: auto;
+    padding: 0.625rem 0.875rem;
+    border-radius: $submenu-radius;
+    gap: 0.75rem;
+  }
+
+  @include desktop {
+    width: 100%;
+    max-width: 60rem;
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+.submenuTabBar__tab {
+  @include flex($gap: 0.125rem, $justify: center);
+  height: 2.375rem;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  border-radius: 1.625rem;
+  cursor: pointer;
+  transition:
+    background-color 0.5s ease,
+    box-shadow 0.5s ease;
+
+  @include focus-hover(':not(.submenuTabBar__tab--active)') {
+    @include glow-shadow-sm;
+  }
+
+  @include desktop {
+    width: 14rem;
+    height: 3rem;
+    gap: 0.5rem;
+    border-radius: $button-radius;
+  }
+
+  &--active {
+    background-color: $purple-sky;
+    @include glow-shadow-sm;
+
+    @include tablet {
+      width: 9rem;
+      height: 3rem;
+      border-radius: $button-radius;
+      gap: 0.5rem;
+    }
+
+    @include desktop {
+      width: 14rem;
+      height: 3rem;
+      gap: 0.5rem;
+      border-radius: $button-radius;
+    }
+  }
+}
+
+.submenuTabBar__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.submenuTabBar__label {
+  display: none;
+  color: $aurora-green;
+  font-family: $font-family-base;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+
+  @include desktop {
+    font-size: $font-size-sm;
+    display: inline;
+  }
+}
+
+.submenuTabBar__tab--active .submenuTabBar__label {
+  display: inline;
+}

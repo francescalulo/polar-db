@@ -1,0 +1,207 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.movieCard {
+  position: relative;
+  width: 12.25rem;
+  height: 18.25rem;
+  border-radius: 0.5rem;
+  background-color: $purple-sky;
+  overflow: hidden;
+
+  @include tablet {
+    width: 17.125rem;
+    height: 26.25rem;
+    border-radius: $card-radius;
+  }
+
+  &--active,
+  &:focus-within {
+    @include glow-shadow;
+
+    .movieCard__details {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @include glow-shadow;
+
+      .movieCard__details {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+}
+
+.movieCard__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movieCard__details {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  @include flex(
+    $direction: column,
+    $align: stretch,
+    $justify: flex-end,
+    $gap: 1.25rem
+  );
+}
+
+.movieCard__overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 0;
+  @include fade-to-navy(10%, 80%, $mid: 55%);
+}
+
+.movieCard__vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  @include vignette;
+}
+
+.movieCard__info {
+  position: relative;
+  z-index: 1;
+  margin: 0 0.875rem;
+  @include flex($direction: column, $align: stretch, $gap: 0.375rem);
+  @include poster-icon-shadow;
+  @include text-shadow;
+
+  @include tablet {
+    margin: 0 1.25rem;
+  }
+}
+
+.movieCard__titleGroup {
+  @include flex($direction: column, $align: flex-start, $gap: 0.125rem);
+}
+
+.movieCard__title {
+  margin: 0;
+  font-size: $font-size-md;
+  letter-spacing: -0.0375rem;
+
+  @include tablet {
+    font-size: $font-size-xxl;
+    letter-spacing: -0.0525rem;
+  }
+}
+
+.movieCard__genre {
+  margin: 0;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-xxs;
+  line-height: 1.6;
+  color: $aurora-cyan;
+
+  @include tablet {
+    font-size: $font-size-xs;
+  }
+}
+
+.movieCard__date,
+.movieCard__overview {
+  margin: 0;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-xxs;
+  line-height: 1.5;
+
+  @include tablet {
+    font-size: $font-size-sm;
+  }
+}
+
+.movieCard__overview {
+  line-height: 1.4;
+  @include line-clamp(3);
+}
+
+.movieCard__moreInfo {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.875rem 0.875rem;
+  @include poster-icon-shadow;
+
+  @include tablet {
+    margin: 0 0 1.25rem 1.25rem;
+  }
+}
+
+.movieCard__topRow {
+  position: absolute;
+  top: 0.875rem;
+  left: 0.875rem;
+  right: 0.875rem;
+  height: 2.75rem;
+  @include flex($justify: space-between);
+
+  @include tablet {
+    top: 1.25rem;
+    left: 1.25rem;
+    right: 1.25rem;
+  }
+}
+
+.movieCard__rating {
+  @include flex($gap: 0.625rem);
+  font-size: $font-size-sm;
+  @include poster-icon-shadow;
+}
+
+.movieCard__ratingValue {
+  @include poster-icon-shadow(8px, 1);
+}
+
+.movieCard__ratingIcon {
+  @include rating-icon;
+}
+
+.movieCard__bookmark {
+  align-self: flex-start;
+  position: relative;
+  top: -0.875rem;
+  width: 2rem;
+  height: auto;
+  padding: 1.625rem 0.25rem 0.25rem;
+  border-radius: 0 0 0.375rem 0.375rem;
+  @include glass-panel(0.65);
+  @include poster-icon-shadow(8px, 1);
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @include tablet {
+    top: -1.25rem;
+    padding-top: 2rem;
+  }
+}
+
+.movieCard__share {
+  position: absolute;
+  right: 0.875rem;
+  bottom: 0.875rem;
+
+  @include tablet {
+    right: 1.25rem;
+    bottom: 1.25rem;
+  }
+}

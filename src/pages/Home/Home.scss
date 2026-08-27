@@ -1,0 +1,51 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.home__content {
+  @include page-padding;
+}
+
+// MovieGrid has its own built-in padding for standalone use, but
+// .home__content above already applies page-padding around it - without
+// this override the two would stack and double the gutter.
+.home__content .movieGrid {
+  padding: 0;
+}
+
+.home__status {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: $ice;
+}
+
+.home__loadMore {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.75rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  color: $ice;
+  font-family: $font-family-base;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  @include gradient-button;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.home__end {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.home__endHeading {
+  @include message-heading($aurora-green, 0.25rem);
+}
+
+.home__endText {
+  margin: 0;
+  color: $ice;
+}

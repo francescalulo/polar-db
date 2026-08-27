@@ -1,0 +1,86 @@
+@use 'sass:color';
+
+// Colour
+$night-field: #0d0b22; // page background
+$purple-sky: #1e1334; // card background, mobile hero gradient overlay base, hero card gradient start (tablet/desktop)
+$ice: #eaf6f4; // primary text
+$aurora-green: #79ff9c; // accent / glow highlight
+$aurora-green-glow: #02ea8d; // glow shadow color, used on hover, inactive submenu tab hover glow
+$aurora-cyan: #00c3d5; // secondary accent (genre tags, links)
+$aurora-deep-cyan: #008585; // used in hover gradient
+$aurora-teal: #26e4b0; // Secondary Header Color, Artist Name Color
+$aurora-deep-teal: #03624c; // hero card border, tablet/desktop
+$aurora-deep-teal-border: color.adjust(
+  $aurora-deep-teal,
+  $lightness: 10%
+); // 5.01:1 vs $night-field
+
+// Darkened variants of the aurora accents above, used only as gradient
+// button backgrounds where $ice text needs to sit directly on top of
+// them. The originals are too light to clear WCAG's 4.5:1 minimum for
+// text contrast, verified against $ice for each value below.
+$aurora-teal-button: color.adjust(
+  $aurora-teal,
+  $lightness: -26%
+); // 5.01:1 with $ice
+$aurora-green-glow-button: color.adjust(
+  $aurora-green-glow,
+  $lightness: -22%
+); // 4.84:1 with $ice
+$aurora-deep-cyan-button: color.adjust(
+  $aurora-deep-cyan,
+  $lightness: -4%
+); // 5.30:1 with $ice
+
+$glass-overlay: #003c3b; // header and footer
+
+// Typography
+$font-family-base: 'Inter', sans-serif;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// Type Scale
+$font-size-xxs: 0.75rem; // artist mobile details
+$font-size-xs: 0.875rem; // genre tags
+$font-size-sm: 1rem; // body copy, UI text (base size)
+$font-size-md: 1.25rem; // watchlist/overview section headings
+$font-size-lg: 1.375rem; // hero title, artist carousel heading
+$font-size-xl: 1.5rem; // movie detail title (mobile)
+$font-size-xxl: 1.75rem; // large movie title
+
+// Shape
+$card-radius: 0.75rem;
+$button-radius: 3.75rem;
+$search-radius: 1.875rem;
+$submenu-radius: 3.28125rem;
+
+$content-max-width: 90rem; // 1440px  caps main content on very wide screens; full-bleed backdrops stay unaffected
+
+// Overlay
+$overlay-navy: #111a2e; // shared poster overlay + button gradient start
+
+// Gradients
+$button-gradient: linear-gradient(
+  124deg,
+  $overlay-navy 42%,
+  $aurora-teal-button 99%
+);
+$button-hover-gradient: linear-gradient(
+  90deg,
+  #001f1f 0%,
+  $aurora-deep-cyan-button 100%
+);
+$button-pressed-gradient: linear-gradient(
+  90deg,
+  $aurora-green-glow-button 7.212%,
+  $aurora-deep-cyan-button 62.981%
+);
+
+// Breakpoints, used by the mixins below, mobile-first
+$breakpoint-tablet: 48rem;
+$breakpoint-desktop: 64rem;
+
+// Layout
+$header-height-mobile: 3.75rem; // 60px
+$header-height-desktop: 3.5rem; // 56px

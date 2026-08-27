@@ -1,0 +1,19 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.moreInfoButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  white-space: nowrap;
+  width: 5.5rem;
+  height: 1.875rem;
+  padding: 1.25rem 3.5rem;
+  border: none;
+  cursor: pointer;
+  color: $ice;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  @include gradient-button;
+}

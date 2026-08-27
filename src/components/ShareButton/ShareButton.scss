@@ -1,0 +1,45 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.shareButton {
+  @include icon-button;
+}
+
+.shareButton__menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  z-index: 10;
+  min-width: 9rem;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  background: $purple-sky;
+  border-radius: $card-radius;
+  box-shadow: 0 0.5rem 1.5rem rgba(#000000, 0.4);
+
+  li + li {
+    margin-top: 0.25rem;
+  }
+
+  a,
+  button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: none;
+    border: none;
+    border-radius: 0.5rem;
+    color: $ice;
+    font-family: $font-family-base;
+    font-size: $font-size-xs;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+
+    @include focus-hover {
+      background: rgba($aurora-cyan, 0.15);
+      color: $aurora-cyan;
+    }
+  }
+}

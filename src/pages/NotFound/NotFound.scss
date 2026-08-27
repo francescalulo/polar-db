@@ -1,0 +1,35 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.notFound {
+  @include flex($direction: column, $gap: 1.25rem);
+  padding: 8rem 1rem 5rem;
+  text-align: center;
+}
+
+.notFound__code {
+  margin: 0;
+  color: $aurora-green;
+  font-size: 3rem;
+}
+
+.notFound__message {
+  margin: 0 0 0.5rem;
+}
+
+.notFound__heading {
+  @include message-heading($aurora-cyan);
+}
+
+.notFound__text {
+  margin: 0;
+  color: rgba($ice, 0.9);
+}
+
+.notFound__link {
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  color: $ice;
+  text-decoration: none;
+  @include gradient-button;
+}

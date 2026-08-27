@@ -1,0 +1,16 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.movieGrid {
+  @include card-grid;
+  padding: 1.5rem 1rem;
+
+  @include tablet {
+    padding: 2rem;
+  }
+
+  @include desktop {
+    box-sizing: border-box;
+    padding: 2rem 3.75rem;
+  }
+}

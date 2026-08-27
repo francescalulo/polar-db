@@ -1,0 +1,123 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.artistCarousel {
+  width: 100%;
+  padding: 3rem 1rem;
+  padding-top: 1rem;
+}
+
+.artistCarousel__title {
+  margin: 0 0 1.5rem;
+  color: $aurora-green;
+  font-size: $font-size-lg;
+  text-transform: uppercase;
+}
+
+.artistCarousel__content {
+  position: relative;
+  width: 100%;
+}
+
+.artistCarousel__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem 1rem;
+  width: 100%;
+}
+
+.artistCarousel__item {
+  min-width: 0;
+}
+
+.artistCarousel__item--largerScreens {
+  display: none;
+}
+
+.artistCarousel__button {
+  display: none;
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: $night-field;
+    border-radius: 50%;
+  }
+
+  @include focus-hover {
+    @include text-glow;
+  }
+}
+
+.artistCarousel__button--previous {
+  left: -1rem;
+}
+
+.artistCarousel__button--next {
+  right: -1rem;
+}
+
+@include tablet {
+  .artistCarousel {
+    padding: 4rem 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .artistCarousel__content {
+    --item-width: calc((100% - 2.5rem) / 3);
+  }
+
+  .artistCarousel__list {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .artistCarousel__item {
+    flex: 0 0 var(--item-width);
+    scroll-snap-align: start;
+  }
+
+  .artistCarousel__item--largerScreens {
+    display: block;
+  }
+
+  .artistCarousel__button {
+    display: block;
+  }
+}
+
+@include desktop {
+  .artistCarousel {
+    padding: 5rem 3.75rem;
+    padding-top: 2rem;
+  }
+
+  .artistCarousel__content {
+    --item-width: calc((100% - 3.75rem) / 5);
+  }
+
+  .artistCarousel__list {
+    gap: 1rem;
+  }
+
+  .artistCarousel__item {
+    flex-basis: var(--item-width);
+  }
+}
