@@ -67,6 +67,7 @@ function Header() {
 
   const handleSuggestionClick = (movieId) => {
     setIsSuggestionsOpen(false);
+    setHighlightedIndex(-1);
     navigate('/movie/' + movieId);
   };
 
@@ -161,7 +162,7 @@ function Header() {
             aria-expanded={isSuggestionsOpen && suggestions.length > 0}
             aria-controls="header__suggestionsList"
             aria-activedescendant={
-              highlightedIndex >= 0
+              highlightedIndex >= 0 && suggestions[highlightedIndex]
                 ? 'header__suggestion-' + suggestions[highlightedIndex].id
                 : undefined
             }
@@ -190,7 +191,11 @@ function Header() {
                 setHighlightedIndex((prev) =>
                   prev <= 0 ? suggestions.length - 1 : prev - 1,
                 );
-              } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+              } else if (
+                e.key === 'Enter' &&
+                highlightedIndex >= 0 &&
+                suggestions[highlightedIndex]
+              ) {
                 e.preventDefault();
                 handleSuggestionClick(suggestions[highlightedIndex].id);
               }
