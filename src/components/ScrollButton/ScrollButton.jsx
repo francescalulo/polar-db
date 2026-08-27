@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '../../utils/prefersReducedMotion';
+
 import useIsMobile from '../../hooks/useIsMobile';
 import chevronUpIcon from '../../assets/icons/chevron-up-icon.svg';
 import chevronDownIcon from '../../assets/icons/chevron-down-icon.svg';
+
 import './ScrollButton.scss';
 
 const SCROLL_DURATION = 1100; // ms, how long the scroll animation takes
@@ -80,8 +82,6 @@ function ScrollButton({ hasHero = true, hasBottomBar = false }) {
     return null;
   }
 
-  // Kept identical to the aria-label so the visible text always matches
-  // the accessible name (WCAG 2.5.3, Label in Name).
   const label = hasScrolled ? 'Scroll to top' : 'Scroll down';
 
   return (

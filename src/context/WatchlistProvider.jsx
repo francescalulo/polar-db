@@ -28,7 +28,7 @@ function WatchlistProvider({ children }) {
     }
   }, []);
 
-  // Actions -- each one updates localStorage and dispatches together, so
+  // Actions - each one updates localStorage and dispatches together, so
   // the two never drift out of sync with each other
   const addMovie = (movie) => {
     const updatedWatchlist = [...state, movie];
