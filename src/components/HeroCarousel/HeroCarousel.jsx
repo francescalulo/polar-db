@@ -20,7 +20,7 @@ const WHEEL_COOLDOWN = DRAG_TRANSITION_DURATION + 200; // ms to ignore extra whe
 
 function HeroCarousel({ movies }) {
   // Which movie is showing, whether it's mid-fade, and the transition's
-  // speed/easing - duration and easing change per interaction (click vs
+  // speed/easing for duration and easing change per interaction (click vs
   // drag vs auto-advance all feel different), so they're state rather
   // than fixed CSS
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -76,7 +76,7 @@ function HeroCarousel({ movies }) {
 
     setTimeout(() => {
       if (preloadImage.complete) {
-        // already loaded (e.g. cached from a previous cycle). Swap right away
+        // already loaded like cached from a previous cycle, swap right away
         swapAndFadeIn();
       } else {
         // wait for it to finish loading before swapping, so the backdrop

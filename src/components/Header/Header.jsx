@@ -1,5 +1,7 @@
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { searchMovies } from '../../services/movies';
+
 import logoMark from '../../assets/images/polar-logo.svg';
 import wordmark from '../../assets/images/polar-wordmark.svg';
 import bookmarkIcon from '../../assets/icons/bookmark-icon-outline.svg';
@@ -7,7 +9,7 @@ import aboutIcon from '../../assets/icons/about-icon-outline.svg';
 import searchIcon from '../../assets/icons/search-icon-outline.svg';
 import searchIconFilled from '../../assets/icons/search-icon-filled.svg';
 import posterFallback from '../../assets/fallbacks/poster-fallback.png';
-import { searchMovies } from '../../services/movies';
+
 import './Header.scss';
 
 const SUGGESTION_LIMIT = 5;
@@ -104,7 +106,7 @@ function Header() {
   }, [query]);
 
   // Whenever the suggestions list itself changes (new results, cleared,
-  // etc.) drop any keyboard highlight from the previous list -- covers
+  // etc.) drop any keyboard highlight from the previous list - covers
   // every case in one place instead of resetting it at each call site
   useEffect(() => {
     setHighlightedIndex(-1);
