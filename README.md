@@ -9,9 +9,9 @@ Users can browse popular, upcoming, now playing, and top rated movies, search by
 
 ## Team Members
 
-- **Talia** — TMDB API layer (shared fetch client + service functions), About page, Individual Movie page, 404/fallback route
-- **Sara** — Watchlist page and localStorage-backed favouriting
-- **Frances** — Design system, Header/Footer/routing setup, Home page, search feature, overall polish
+- **Talia** — Original repo scaffold and npm setup, base TMDB API layer (shared fetch client + service functions), About page, MovieDetail endpoint wiring, NotFound/404 page and wildcard fallback route
+- **Sara** — Watchlist page UI and its components (empty state, add-to-watchlist card), localStorage-backed favouriting, cast/artist UI and API wiring (getMovieCredits)
+- **Frances** — Design system, Header/Footer/routing setup, Home page with its API wiring, search feature, MovieDetail hero and fallback image handling, accessibility polish
 
 ## Pages
 
