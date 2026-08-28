@@ -158,6 +158,7 @@ function Header() {
         >
           <input
             type="search"
+            name="search"
             aria-label="Search movies"
             role="combobox"
             aria-autocomplete="list"
