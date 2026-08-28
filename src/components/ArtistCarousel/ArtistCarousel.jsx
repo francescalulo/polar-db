@@ -74,7 +74,7 @@ function ArtistCarousel({ cast = [] }) {
           </button>
         )}
 
-        <div ref={carouselRef} className="artistCarousel__list">
+        <div ref={carouselRef} className="artistCarousel__list" tabIndex={0}>
           {displayedCast.map((actor, index) => (
             <div
               key={actor.creditId || actor.id}

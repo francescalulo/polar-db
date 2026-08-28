@@ -154,6 +154,7 @@ function SearchResults() {
               Sort by
               <select
                 className="searchResults__sortSelect"
+                name="sortBy"
                 value={sortBy}
                 onChange={handleSortChange}
               >
@@ -167,6 +168,7 @@ function SearchResults() {
               Year
               <select
                 className="searchResults__yearSelect"
+                name="year"
                 value={year}
                 onChange={handleYearChange}
               >
