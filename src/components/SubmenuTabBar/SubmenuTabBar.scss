@@ -35,7 +35,6 @@
         z-index: -1;
         pointer-events: none;
         backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px); // Safari needs the prefix
         mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
         -webkit-mask-image: linear-gradient(
           to bottom,
